@@ -1,25 +1,27 @@
 <?php
+// error_reporting(0);
 session_start();
 include "../../../config/koneksi.php";
 include "../../../config/library.php";
 include "../../../config/fungsi_thumb.php";
 include "../../../config/fungsi_seo.php";
 
-$module=$_GET[module];
-$act=$_GET[act];
+$module=$_GET['module'];
+$act=$_GET['act'];
 
-// Hapus produk
-if ($module=='produk' AND $act=='hapus'){
-$data=mysql_fetch_array(mysql_query("SELECT gambar FROM produk WHERE id_produk='$_GET[id]'"));
-  if ($data['gambar']!=''){
-     mysql_query("DELETE FROM produk WHERE id_produk='$_GET[id]'");
-     unlink("../../../foto_produk/$_GET[namafile]");   
-  }
-  else{
-  mysql_query("DELETE FROM produk WHERE id_produk='$_GET[id]'");
-  }
-  header('location:../../media.php?module='.$module);
-}
+    // Hapus produk
+    if ($module=='produk' AND $act=='hapus'){
+        $data= mysql_fetch_assoc(mysql_query("SELECT gambar FROM produk WHERE id_produk='$_GET[id]'"));
+
+        if ( $data['gambar'] ){
+            unlink("../../../foto_produk/{$data['gambar']}");   
+            unlink("../../../foto_produk/big_{$data['gambar']}");   
+            unlink("../../../foto_produk/medium_{$data['gambar']}");   
+            unlink("../../../foto_produk/small_{$data['gambar']}");   
+        }
+        mysql_query("DELETE FROM produk WHERE id_produk='$_GET[id]'");
+        header('location:../../media.php?module='.$module);
+    }
 
 // Input produk
 elseif ($module=='produk' AND $act=='input'){
