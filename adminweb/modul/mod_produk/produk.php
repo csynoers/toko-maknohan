@@ -68,7 +68,7 @@ switch($_GET[act]){
                   <input type='text' name='nama_produk' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Nama Produk' required>
                 </div>
 				<div class='form-group'>
-                  <label for='exampleInputPassword1'>Kategori</label>
+                  <label for='exampleInputPassword1'>Kategori <small><a href='media.php?module=kategori'>[+ Tambah kategori baru]</a></small></label>
                   <select class='form-control' name='kategori' required>
             <option value='' selected>- Pilih Kategori -</option>";
             $tampil=mysql_query("SELECT * FROM kategori ORDER BY nama_kategori");
@@ -78,7 +78,7 @@ switch($_GET[act]){
     echo "</select>
                 </div>
 				<div class='form-group'>
-                  <label for='exampleInputPassword1'>Ukuran</label><br>
+                  <label for='exampleInputPassword1'>Ukuran <small><a href='media.php?module=ukuran'>[+ Tambah ukuran baru]</a></small></label><br>
                   ";
 		  $tampil=mysql_query("SELECT * FROM ukuran ORDER BY kode_ukuran");
             while($r=mysql_fetch_array($tampil)){
@@ -100,9 +100,7 @@ switch($_GET[act]){
                 </div>
 				<div class='form-group'>
                   <label for='exampleInputPassword1'>Deskripsi</label>
-                  <textarea id='editor1' name='deskripsi' rows='20' cols='80'>
-                                            Isikan Deskripsi Produk Disini.
-                    </textarea>
+                  <textarea id='editor1' name='deskripsi' rows='20' colsx='80'>Isikan Deskripsi Produk Disini.</textarea>
                 </div>
 				<div class='form-group'>
                   <label for='exampleInputFile'>Gambar</label>

@@ -50,6 +50,7 @@ else{
 src="../tinymcpuk/tiny_mce_src.js"></script>
 <script type="text/javascript">
 tinyMCE.init({
+    width : '100%',
 		mode : "textareas",
 		theme : "advanced",
 		plugins : "table,youtube,advhr,advimage,advlink,emotions,flash,searchreplace,paste,directionality,noneditable,contextmenu",
