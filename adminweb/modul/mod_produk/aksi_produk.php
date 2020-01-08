@@ -99,7 +99,7 @@ elseif ($module=='produk' AND $act=='update'){
   $acak           = rand(1,99);
   $nama_file_unik = $acak.$nama_file; 
 
-  $produk_seo      = seo_title($_POST[nama_produk]);
+  $produk_seo      = seo_title($_POST['nama_produk']);
 
   // Apabila gambar tidak diganti
   if (empty($lokasi_file)){
@@ -122,6 +122,14 @@ elseif ($module=='produk' AND $act=='update'){
 		}					 
   }
   else{
+    $data= mysql_fetch_assoc(mysql_query("SELECT gambar FROM produk WHERE id_produk='$_POST[id]'"));
+
+    if ( $data['gambar'] ){
+        unlink("../../../foto_produk/{$data['gambar']}");   
+        unlink("../../../foto_produk/big_{$data['gambar']}");   
+        unlink("../../../foto_produk/medium_{$data['gambar']}");   
+        unlink("../../../foto_produk/small_{$data['gambar']}");   
+    }
     UploadImage($nama_file_unik);
     mysql_query("UPDATE produk SET nama_produk = '$_POST[nama_produk]',
                                    produk_seo  = '$produk_seo', 

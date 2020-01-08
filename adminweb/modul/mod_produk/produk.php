@@ -144,7 +144,7 @@ switch($_GET[act]){
                   <input type='text' name='nama_produk' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Nama Produk' value='$r[nama_produk]' required>
                 </div>
 				<div class='form-group'>
-                  <label for='exampleInputPassword1'>Kategori</label>
+                  <label for='exampleInputPassword1'>Kategori <small><a href='media.php?module=kategori'>[+ Tambah kategori baru]</a></small></label>
                   <select class='form-control' name='kategori' required>";
  
           $tampil=mysql_query("SELECT * FROM kategori ORDER BY nama_kategori");
@@ -163,7 +163,7 @@ switch($_GET[act]){
     echo "</select>
                 </div>
 				<div class='form-group'>
-                  <label for='exampleInputPassword1'>Ukuran</label><br>
+                  <label for='exampleInputPassword1'>Ukuran <small><a href='media.php?module=ukuran'>[+ Tambah ukuran baru]</a></small></label><br>
                   ";
 		 $sql_ukuran="select * from produk_ukuran where id_produk='$_GET[id]'";
 			$qry_ukuran=mysql_query($sql_ukuran);
