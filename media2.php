@@ -223,7 +223,7 @@ Footer
 <div class="span2">
 <h5>Navigasi</h5>
 <a href="hubungi-kami.html">HUBUNGI KAMI</a><br>
-<a href="cara-beli.html">CARA BELI</a><br>
+<a href="cara-pembelian.html">CARA BELI</a><br>
 <a href="profil-kami.html">PROFIL KAMI</a><br>
  </div>
 
