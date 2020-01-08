@@ -93,7 +93,7 @@ Lower Header Section
 	<div class="span4">
 	<h1>
 	<a class="logo" href="index.php"><span>Twitter Bootstrap ecommerce template</span> 
-		<img src="assets/img/logo-bootstrap-shoping-cart.png" alt="bootstrap sexy shop">
+		<img src="assets/img/logo-maknohan.png" alt="bootstrap sexy shop">
 	</a>
 	</h1>
 	</div>
