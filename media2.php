@@ -21,7 +21,7 @@ $statusUrl = $serverUrlAndPath."status.php";
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Toko Batik Sinar Abadi shopping cart</title>
+    <title>Toko Batik Maknohan</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -62,9 +62,9 @@ $statusUrl = $serverUrlAndPath."status.php";
 		if (empty($_SESSION['namalengkap']) AND empty($_SESSION['passuser'])){
 		?>
 				<a href="index.php"> <span class="icon-home"></span> Home</a>
-				<a href="daftar-member.html"><span class="icon-edit"></span> Free Register </a> 
-				<a href="hubungi-kami.html"><span class="icon-envelope"></span> Hubungi Kami</a>
-				<a href="keranjang-belanja.html"><span class="icon-shopping-cart"></span> Keranjang Anda</a>
+				<a class="<?= $_GET['module']=='daftarmember' ? 'active' : NULL ; ?>" href="daftar-member.html"><span class="icon-edit"></span> Free Register </a> 
+				<a class="<?= $_GET['module']=='hubungikami' ? 'active' : NULL ; ?>" href="hubungi-kami.html"><span class="icon-envelope"></span> Hubungi Kami</a>
+				<a class="<?= $_GET['module']=='profilkami' ? 'active' : NULL ; ?>" href="keranjang-belanja.html"><span class="icon-shopping-cart"></span> Keranjang Anda</a>
 		<?php
 		  }
 		  if (!empty($_SESSION['namalengkap']) AND !empty($_SESSION['passuser'])){
@@ -117,10 +117,10 @@ Navigation Bar Section
 		  </a>
 		  <div class="nav-collapse">
 			<ul class="nav">
-			  <li class=""><a href="index.php">Home	</a></li>
-			  <li class=""><a href="semua-produk.html">Produk</a></li>
-			  <li class=""><a href="cara-pembelian.html">Cara Beli</a></li>
-			  <li class=""><a href="profil-kami.html">Profil</a></li>
+			  <li class="<?= $_GET['module']=='home' ? 'active' : NULL ; ?>"><a href="index.php">Home	</a></li>
+			  <li class="<?= ($_GET['module']=='semuaproduk'||$_GET['module']=='detailkategori'||$_GET['module']=='detailproduk') ? 'active' : NULL ; ?>"><a href="semua-produk.html">Produk</a></li>
+			  <li class="<?= $_GET['module']=='carabeli' ? 'active' : NULL ; ?>"><a href="cara-pembelian.html">Cara Beli</a></li>
+			  <li class="<?= $_GET['module']=='profilkami' ? 'active' : NULL ; ?>"><a href="profil-kami.html">Profil</a></li>
 			</ul>
 			<form action="hasil-pencarian.html" method="POST" class="navbar-search pull-left">
 			  <input type="text" name="kata" placeholder="Pencarian" class="search-query span2">
