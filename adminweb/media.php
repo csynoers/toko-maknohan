@@ -181,7 +181,7 @@ else{
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Administrator E-Commerce Toko Maknohan
+        Administrator E-Commerce Toko Mak Nohan
         
       </h1>
       
@@ -204,7 +204,7 @@ else{
     <div class="pull-right hidden-xs">
       <b>Version</b> 2.3.3
     </div>
-    <strong>Copyright &copy; <?= date('Y') ?> Toko Maknohan All rights
+    <strong>Copyright &copy; <?= date('Y') ?> Toko Mak Nohan All rights
     reserved.
   </footer>
 

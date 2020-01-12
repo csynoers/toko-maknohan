@@ -21,7 +21,7 @@ $statusUrl = $serverUrlAndPath."status.php";
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Toko Batik Maknohan</title>
+    <title>Mak Nohan Oleh-Oleh Khas Dieng Wonosobo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -72,7 +72,7 @@ $statusUrl = $serverUrlAndPath."status.php";
 		  <a href="index.php"> <span class="icon-home"></span> Home</a> 
 				<a href="edit-member.html"><span class="icon-user"></span> My Account</a>
 				<a href="data-transaksi.html"><span class="icon-edit"></span> Riwayat Order </a>
-				<a href="konfirmasi-pembayaran.html"><span class="icon-envelope"></span> Konfirmasi Pembayaran</a>
+				<!-- <a href="konfirmasi-pembayaran.html"><span class="icon-envelope"></span> Konfirmasi Pembayaran</a> -->
 				<a href="hubungi-kami.html"><span class="icon-envelope"></span> Hubungi Kami</a>
 				<a href="keranjang-belanja.html"><span class="icon-shopping-cart"></span> Keranjang Anda</a>
 				<?php
@@ -229,24 +229,34 @@ Footer
 
  <div class="span6">
 <h5>Kontak Kami</h5>
-Email : sinarabadibatikkp@yahoo.com <br>
+Email : tokomaknohan@gmail.com <br>
 Phone : 0813 9015 7959  <br>
-Alamat :  Jl. Sutijab No.48, Wates, Kabupaten Kulon Progo, DIY 55651 <br>
+Alamat :  Jl. Raya Kertek km 05 Sayangan Wonosobo <br>
  </div>
  </div>
 </footer>
 </div><!-- /container -->
-
 <div class="copyright">
 <div class="container">
-	<p class="pull-right">
-		<a href="#"><img src="assets/img/maestro.png" alt="payment"></a>
-		<a href="#"><img src="assets/img/mc.png" alt="payment"></a>
-		<a href="#"><img src="assets/img/pp.png" alt="payment"></a>
-		<a href="#"><img src="assets/img/visa.png" alt="payment"></a>
-		<a href="#"><img src="assets/img/disc.png" alt="payment"></a>
-	</p>
-	<span>Copyright &copy; 2018<br> Toko Batik Sinar Abadi</span>
+	<table width="100%">
+	 	<tr>
+	 		<td width="70%">
+				<span>Copyright &copy; <?= date('Y') ?><br> Mak Nohan Oleh-Oleh Khas Dieng Wonosobo</span>
+			</td>
+			<td width="30%">
+	 			<table>
+	 				<tr>
+	 					<td>
+	 						Metode Pembayaran :
+						</td>
+						<td>
+							<a href="#"><img style="height:50px" src="img/fasapay.png" alt="payment">
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
 </div>
 </div>
 <a href="#" class="gotop"><i class="icon-double-angle-up"></i></a>

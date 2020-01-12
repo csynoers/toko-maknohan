@@ -530,16 +530,16 @@ echo"
 	}
 
 }
-elseif ($_GET[module]=='selesaibelanja'){
+elseif ($_GET['module']=='selesaibelanja'){
  $sid = session_id();
 $member=mysql_query("SELECT * FROM kustomer WHERE id_kustomer='$_SESSION[kustomer_id]'");
     $m=mysql_fetch_array($member);
-    $address=$m[address];
+    $address=$m['address'];
 $edit = mysql_query("SELECT SUM(berat) AS weight FROM orders_temp a left join produk b on a.id_produk=b.id_produk
 		left join ukuran c on a.id_ukuran=c.id_ukuran 
 			                WHERE id_session='$sid'");
     $w    = mysql_fetch_array($edit);
-	$totalberat=$w[weight];
+	$totalberat=$w['weight'];
 	$berat_gram=$totalberat*1000;
   if (empty($_SESSION['namalengkap']) AND empty($_SESSION['passuser'])){
 
@@ -589,7 +589,7 @@ echo"
 			$data = json_decode($response, true);
 				$data = json_decode($response, true);
 			 
-				echo "<option value='501' selected>Yogyakarta</option>";
+				echo "<option value='498' selected>Wonosobo</option>";
 			echo "</select>
 						</div>
 					  </div>";
@@ -629,69 +629,71 @@ echo"
 						 <select id='kabupaten' name='kabupaten' class='custom-select'></select>
 						</div>
 					  </div>
-					  <div class='control-group'>
-						<label class='span2 control-label' for='inputPassword'>Kurir</label>
-						<div class='controls'>
-						  <select id='kurir' name='kurir' class='custom-select'>
-				<option value='jne'>JNE</option>
-				<option value='tiki'>TIKI</option>
-				<option value='pos'>POS INDONESIA</option>
-			</select>
+
+						<div class='control-group'>
+							<label class='span2 control-label' for='inputPassword'>Kurir</label>
+							<div class='controls'>
+								<select id='kurir' name='kurir' class='custom-select'>
+									<option value='jne'>JNE</option>
+									<option value='tiki'>TIKI</option>
+									<option value='pos'>POS INDONESIA</option>
+								</select>
+							</div>
 						</div>
-					  </div>
-					  <div class='control-group'>
-						<label class='span2 control-label' for='inputPassword'>Berat (gr)</label>
-						<div class='controls'>
-						  <input type='number' id='berat' name='berat' value='$berat_gram' readonly>
+
+						<div class='control-group'>
+							<label class='span2 control-label' for='inputPassword'>Berat (gr)</label>
+							<div class='controls'>
+								<input type='number' id='berat' name='berat' value='$berat_gram' readonly>
+							</div>
 						</div>
-					  </div>
-					  <div class='control-group'>
-						<div class='controls'>
-						<input id='cek' type='button' value='Cek Ongkir' class='shopBtn'>
-						  
+
+						<div class='control-group'>
+							<div class='controls'>
+								<input id='cek' type='button' value='Cek Ongkir' class='shopBtn'>
+							</div>
 						</div>
-					  </div>
 					 
 				  </td>
 				  </tr>
               </tbody>
             </table>
 			
-			
-			<div class='col-md-8'>
-		  <div class='card my-4'>
-            <div class='card-body'>
-				<div id='loading'><img src='img/ajax-loader.gif'></div>
-				<p id='kurirname' style='font-weight:700;text-transform:uppercase;color:green;'></p>
-				<table id='details' class='table table-bordered table-responsive'></table>
-				<table id='ongkos' class='table table-bordered table-responsive'></table>
-				<div id='ongkir'></div>
-		   </div>
-          </div>
-        </div>
-		 <div class='control-group'>
+		<div class='col-md-8'>
+			<div class='card my-4'>
+				<div class='card-body'>
+					<div id='loading'><img src='img/ajax-loader.gif'></div>
+					<p id='kurirname' style='font-weight:700;text-transform:uppercase;color:green;'></p>
+					<table id='details' class='table table-bordered table-responsive'></table>
+					<table id='ongkos' class='table table-bordered table-responsive'></table>
+					<div id='ongkir'></div>
+				</div>
+			</div>
+		</div>
+		
+		<div class='control-group'>
 			<label class='control-label' for='inputLname'>Alamat Pengiriman<sup>*</sup></label>
 			<div class='controls'>
-			  <input type='text' name='alamat' id='inputLname' value='$address' placeholder='Masukkan Alamat Anda' required>
+				<textarea name='alamat' id='inputLname' placeholder='Masukkan Alamat Anda' required class='input-block-level'>{$address}</textarea>
 			</div>
-		 </div>
-		 <div class='control-group'>
-		<label class='control-label'>Jenis Pembayaran <sup>*</sup></label>
-		<div class='controls'>
-		<select name='jenis_pembayaran'  required>
-      <option value=''>-- Pilih Jenis Pembayaran --</option>
-          <option value='TRANSFER'>TRANSFER</option>
-          <option value='FASAPAY'>FASAPAY</option>
-		  </select>
 		</div>
+
+		<div class='control-group' style='display:none'>
+			<label class='control-label'>Jenis Pembayaran <sup>*</sup></label>
+			<div class='controls'>
+				<select name='jenis_pembayaran'  required>
+					<option value=''>-- Pilih Jenis Pembayaran --</option>
+					<option value='TRANSFER'>TRANSFER</option>
+					<option selected value='FASAPAY'>FASAPAY</option>
+				</select>
+			</div>
 		</div>
-		 
 		
-	<div class='control-group'>
-		<div class='controls'>
-		 <input type='submit' name='submitAccount' value='Proses' class='exclusive shopBtn'>
+		<div class='control-group'>
+			<div class='controls'>
+			<input type='submit' name='submitAccount' value='Proses' class='exclusive shopBtn'>
+			</div>
 		</div>
-	</div>
 	</form>
 </div>
 							</div>";
@@ -728,7 +730,7 @@ $jam_skrg = date("H:i:s");
  $allitem = mysql_fetch_array(mysql_query("SELECT * FROM orders_temp,produk "
             . "WHERE orders_temp.id_produk=produk.id_produk "
             . "AND id_session='$sesid'"));
-            $rekap = "Pembelian di Toko Batik Sinar Abadi ";
+            $rekap = "Pembelian di Toko Mak Nohan ";
 $rekaps = array();
             $totalquantity = 0;
             foreach ($allitem as $_it) {
@@ -809,11 +811,11 @@ echo"
         Data order Anda adalah sebagai berikut: <br /><br />";
 			  $no=1;
 while ($d=mysql_fetch_array($daftarproduk)){
-   $subtotalberat = $d[berat] * $d[jumlah]; // total berat per item produk 
+   $subtotalberat = $d['berat'] * $d['jumlah']; // total berat per item produk 
    $totalberat  = $totalberat + $subtotalberat; // grand total berat all produk yang dibeli
 
-   $harga1 = $d[harga];
-   $subtotal    = $harga1 * $d[jumlah];
+   $harga1 = $d['harga'];
+   $subtotal    = $harga1 * $d['jumlah'];
    $total       = $total + $subtotal;
    $subtotal_rp = format_rupiah($subtotal);    
    $total_rp    = format_rupiah($total);    
@@ -839,8 +841,8 @@ $norek = mysql_query("SELECT * FROM norek LIMIT 1");
 	
 $edit=mysql_query("SELECT * FROM kustomer WHERE id_kustomer='$_SESSION[kustomer_id]'");
 $x=mysql_fetch_array($edit);
-$email=$x[email];
-$kota=$x[id_kota];
+$email=$x['email'];
+$kota=$x['id_kota'];
 
 $ongkos=mysql_fetch_array(mysql_query("SELECT ongkir FROM orders WHERE id_orders='$id_orders'"));
 $ongkoskirim1=$ongkos[ongkir];
@@ -860,14 +862,14 @@ $pesan.="<br /><br />Total : Rp. $total_rp
          nomor rekeningnya <b>$z[nomor]</b> a.n. $z[atas_nama]";
 $subjek="Pemesanan Online sinarabadibatik.online";
 // Kirim email dalam format HTML
-$dari = "From: redaksi@sinarabadibatik.online \n";
+$dari = "From: redaksi@tokomaknohan.online \n";
 $dari .= "Content-type: text/html \r\n";
 
 // Kirim email ke kustomer
-mail($x[email],$subjek,$pesan,$dari);
+mail($x['email'],$subjek,$pesan,$dari);
 
 // Kirim email ke pengelola toko online
-mail("dafidsriwidodo@gmail.com",$subjek,$pesan,$dari);
+mail("tokomaknohan@gmail.com",$subjek,$pesan,$dari);
 echo"				
 				 <tr>
                   <td colspan='6' class='alignR'>Total:	</td>
@@ -894,17 +896,17 @@ echo"
 			 if ($_POST["jenis_pembayaran"] == "FASAPAY") {
 			 echo"<p>Silahkan lanjutkan proses pembayaran melalui Akun Fasapay Anda dengan mengklik tombol di bawah ini, untuk melihat setatus pengiriman silakan pilih halaman <a href='data-transaksi.html'><b>riwayat order</b></a></p><br />
 			 <form id='form1' name='form1' target='_blank' method='post' action='https://sci.fasapay.co.id/'>
-	<input type='hidden' name='fp_acc' value='FI435930'>
+	<input type='hidden' name='fp_acc' value='FP618486'>
     <input type='hidden' name='fp_acc_from' value='' />
-    <input type='hidden' name='fp_store' value='Sinar Abadi Batik'>
-    <input type='hidden' name='fp_item' value='Pembelian Produk Sinar Abadi Batik'>
+    <input type='hidden' name='fp_store' value='Toko Maknohan | Pusat Oleh-Oleh Khas Dieng'>
+    <input type='hidden' name='fp_item' value='Pembelian Produk Di Toko Oleh-Oleh Maknohan'>
     <input type='hidden' name='fp_amnt' value='$grandtotal'>
     <input type='hidden' name='fp_currency' value='IDR'>
     <input type='hidden' name='fp_comments' value='Pembayaran No Order $id_orders menggunakan store variable'>
     <input type='hidden' name='fp_merchant_ref' value='BL000001' />
-    <input type='hidden' name='fp_success_url' value='http://www.sinarabadibatik.online/gentur/index.php' />
+    <input type='hidden' name='fp_success_url' value='http://www.tokomaknohan.online/gentur/index.php' />
 	<input type='hidden' name='fp_success_method' value='POST' />
-	<input type='hidden' name='fp_fail_url' value='http://www.sinarabadibatik.online/gentur/index.php' />
+	<input type='hidden' name='fp_fail_url' value='http://www.tokomaknohan.online/gentur/index.php' />
 	<input type='hidden' name='fp_fail_method' value='GET' />
     <!-- baggage fields -->
     <input type='hidden' name='track_id' value='558421222'>
@@ -959,14 +961,14 @@ echo"
 							</div>";
 
 }
-elseif ($_GET[module]=='detailtransaksi'){
+elseif ($_GET['module']=='detailtransaksi'){
 session_start();
 $edit = mysql_query("SELECT * FROM orders WHERE id_orders='$_GET[id]'");
     $r    = mysql_fetch_array($edit);
-    $status=$r[status_order];
-    $metode=$r[jenis_pembayaran];
-    $id_orders=$r[id_orders];
-    $tanggal=tgl_indo($r[tgl_order]);
+    $status=$r['status_order'];
+    $metode=$r['jenis_pembayaran'];
+    $id_orders=$r['id_orders'];
+    $tanggal=tgl_indo($r['tgl_order']);
 	$customer=mysql_query("select * from kustomer where id_kustomer='$r[id_kustomer]'");
   $c=mysql_fetch_array($customer);
 echo"							
@@ -1029,23 +1031,23 @@ echo "<tr><td colspan=5 align=right>Total              Rp. : </td><td align=righ
       if ($metode == "FASAPAY" AND $status=='Belum-Dibayar') {
 			 echo"<p>Silahkan lanjutkan proses pembayaran melalui Akun Fasapay Anda dengan mengklik tombol di bawah ini.<br />
 			 <form id='form1' name='form1' target='_blank' method='post' action='https://sci.fasapay.co.id/'>
-	<input type='hidden' name='fp_acc' value='FI435930'>
-    <input type='hidden' name='fp_acc_from' value='' />
-    <input type='hidden' name='fp_store' value='Sinar Abadi Batik'>
-    <input type='hidden' name='fp_item' value='Pembelian Produk Sinar Abadi Batik'>
-    <input type='hidden' name='fp_amnt' value='$grandtotal'>
-    <input type='hidden' name='fp_currency' value='IDR'>
-    <input type='hidden' name='fp_comments' value='Pembayaran No Order $id_orders menggunakan store variable'>
-    <input type='hidden' name='fp_merchant_ref' value='BL000001' />
-    <input type='hidden' name='fp_success_url' value='http://www.sinarabadibatik.online/gentur/index.php' />
-	<input type='hidden' name='fp_success_method' value='POST' />
-	<input type='hidden' name='fp_fail_url' value='http://www.sinarabadibatik.online/gentur/index.php' />
-	<input type='hidden' name='fp_fail_method' value='GET' />
-    <!-- baggage fields -->
-    <input type='hidden' name='track_id' value='558421222'>
-    <input type='hidden' name='order_id' value='BJ2993800'>
-  <input name='' type='submit' value='Bayar Dengan Fasapay' />
-</form>";
+				<input type='hidden' name='fp_acc' value='FP669896'>
+				<input type='hidden' name='fp_acc_from' value='' />
+				<input type='hidden' name='fp_store' value='Toko Mak Nohan | Pusat Oleh-Oleh Khas Dieng'>
+				<input type='hidden' name='fp_item' value='Pembelian Produk Toko Mak Nohan'>
+				<input type='hidden' name='fp_amnt' value='$grandtotal'>
+				<input type='hidden' name='fp_currency' value='IDR'>
+				<input type='hidden' name='fp_comments' value='Pembayaran No Order $id_orders menggunakan store variable'>
+				<input type='hidden' name='fp_merchant_ref' value='BL000001' />
+				<input type='hidden' name='fp_success_url' value='index.php' />
+				<input type='hidden' name='fp_success_method' value='POST' />
+				<input type='hidden' name='fp_fail_url' value='index.php' />
+				<input type='hidden' name='fp_fail_method' value='GET' />
+				<!-- baggage fields -->
+				<input type='hidden' name='track_id' value='558421222'>
+				<input type='hidden' name='order_id' value='BJ2993800'>
+				<input name='' type='button' value='Bayar Dengan Fasapay' />
+			</form>";
 			 }
       
       if ($status=='Belum-Dibayar'){

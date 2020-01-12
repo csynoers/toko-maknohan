@@ -12,11 +12,13 @@ echo"
 	</ul>
 </div>
 
-			  <div class='well well-small' ><a href='#'><img src='assets/img/paypal.jpg' alt='payment method paypal'></a>
-			  <center><h4>Mandiri</h4>
-				  <p>An. Gentur Aji</p>
+			  <div class='well well-small' >
+			  	<h5>Metode Pembayaran</h5>
+			  	<a href='#'><img src='img/fasapay.png' alt='payment method fasapay'></a>
+			  <!--<center><h4>Mandiri</h4>
+				  <p>An. Toko Maknohan</p>
 				  <p>No. Rek : 0867564-9876-876</p>
-			  </center>
+			  </center>-->
 			  </div>";
 $promo=mysql_query("SELECT * FROM produk ORDER BY rand() LIMIT 1");
 while($a=mysql_fetch_array($promo)){

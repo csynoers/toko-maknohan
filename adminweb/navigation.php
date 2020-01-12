@@ -33,7 +33,7 @@ echo "
           <ul class='treeview-menu'>
 		    <li><a href='media.php?module=kustomer' class='".($_GET['module']=='kustomer'? 'bg-blue-active' : NULL)."'><i class='fa fa-circle-o'></i> Kustomer</a></li>
             <li><a href='media.php?module=order' class='".($_GET['module']=='order'? 'bg-blue-active' : NULL)."'><i class='fa fa-circle-o'></i> Data Orders</a></li>
-			<li><a href='media.php?module=konfirmasi' class='".($_GET['module']=='konfirmasi'? 'bg-blue-active' : NULL)."'><i class='fa fa-circle-o'></i> Konfirmasi Pembayaran</a></li>
+			<!--<li><a href='media.php?module=konfirmasi' class='".($_GET['module']=='konfirmasi'? 'bg-blue-active' : NULL)."'><i class='fa fa-circle-o'></i> Konfirmasi Pembayaran</a></li>-->
           </ul>
         </li>
 		<li class='".($_GET['module']=='laporan'? 'bg-blue-active' : NULL)."'>
