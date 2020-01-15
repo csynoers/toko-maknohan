@@ -192,7 +192,8 @@ echo"
 				  </div>
 				  <h4>$d[stok] items in stock</h4>
 				  ";
-			echo "<input type='hidden' name='id' value='$d[id_produk]' /> Ukuran : <select name='id_ukuran'>";
+			echo "<input type='hidden' name='id' value='$d[id_produk]' /> 
+			<select name='id_ukuran' style='display:none'>";
 			$sql_ukuran="select a.*,b.kode_ukuran from produk_ukuran a left join ukuran b on a.id_ukuran=b.id_ukuran
 						where a.id_produk='$_GET[id]'";
 			$qry_ukuran=mysql_query($sql_ukuran);

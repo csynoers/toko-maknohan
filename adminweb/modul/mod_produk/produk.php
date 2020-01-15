@@ -52,77 +52,91 @@ switch($_GET[act]){
  
     break;
   
-  case "tambahproduk":
-    echo "<div class='col-xs-12'>
-        <div class='box'>
-            <div class='box-header'>
-              <h3 class='box-title'><b>Form Tambah Produk</b></h3>
-            </div>
-            <!-- /.box-header -->
-            <div class='box-body'>
-			
-			<form method=POST action='$aksi?module=produk&act=input' enctype='multipart/form-data'>
-			<div class='box-body'>
-                <div class='form-group'>
-                  <label for='exampleInputPassword1'>Nama Produk</label>
-                  <input type='text' name='nama_produk' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Nama Produk' required>
-                </div>
-				<div class='form-group'>
-                  <label for='exampleInputPassword1'>Kategori <small><a href='media.php?module=kategori'>[+ Tambah kategori baru]</a></small></label>
-                  <select class='form-control' name='kategori' required>
-            <option value='' selected>- Pilih Kategori -</option>";
-            $tampil=mysql_query("SELECT * FROM kategori ORDER BY nama_kategori");
-            while($r=mysql_fetch_array($tampil)){
-              echo "<option value=$r[id_kategori]>$r[nama_kategori]</option>";
-            }
-    echo "</select>
-                </div>
-				<div class='form-group'>
-                  <label for='exampleInputPassword1'>Ukuran <small><a href='media.php?module=ukuran'>[+ Tambah ukuran baru]</a></small></label><br>
-                  ";
-		  $tampil=mysql_query("SELECT * FROM ukuran ORDER BY kode_ukuran");
-            while($r=mysql_fetch_array($tampil)){
-			echo"<input type='checkbox' name='ukuran[]' value=$r[id_ukuran]>$r[kode_ukuran] &nbsp;";
-			}
-		  echo"
-                </div>
-				<div class='form-group'>
-                  <label for='exampleInputPassword1'>Berat</label>
-                  <input type='text' name='berat' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Berat Produk' required>
-                </div>
-				<div class='form-group'>
-                  <label for='exampleInputPassword1'>Harga</label>
-                  <input type='number' name='harga' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Harga Produk' required>
-                </div>
-				<div class='form-group'>
-                  <label for='exampleInputPassword1'>Stok</label>
-                  <input type='number' name='stok' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Stok Produk' required>
-                </div>
-				<div class='form-group'>
-                  <label for='exampleInputPassword1'>Deskripsi</label>
-                  <textarea id='editor1' name='deskripsi' rows='20' colsx='80'>Isikan Deskripsi Produk Disini.</textarea>
-                </div>
-				<div class='form-group'>
-                  <label for='exampleInputFile'>Gambar</label>
-                  <input type='file' name='fupload' id='exampleInputFile'>
-                  <p class='help-block'>Pastikan File yang diupload berekstensi *JPG atau *JPEG.</p>
-                </div>
-              </div>
-              <!-- /.box-body -->
+    case "tambahproduk":
+        $kategoriProduk = [];
+        $tampil=mysql_query("SELECT * FROM kategori ORDER BY nama_kategori");
+        while($r=mysql_fetch_array($tampil)){
+            $kategoriProduk[]= "<option value=$r[id_kategori]>$r[nama_kategori]</option>";
+        }
+        $kategoriProduk = implode('',$kategoriProduk);
 
-              <div class='box-footer'>
-                <button type='submit' class='btn btn-primary'>Simpan</button>
-				<button onclick=self.history.back() class='btn btn-danger'>Batal</button>
-              </div>
-			</form>
-			
-			
-          </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>";
-     break;
+        $ukuranProduk = [];
+        $tampil=mysql_query("SELECT * FROM ukuran ORDER BY kode_ukuran");
+        $no=1;
+        while($r=mysql_fetch_array($tampil)){
+            $ukuranProdukChecked = '';
+            if ( $no==1 ) {
+                $ukuranProdukChecked = 'checked';
+            }
+            $ukuranProduk[] = "<input type='checkbox' name='ukuran[]' checked value=$r[id_ukuran]>$r[kode_ukuran] &nbsp;";
+            $no++;
+        }
+        $ukuranProduk = implode('',$ukuranProduk);
+
+        echo "
+            <div class='col-xs-12'>
+                <div class='box'>
+                    <div class='box-header'>
+                        <h3 class='box-title'><b>Form Tambah Produk</b></h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class='box-body'>
+
+                    <form method=POST action='$aksi?module=produk&act=input' enctype='multipart/form-data'>
+                    <div class='box-body'>
+                    <div class='form-group'>
+                    <label for='exampleInputPassword1'>Nama Produk</label>
+                    <input type='text' name='nama_produk' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Nama Produk' required>
+                    </div>
+                    <div class='form-group'>
+                        <label for='exampleInputPassword1'>Kategori <small><a href='media.php?module=kategori'>[+ Tambah kategori baru]</a></small></label>
+                        <select class='form-control' name='kategori' required>
+                            <option value='' selected>- Pilih Kategori -</option>
+                            {$kategoriProduk}
+                        </select>
+                    </div>
+                    <div class='form-group hidden'>
+                        <label for='exampleInputPassword1'>Ukuran <small><a href='media.php?module=ukuran'>[+ Tambah ukuran baru]</a></small></label><br>
+                        {$ukuranProduk}
+                    </div>
+                    <div class='form-group'>
+                        <label for='exampleInputPassword1'>Berat</label>
+                        <input type='text' name='berat' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Berat Produk' required>
+                    </div>
+                    <div class='form-group'>
+                        <label for='exampleInputPassword1'>Harga</label>
+                        <input type='number' name='harga' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Harga Produk' required>
+                    </div>
+                    <div class='form-group'>
+                        <label for='exampleInputPassword1'>Stok</label>
+                        <input type='number' name='stok' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Stok Produk' required>
+                    </div>
+                    <div class='form-group'>
+                        <label for='exampleInputPassword1'>Deskripsi</label>
+                        <textarea id='editor1' name='deskripsi' rows='20' colsx='80'>Isikan Deskripsi Produk Disini.</textarea>
+                    </div>
+                    <div class='form-group'>
+                        <label for='exampleInputFile'>Gambar</label>
+                        <input type='file' name='fupload' id='exampleInputFile'>
+                        <p class='help-block'>Pastikan File yang diupload berekstensi *JPG atau *JPEG.</p>
+                    </div>
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class='box-footer'>
+                    <button type='submit' class='btn btn-primary'>Simpan</button>
+                    <button onclick=self.history.back() class='btn btn-danger'>Batal</button>
+                    </div>
+                    </form>
+
+
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+        ";
+        break;
     
   case "editproduk":
     $edit = mysql_query("SELECT * FROM produk WHERE id_produk='$_GET[id]'");
