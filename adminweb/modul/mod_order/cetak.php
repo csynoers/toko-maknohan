@@ -1,9 +1,12 @@
+<?php
+  error_reporting(0);
+?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Sinar Abadi Batik | Invoice</title>
+  <title>Toko Mak Nohan | Invoice</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -22,14 +25,15 @@
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-<body onload="window.print();">
+<!-- <body onload="window.print();"> -->
+<body >
 <?php
 include "../../../config/koneksi.php";
 include "../../../config/fungsi_rupiah.php";
 include "../../../config/fungsi_indotgl.php";
 $edit = mysql_query("SELECT * FROM orders WHERE id_orders='$_GET[id]'");
     $r    = mysql_fetch_array($edit);
-    $tanggal=tgl_indo($r[tgl_order]);
+    $tanggal=tgl_indo($r['tgl_order']);
 	$customer=mysql_query("select * from kustomer where id_kustomer='$r[id_kustomer]'");
   $c=mysql_fetch_array($customer);
 echo"
@@ -40,7 +44,7 @@ echo"
     <div class='row'>
       <div class='col-xs-12'>
         <h2 class='page-header'>
-          <i class='fa fa-globe'></i> Toko Sinar Abadi Batik.
+          <i class='fa fa-globe'></i> Toko Mak Nohan.
           <small class='pull-right'>Date: $tanggal</small>
         </h2>
       </div>
@@ -51,11 +55,10 @@ echo"
       <div class='col-sm-4 invoice-col'>
         Dari
         <address>
-          <strong>Sinar Abadi Batik.</strong><br>
-           Jl. Sutijab No.48  <br>
-           Wates, Kabupaten Kulon Progo, DIY 55651<br>
+          <strong>Toko Mak Nohan.</strong><br>
+          Jl. Raya Kertek km 05 Sayangan Wonosobo<br>
           Phone: 0813 9015 7959 <br>
-          Email: sinarabadi@sinarabadibatik.com
+          Email: tokomaknohan@gmail.com
         </address>
       </div>
       <!-- /.col -->
@@ -94,7 +97,7 @@ echo"
             <tr>
               <th>Produk</th>
               <th>Berat(Kg)</th>
-              <th>Ukuran</th>
+              <!--<th>Ukuran</th>-->
               <th>Jumlah</th>
               <th>Harga</th>
 			  <th>Subtotal</th>
@@ -104,13 +107,13 @@ echo"
   $sql2=mysql_query("SELECT * FROM orders_detail a left join produk b on a.id_produk=b.id_produk
 		left join ukuran c on a.id_ukuran=c.id_ukuran WHERE id_orders='$_GET[id]'");
 		 while($s=mysql_fetch_array($sql2)){
-  $subtotalberat = $s[berat] * $s[jumlah]; // total berat per item produk 
+  $subtotalberat = $s['berat'] * $s['jumlah']; // total berat per item produk 
    $totalberat  = $totalberat + $subtotalberat; // grand total berat all produk yang dibeli
 
-    $harga1 = $s[harga];
+    $harga1 = $s['harga'];
 	
    
-   $subtotal    = $harga1 * $s[jumlah];
+   $subtotal    = $harga1 * $s['jumlah'];
    $total       = $total + $subtotal;
    $subtotal_rp = format_rupiah($subtotal);    
    $total_rp    = format_rupiah($total);    
@@ -120,7 +123,7 @@ echo"
             <tr>
               <td>$s[nama_produk]</td>
               <td>$s[berat]</td>
-              <td>$s[kode_ukuran]</td>
+              <!--<td>$s[kode_ukuran]</td>-->
               <td>$s[jumlah]</td>
               <td>Rp. $harga</td>
 			  <td>Rp. $subtotal_rp</td>
@@ -128,7 +131,7 @@ echo"
 			</tbody>";
 			}
   
-  $ongkoskirim1=$r[ongkir];
+  $ongkoskirim1=$r['ongkir'];
   $ongkoskirim=$ongkoskirim1 * $totalberat;
 	
   $grandtotal    = $total + $ongkoskirim; 

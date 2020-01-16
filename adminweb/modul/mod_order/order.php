@@ -56,7 +56,7 @@ switch($_GET[act]){
     break;
   
     
-  case "detailorder":
+    case "detailorder":
     
 $edit = mysql_query("SELECT * FROM orders WHERE id_orders='$_GET[id]'");
     $r    = mysql_fetch_array($edit);
@@ -120,7 +120,7 @@ echo"
             <tr>
               <th>Produk</th>
               <th>Berat(Kg)</th>
-              <th>Ukuran</th>
+              <!--<th>Ukuran</th>-->
               <th>Jumlah</th>
               <th>Harga</th>
 			  <th>Subtotal</th>
@@ -146,7 +146,7 @@ echo"
             <tr>
               <td>$s[nama_produk]</td>
               <td>$s[berat]</td>
-              <td>$s[kode_ukuran]</td>
+              <!--<td>$s[kode_ukuran]</td>-->
               <td>$s[jumlah]</td>
               <td>Rp. $harga</td>
 			  <td>Rp. $subtotal_rp</td>
