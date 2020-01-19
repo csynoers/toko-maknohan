@@ -796,7 +796,7 @@ echo"
                 <tr>
 									<th>No</th>
 									<th>Nama Produk</th>
-									<th>Ukuran</th>
+									<!--<th>Ukuran</th>-->
 									<th>Jumlah</th>
 									<th>Berat</th>
 									<th>Harga</th>
@@ -826,7 +826,7 @@ while ($d=mysql_fetch_array($daftarproduk)){
                 <tr>
                   <td>$no</td>
 									<td>$d[nama_produk]</td>
-									<td>$d[kode_ukuran]</td>
+									<!--td>$d[kode_ukuran]</td>-->
 									<td>$d[jumlah]</td>
 									<td>$d[berat] Kg</td>
 									<td>Rp. $harga</td>
@@ -861,7 +861,7 @@ $pesan.="<br /><br />Total : Rp. $total_rp
          <br />Grand Total : Rp. $grandtotal_rp 
          <br /><br />Silahkan lakukan pembayaran ke $z[bank] sebanyak Grand Total yang tercantum, 
          nomor rekeningnya <b>$z[nomor]</b> a.n. $z[atas_nama]";
-$subjek="Pemesanan Online sinarabadibatik.online";
+$subjek="Pemesanan Online Toko Mak Nohan";
 // Kirim email dalam format HTML
 $dari = "From: redaksi@tokomaknohan.online \n";
 $dari .= "Content-type: text/html \r\n";
@@ -873,23 +873,23 @@ mail($x['email'],$subjek,$pesan,$dari);
 mail("tokomaknohan@gmail.com",$subjek,$pesan,$dari);
 echo"				
 				 <tr>
-                  <td colspan='6' class='alignR'>Total:	</td>
+                  <td colspan='5' class='alignR'>Total:	</td>
                   <td> Rp. $total_rp</td>
                 </tr>
 				<tr>
-                  <td colspan='6' class='alignR'>Ongkos Kirim untuk Tujuan Kota Anda:	</td>
+                  <td colspan='5' class='alignR'>Ongkos Kirim untuk Tujuan Kota Anda:	</td>
                   <td > Rp. $ongkoskirim1_rp/Kg</td>
                 </tr>
 				<tr>
-                  <td colspan='6' class='alignR'>Total Berat:	</td>
+                  <td colspan='5' class='alignR'>Total Berat:	</td>
                   <td > $totalberat Kg</td>
                 </tr>
 				<tr>
-                  <td colspan='6' class='alignR'>Total Ongkos Kirim:	</td>
+                  <td colspan='5' class='alignR'>Total Ongkos Kirim:	</td>
                   <td > Rp. $ongkoskirim_rp</td>
                 </tr>
 				<tr>
-                  <td colspan='6' class='alignR'>Grand Total:	</td>
+                  <td colspan='5' class='alignR'>Grand Total:	</td>
                   <td class='label label-primary'> Rp. $grandtotal_rp</td>
                 </tr>
 				</tbody>
@@ -994,7 +994,7 @@ echo"
   
   echo "<table class='table table-bordered table-condensed'>
 	
-        <tr><td>Nama Produk</td><td>Ukuran</td><td>Berat(kg)</td><td>Jumlah</td><td>Harga Satuan</td><td>Sub Total</td></tr>";
+        <tr><td>Nama Produk</td><!--<td>Ukuran</td>--><td>Berat(kg)</td><td>Jumlah</td><td>Harga Satuan</td><td>Sub Total</td></tr>";
   
   while($s=mysql_fetch_array($sql2)){
   $subtotalberat = $s[berat] * $s[jumlah]; // total berat per item produk 
@@ -1009,7 +1009,7 @@ echo"
    $total_rp    = format_rupiah($total);    
    $harga       = format_rupiah($harga1);
 
-    echo "<tr><td>$s[nama_produk]</td><td>$s[kode_ukuran]</td><td align=center>$s[berat]</td><td align=center>$s[jumlah]</td><td>Rp. $harga</td><td>Rp. $subtotal_rp</td></tr>";
+    echo "<tr><td>$s[nama_produk]</td><!--<td>$s[kode_ukuran]</td>--><td align=center>$s[berat]</td><td align=center>$s[jumlah]</td><td>Rp. $harga</td><td>Rp. $subtotal_rp</td></tr>";
   }
 
 
@@ -1023,11 +1023,11 @@ echo"
   $grandtotal_rp  = format_rupiah($grandtotal); 
     
 
-echo "<tr><td colspan=5 align=right>Total              Rp. : </td><td align=right><b>$total_rp</b></td></tr>
-      <tr><td colspan=5 align=right>Ongkos Kirim       Rp. : </td><td align=right><b>$ongkoskirim1_rp</b>/Kg</td></tr>      
-      <tr><td colspan=5 align=right>Total Berat            : </td><td align=right><b>$totalberat</b> Kg</td></tr>      
-      <tr><td colspan=5 align=right>Total Ongkos Kirim Rp. : </td><td align=right><b>$ongkoskirim_rp</b></td></tr>      
-      <tr><td colspan=5 align=right>Grand Total        Rp. : </td><td align=right><b>$grandtotal_rp</b></td></tr>
+echo "<tr><td colspan=4 align=right>Total              Rp. : </td><td align=right><b>$total_rp</b></td></tr>
+      <tr><td colspan=4 align=right>Ongkos Kirim       Rp. : </td><td align=right><b>$ongkoskirim1_rp</b>/Kg</td></tr>      
+      <tr><td colspan=4 align=right>Total Berat            : </td><td align=right><b>$totalberat</b> Kg</td></tr>      
+      <tr><td colspan=4 align=right>Total Ongkos Kirim Rp. : </td><td align=right><b>$ongkoskirim_rp</b></td></tr>      
+      <tr><td colspan=4 align=right>Grand Total        Rp. : </td><td align=right><b>$grandtotal_rp</b></td></tr>
       </table>";
       if ($metode == "FASAPAY" AND $status=='Belum-Dibayar') {
 			 echo"<p>Silahkan lanjutkan proses pembayaran melalui Akun Fasapay Anda dengan mengklik tombol di bawah ini.<br />

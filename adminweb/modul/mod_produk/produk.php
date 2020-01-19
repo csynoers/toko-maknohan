@@ -111,16 +111,16 @@ switch(empty($_GET['act']) ? NULL : $_GET['act']){
 									{$ukuranProduk}
 								</div>
 								<div class='form-group'>
-									<label for='exampleInputPassword1'>Berat</label>
-									<input type='text' name='berat' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Berat Produk' required>
+									<label for='exampleInputPassword1'>Berat(kg)</label>
+									<input min='0.1' type='number' name='berat' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Berat Produk ex: 0.5' required>
 								</div>
 								<div class='form-group'>
-									<label for='exampleInputPassword1'>Harga</label>
-									<input type='number' name='harga' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Harga Produk' required>
+									<label for='exampleInputPassword1'>Harga(hanya angka)</label>
+									<input min='1' type='number' name='harga' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Harga Produk' required>
 								</div>
 								<div class='form-group'>
-									<label for='exampleInputPassword1'>Stok</label>
-									<input type='number' name='stok' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Stok Produk' required>
+									<label for='exampleInputPassword1'>Stok(hanya angka)</label>
+									<input min='1' type='number' name='stok' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Stok Produk' required>
 								</div>
 								<div class='form-group'>
 									<label for='exampleInputPassword1'>Deskripsi</label>
@@ -221,16 +221,16 @@ switch(empty($_GET['act']) ? NULL : $_GET['act']){
 									{$ukuranProduk}
 								</div>
 								<div class='form-group'>
-									<label for='exampleInputPassword1'>Berat</label>
-									<input type='text' name='berat' class='form-control' id='exampleInputPassword1' value=$r[berat] placeholder='Masukkan Berat Produk' required>
+									<label for='exampleInputPassword1'>Berat(kg)</label>
+									<input min='0.1' type='number' name='berat' class='form-control' id='exampleInputPassword1' value=$r[berat] placeholder='Masukkan Berat Produk' required>
 								</div>
 								<div class='form-group'>
-									<label for='exampleInputPassword1'>Harga</label>
-									<input type='number' name='harga' class='form-control' id='exampleInputPassword1' value=$r[harga] placeholder='Masukkan Harga Produk' required>
+									<label for='exampleInputPassword1'>Harga(hanya angka)</label>
+									<input min='1' type='number' name='harga' class='form-control' id='exampleInputPassword1' value=$r[harga] placeholder='Masukkan Harga Produk' required>
 								</div>
 								<div class='form-group'>
-									<label for='exampleInputPassword1'>Stok</label>
-									<input type='number' name='stok' class='form-control' id='exampleInputPassword1' value=$r[stok] placeholder='Masukkan Stok Produk' required>
+									<label for='exampleInputPassword1'>Stok(hanya angka)</label>
+									<input min='1' type='number' name='stok' class='form-control' id='exampleInputPassword1' value=$r[stok] placeholder='Masukkan Stok Produk' required>
 								</div>
 								<div class='form-group'>
 									<label for='exampleInputPassword1'>Deskripsi</label>
