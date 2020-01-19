@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+// error_reporting(0);
   session_start();	
   include "config/koneksi.php";
 	include "config/fungsi_indotgl.php";
@@ -170,7 +170,7 @@ Body Section
 	</div>
 	<div class="span9">
 	<?php
-	if ($_GET[module]=='home'){
+	if ($_GET['module']=='home'){
 	?>
 	<div class="well np">
 		<div id="myCarousel" class="carousel slide homCar">
@@ -357,6 +357,33 @@ Alamat :  Jl. Raya Kertek km 05 Sayangan Wonosobo <br>
 				}
           	});
 		});
+
+		$(document).on('change','select[name=provinsi]',function(){
+			let id = $(this).val();
+			let htmls = {};
+			htmls['optionKota'] = [];
+			$.each(getKota(id),function(a,b){
+				htmls.optionKota.push(`<option value='${b.city_id}'>${b.city_name}</option>`);
+			});
+			htmls['optionKota'] = htmls.optionKota.join('');
+			$('select[name=kota]').html(htmls.optionKota);
+		});
+		
+		function getKota(id=null) {
+			let data = {};
+			if ( id ) {
+				data.id = id;
+			}
+			data.get = 'kota';
+			return JSON.parse(
+				$.ajax({
+					type: "GET",
+					url: "rajaongkir.php",
+					async: false,
+					data: data
+				}).responseText
+			);
+		}
 	});
 	</script>
   </body>

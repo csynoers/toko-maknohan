@@ -1,5 +1,5 @@
 <?php
-if ($_GET[module]=='home'){
+if ($_GET['module']=='home'){
 echo"
 <div class='well well-small'>
 	<h3>Produk Terbaru </h3>
@@ -12,7 +12,7 @@ echo"
   $kolom = 3;
   $i=0;
   while ($r=mysql_fetch_array($sql)){
-    $harga1 = $r[harga];
+    $harga1 = $r['harga'];
     $harga     = number_format($harga1,0,",",".");
 	echo"
 			<li class='span4'>
@@ -32,7 +32,7 @@ echo"
 		</div>
 	</div>";
 	}
-elseif ($_GET[module]=='semuaproduk'){
+elseif ($_GET['module']=='semuaproduk'){
 echo"
 
 	<h3>Semua Produk </h3>
@@ -78,7 +78,7 @@ echo"
 		
 ";
 }
-elseif ($_GET[module]=='detailkategori'){
+elseif ($_GET['module']=='detailkategori'){
 $sq = mysql_query("SELECT nama_kategori from kategori where id_kategori='$_GET[id]'");
   $n = mysql_fetch_array($sq);
 echo"
@@ -136,7 +136,7 @@ echo"
   }
  
 }
-elseif ($_GET[module]=='carabeli'){
+elseif ($_GET['module']=='carabeli'){
 $detail=mysql_query("SELECT * FROM halamanstatis WHERE id_halaman='1'");
 	$d   = mysql_fetch_array($detail);
 echo"							
@@ -146,7 +146,7 @@ echo"
 							</div>";
 
 }
-elseif ($_GET[module]=='profilkami'){
+elseif ($_GET['module']=='profilkami'){
 $detail=mysql_query("SELECT * FROM halamanstatis WHERE id_halaman='2'");
 	$d   = mysql_fetch_array($detail);
 echo"							
@@ -156,7 +156,7 @@ echo"
 							</div>";
 
 }
-elseif ($_GET[module]=='detailproduk'){
+elseif ($_GET['module']=='detailproduk'){
 $detail=mysql_query("SELECT * FROM produk,kategori    
                       WHERE produk.id_kategori=kategori.id_kategori AND id_produk='$_GET[id]'");
 	$d   = mysql_fetch_array($detail);
@@ -257,7 +257,18 @@ echo"
 </div>
 ";
 }
-elseif ($_GET[module]=='daftarmember'){
+elseif ($_GET['module']=='daftarmember'){
+/* load api raja ongkir */
+require_once 'rajaongkir/rajaOngkir.php';
+	
+$htmls= [];
+$htmls['option_provinsi'][] = "<option value='' selected disabled> -- Pilih Provinsi -- </option>";
+foreach (Rajaongkir::province() as $key => $value) {
+	$htmls['option_provinsi'][] = "<option value='{$value->province_id}'>{$value->province}</option>";
+}
+$htmls['option_provinsi'] 	= implode('',$htmls['option_provinsi']);
+$htmls['option_kota'] 	= "<option value='' selected disabled> -- Pilih Provinsi Terlebih Dahulu -- </option>";
+
 echo"							
 <div class='span9'>
 <h3> Form Daftar Member</h3>	
@@ -269,7 +280,7 @@ echo"
 		<div class='control-group'>
 			<label class='control-label' for='inputFname'>Nama Lengkap <sup>*</sup></label>
 			<div class='controls'>
-			  <input type='text' name='nama' id='inputFname' placeholder='Masukkan Nama Lengkap Anda' required>
+			  <input type='text' name='nama'  placeholder='Masukkan Nama Lengkap Anda' required>
 			</div>
 		 </div>
 		 
@@ -280,21 +291,45 @@ echo"
 		</div>
 	  </div>	  
 		<div class='control-group'>
-		<label class='control-label'>Password <sup>*</sup></label>
-		<div class='controls'>
-		  <input type='password' name='password' placeholder='Password' required>
+			<label class='control-label'>Password <sup>*</sup></label>
+			<div class='controls'>
+				<input type='password' name='password' placeholder='Password' required>
+			</div>
 		</div>
-	  </div>
 		<div class='control-group'>
 			<label class='control-label' for='inputFname'>Nomot Telepon <sup>*</sup></label>
 			<div class='controls'>
-			  <input type='text' name='no_telp' id='inputFname' placeholder='Masukkan Nomor Telepon Anda' required>
+				<input type='text' name='no_telp'  placeholder='Masukkan Nomor Telepon Anda' required>
 			</div>
-		 </div>
+		</div>
+		<div class='control-group'>
+			<label class='control-label'>Provinsi <sup>*</sup></label>
+			<div class='controls'>
+				<select class='input-block-level mod-width-fit-content' name='provinsi' required>
+					{$htmls['option_provinsi']}
+				</select>
+			</div>
+		</div>
+
+		<div class='control-group'>
+			<label class='control-label'>Kota/Kabupaten <sup>*</sup></label>
+			<div class='controls'>
+				<select class='input-block-level mod-width-fit-content' name='kota' required>
+					{$htmls['option_kota']}
+				</select>
+			</div>
+		</div>
+		
+		<div class='control-group'>
+			<label class='control-label' for='inputFname'>Kode Pos <sup>*</sup></label>
+			<div class='controls'>
+				<input type='text' class='input-block-level mod-width-fit-content input-number-only'  name='kode_pos'  placeholder='Kode Pos' required>
+			</div>
+		</div>		 
 		 <div class='control-group'>
 			<label class='control-label' for='inputFname'>Alamat <sup>*</sup></label>
 			<div class='controls'>
-			  <input type='text' name='address' id='inputFname' placeholder='Masukkan Alamat Anda' required>
+				<input type='text' name='address'  placeholder='Masukkan Alamat Anda' required>
 			</div>
 		 </div>
 	<div class='control-group'>
@@ -307,7 +342,7 @@ echo"
 							</div>";
 
 }
-elseif ($_GET[module]=='daftaraksi'){
+elseif ($_GET['module']=='daftaraksi'){
 // Logika utk jika dipinjam, yg masih susah di cari
 $sql = mysql_query("SELECT * FROM kustomer WHERE email='$_POST[email]'
 								OR no_telp ='$_POST[no_telp]'");
@@ -323,19 +358,27 @@ $ketemu=mysql_num_rows($sql);
 							</div>";
 	}
 	else {
-$pass=md5($_POST[password]);
+$pass=md5($_POST['password']);
   mysql_query("INSERT INTO kustomer(nama,
                                    email,
                                    password,
                                    no_telp,
                                    address,
-                                   tgl_daftar) 
+                                   tgl_daftar,
+                                   provinsi,
+                                   kota,
+                                   kode_pos
+								   ) 
                         VALUES('$_POST[nama]',
                                '$_POST[email]',
 							   '$pass',
                                '$_POST[no_telp]',
 							  '$_POST[address]',
-                               '$tgl_sekarang')");
+                               '$tgl_sekarang',
+							   '{$_POST['provinsi']}',
+							   '{$_POST['kota']}',
+							   '{$_POST['kode_pos']}'
+							   )");
 echo"							
 <div class='span9'>
 <h3> Form Daftar Member</h3>	
@@ -345,7 +388,7 @@ echo"
 		}
 
 }
-elseif ($_GET[module]=='loginmember'){
+elseif ($_GET['module']=='loginmember'){
 echo"							
 <div class='span9'>
 <h3> Form Daftar Member</h3>	
@@ -378,7 +421,7 @@ echo"
 							</div>";
 
 }
-elseif ($_GET[module]=='editmember'){
+elseif ($_GET['module']=='editmember'){
 session_start();
 $edit=mysql_query("SELECT * FROM kustomer WHERE id_kustomer='$_SESSION[kustomer_id]'");
     $r=mysql_fetch_array($edit);
@@ -431,7 +474,7 @@ echo"
 							</div>";
 }
 
-elseif ($_GET[module]=='keranjangbelanja'){
+elseif ($_GET['module']=='keranjangbelanja'){
 $sid = session_id();
 	$sql = mysql_query("SELECT * FROM orders_temp a left join produk b on a.id_produk=b.id_produk
 		left join ukuran c on a.id_ukuran=c.id_ukuran 
@@ -701,7 +744,7 @@ echo"
 
 }
 }
-elseif ($_GET[module]=='simpantransaksi'){
+elseif ($_GET['module']=='simpantransaksi'){
 if (empty($_SESSION['namalengkap']) AND empty($_SESSION['passuser'])){
 
 echo "<script>window.alert('Anda belum Login, Silahkan Login Terlebih dahulu');
@@ -928,7 +971,7 @@ echo"
 	}
 
 }
-elseif ($_GET[module]=='datatransaksi'){
+elseif ($_GET['module']=='datatransaksi'){
 session_start();
 
 echo"							
@@ -1068,7 +1111,7 @@ echo "<tr><td colspan=4 align=right>Total              Rp. : </td><td align=righ
 							</div>";
 
 }
-elseif ($_GET[module]=='hasilcari'){
+elseif ($_GET['module']=='hasilcari'){
 echo"
 
 	<h3>Hasil Pencarian </h3>
@@ -1128,7 +1171,7 @@ echo"
   }
   
 }
-elseif ($_GET[module]=='hubungikami'){
+elseif ($_GET['module']=='hubungikami'){
 $detail=mysql_query("SELECT * FROM halamanstatis WHERE id_halaman='3'");
 	$d   = mysql_fetch_array($detail);
 echo"							
@@ -1167,7 +1210,7 @@ echo"
 							</div>";
 
 }
-elseif ($_GET[module]=='hubungiaksi'){
+elseif ($_GET['module']=='hubungiaksi'){
 mysql_query("INSERT INTO hubungi(nama,
                                    email,
                                    subjek,
@@ -1187,7 +1230,7 @@ echo"
 							</div>";
 
 }
-elseif ($_GET[module]=='konfirmasipembayaran'){
+elseif ($_GET['module']=='konfirmasipembayaran'){
 echo"							
 <div class='span9'>
 <h3>Konfirmasi Pembayaran</h3>	
@@ -1239,7 +1282,7 @@ echo"
 							</div>";
 
 }
-elseif ($_GET[module]=='konfirmasiaksi'){
+elseif ($_GET['module']=='konfirmasiaksi'){
 $tgl_skrg = date("Y-m-d");
 $jam_skrg = date("H:i:s");
 $lokasi_file = $_FILES['fupload']['tmp_name'];

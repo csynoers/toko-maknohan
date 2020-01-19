@@ -22,7 +22,7 @@ echo"
 			  </div>";
 $promo=mysql_query("SELECT * FROM produk ORDER BY rand() LIMIT 1");
 while($a=mysql_fetch_array($promo)){
-$harga1 = $a[harga];
+$harga1 = $a['harga'];
     $harga     = number_format($harga1,0,",",".");
 			echo"
 			<li>
