@@ -160,8 +160,8 @@ elseif ($_GET['module']=='detailproduk'){
 $detail=mysql_query("SELECT * FROM produk,kategori    
                       WHERE produk.id_kategori=kategori.id_kategori AND id_produk='$_GET[id]'");
 	$d   = mysql_fetch_array($detail);
-  $harga     = number_format($d[harga],0,",",".");
-  $kategori=$d[id_kategori];
+  $harga     = number_format($d['harga'],0,",",".");
+  $kategori=$d['id_kategori'];
 echo"
 <div class='span9'>
     <ul class='breadcrumb'>
@@ -225,7 +225,7 @@ echo"
   $sql=mysql_query("SELECT * FROM produk,kategori    
 					WHERE produk.id_kategori=kategori.id_kategori AND produk.id_kategori='$kategori' ORDER BY rand() LIMIT 3");
   while($r=mysql_fetch_array($sql)){
-     $harga2     = number_format($r[harga],0,",",".");
+     $harga2     = number_format($r['harga'],0,",",".");
 											
 											echo"
 			<div class='row-fluid'>	  
@@ -422,9 +422,25 @@ echo"
 
 }
 elseif ($_GET['module']=='editmember'){
-session_start();
-$edit=mysql_query("SELECT * FROM kustomer WHERE id_kustomer='$_SESSION[kustomer_id]'");
-    $r=mysql_fetch_array($edit);
+	$edit=mysql_query("SELECT * FROM kustomer WHERE id_kustomer='$_SESSION[kustomer_id]'");
+	$r=mysql_fetch_array($edit);
+
+	/* load api raja ongkir */
+	require_once 'rajaongkir/rajaOngkir.php';
+	
+	$htmls= [];
+	foreach (Rajaongkir::province() as $key => $value) {
+		$selected = ($value->province_id==$r['provinsi']) ? 'selected' : NULL ;
+		$htmls['option_provinsi'][] = "<option {$selected} value='{$value->province_id}'>{$value->province}</option>";
+	}
+	$htmls['option_provinsi'] 	= implode('',$htmls['option_provinsi']);
+
+	foreach (Rajaongkir::city($r['provinsi']) as $key => $value) {
+		$selected = ($value->city_id==$r['kota']) ? 'selected' : NULL ;
+		$htmls['option_kota'][] = "<option {$selected} value='{$value->city_id}'>{$value->city_name}</option>";
+	}
+	$htmls['option_kota'] 	= implode('',$htmls['option_kota']);
+
 echo"							
 <div class='span9'>
 <h3> Edit Profil Member</h3>	
@@ -458,10 +474,34 @@ echo"
 			  <input type='text' name='no_telp' value='$r[no_telp]' id='inputFname' placeholder='Masukkan Nomor Telepon Anda' required>
 			</div>
 		 </div>
+		<div class='control-group'>
+			<label class='control-label'>Provinsi <sup>*</sup></label>
+			<div class='controls'>
+				<select class='input-block-level mod-width-fit-content' name='provinsi' required>
+					{$htmls['option_provinsi']}
+				</select>
+			</div>
+		</div>
+
+		<div class='control-group'>
+			<label class='control-label'>Kota/Kabupaten <sup>*</sup></label>
+			<div class='controls'>
+				<select class='input-block-level mod-width-fit-content' name='kota' required>
+					{$htmls['option_kota']}
+				</select>
+			</div>
+		</div>
+		
+		<div class='control-group'>
+			<label class='control-label' for='inputFname'>Kode Pos <sup>*</sup></label>
+			<div class='controls'>
+				<input type='text' class='input-block-level mod-width-fit-content input-number-only'  name='kode_pos' value='{$r['kode_pos']}'  placeholder='Kode Pos' required>
+			</div>
+		</div>
 		 <div class='control-group'>
 			<label class='control-label' for='inputFname'>Alamat <sup>*</sup></label>
 			<div class='controls'>
-			  <input type='text' name='address' value='$r[address]' id='inputFname' placeholder='Masukkan Nomor Telepon Anda' required>
+			  <input type='text' class='input-block-level' name='address' value='$r[address]' id='inputFname' placeholder='Masukkan Nomor Telepon Anda' required>
 			</div>
 		 </div>
 	<div class='control-group'>
@@ -496,7 +536,7 @@ echo"
                 <tr>
                   <th>Gambar</th>
 									<th>Nama Produk</th>
-									<th>Ukuran</th>
+									<!--<th>Ukuran</th>-->
 									<th>Jumlah</th>
 									<th>Harga</th>
 									<th>Sub Total</th>
@@ -504,12 +544,14 @@ echo"
 				</tr>
               </thead>";
 			  $no=1;
+			  $totalberat=0;
+			  $total=0;
   while($r=mysql_fetch_array($sql)){
-      $produk=$r[id_produk];
-   $subtotalberat = $r[berat] * $r[jumlah]; // total berat per item produk 
+      $produk=$r['id_produk'];
+   $subtotalberat = $r['berat'] * $r['jumlah']; // total berat per item produk 
    $totalberat  = $totalberat + $subtotalberat; // grand total berat all produk yang dibeli
-  $harga1 = $r[harga];
-    $subtotal    = $harga1 * $r[jumlah];
+  $harga1 = $r['harga'];
+    $subtotal    = $harga1 * $r['jumlah'];
     $total       = $total + $subtotal;  
     $subtotal_rp = format_rupiah($subtotal);
     $total_rp    = format_rupiah($total);
@@ -524,7 +566,7 @@ echo"
 			$qry_ukuran=mysql_query($sql_ukuran);
 			$i=0;
 			echo"
-									<td><select name='ukuran[$no]'>";
+									<td class='hide'><select name='ukuran[$no]'>";
 			
 			while($hasil_ukuran=mysql_fetch_array($qry_ukuran)){
 			   if ($r[id_ukuran]==$hasil_ukuran[id_ukuran]){
@@ -585,6 +627,35 @@ $edit = mysql_query("SELECT SUM(berat) AS weight FROM orders_temp a left join pr
     $w    = mysql_fetch_array($edit);
 	$totalberat=$w['weight'];
 	$berat_gram=$totalberat*1000;
+
+	# load rajaongkir api
+	require_once('rajaongkir/rajaOngkir.php');
+
+	$jasaPengiriman = [];
+	foreach (Rajaongkir::cost_all(['destination'=> $m['kota'],'weight'=> $berat_gram]) as $key => $value) {
+		$value['valueText'] = format_rupiah($value['value']);
+		$jasaPengiriman[] = "
+			<tr>
+				<td style='text-align:left;'>
+					<input type='radio' name='radio' value='{$value['value']}'> {$value['code']} {$value['service']} Rp. {$value['valueText']} {$value['etd']}
+				</td>
+			</tr>
+		";
+	}
+	$jasaPengiriman = implode('',$jasaPengiriman);
+	$jasaPengiriman = "
+		<thead style='background-color:green;color:white;'>
+			<tr>
+				<th style='text-align:left'>Pilih Jasa Pengiriman</th>
+			</tr>
+		</thead>
+		<tbody>
+			{$jasaPengiriman}
+		</tbody>
+	";
+
+	$kota = RajaOngkir::city($m['provinsi'],$m['kota']);
+
   if (empty($_SESSION['namalengkap']) AND empty($_SESSION['passuser'])){
 
 echo "<script>window.alert('Anda belum Login, Silahkan Login Terlebih dahulu');
@@ -598,110 +669,11 @@ echo"
 	<div class='well'>
 	<form action=simpan-transaksi.html method=POST class='form-horizontal'>
 		<h3>Alamat Pengiriman</h3>
-		
-		
-		 
-		 
-		 <table class='table table-bordered'>
-			<tbody>
-                <tr><td>Cek Ongkos Kirim</td></tr>
-                 <tr> 
-				 <td>
-					";
-					//Get Data Kabupaten
-			$curl = curl_init();	
-			curl_setopt_array($curl, array(
-				CURLOPT_URL => "http://api.rajaongkir.com/starter/city",
-				CURLOPT_RETURNTRANSFER => true,
-				CURLOPT_ENCODING => "",
-				CURLOPT_MAXREDIRS => 10,
-				CURLOPT_TIMEOUT => 30,
-				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-				CURLOPT_CUSTOMREQUEST => "GET",
-				CURLOPT_HTTPHEADER => array(
-					"key: 4b32610c14ae557a5958fa87dd04425c"
-				),
-			));
-			$response = curl_exec($curl);
-			$err = curl_error($curl);
-			curl_close($curl);
-			echo"
-					  <div class='hidden'>
-						<label class='span2 control-label' for='inputEmail'>Kota/Kab. Asal</label>
-						<div class='controls'>";
-						  echo "<select name='asal' id='asal' class='custom-select'>";
-			$data = json_decode($response, true);
-				$data = json_decode($response, true);
-			 
-				echo "<option value='498' selected>Wonosobo</option>";
-			echo "</select>
-						</div>
-					  </div>";
-					  //Get Data Provinsi
-			$curl = curl_init();
-			curl_setopt_array($curl, array(
-				CURLOPT_URL => "http://api.rajaongkir.com/starter/province",
-				CURLOPT_RETURNTRANSFER => true,
-				CURLOPT_ENCODING => "",
-				CURLOPT_MAXREDIRS => 10,
-				CURLOPT_TIMEOUT => 30,
-				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-				CURLOPT_CUSTOMREQUEST => "GET",
-				CURLOPT_HTTPHEADER => array(
-					"key: f58f37da746247f4a99c75c760fe2c9d"
-				),
-			));
-			$response = curl_exec($curl);
-			$err = curl_error($curl);
-			echo"
-					  <div class='control-group'>
-						<label class='span2 control-label' for='inputPassword'>Provinsi Tujuan</label>
-						<div class='controls'>";
-						  echo "<select name='provinsi' id='provinsi' class='custom-select'>";
-			echo "<option>Pilih Provinsi Tujuan</option>";
-			$data = json_decode($response, true);
-			for ($i=0; $i < count($data['rajaongkir']['results']); $i++) {
-				echo "<option value='".$data['rajaongkir']['results'][$i]['province_id']."'>".$data['rajaongkir']['results'][$i]['province']."</option>";
-			}
-			echo "</select>
-						</div>
-					  </div>
-					  
-					  <div class='control-group'>
-						<label class='span2 control-label' for='inputEmail'>Kota/Kab. Tujuan</label>
-						<div class='controls'>
-						 <select id='kabupaten' name='kabupaten' class='custom-select'></select>
-						</div>
-					  </div>
-
-						<div class='control-group'>
-							<label class='span2 control-label' for='inputPassword'>Kurir</label>
-							<div class='controls'>
-								<select id='kurir' name='kurir' class='custom-select'>
-									<option value='jne'>JNE</option>
-									<option value='tiki'>TIKI</option>
-									<option value='pos'>POS INDONESIA</option>
-								</select>
-							</div>
-						</div>
-
-						<div class='control-group'>
-							<label class='span2 control-label' for='inputPassword'>Berat (gr)</label>
-							<div class='controls'>
-								<input type='number' id='berat' name='berat' value='$berat_gram' readonly>
-							</div>
-						</div>
-
-						<div class='control-group'>
-							<div class='controls'>
-								<input id='cek' type='button' value='Cek Ongkir' class='shopBtn'>
-							</div>
-						</div>
-					 
-				  </td>
-				  </tr>
-              </tbody>
-            </table>
+		<div id='alamatPengiriman' style='padding: 1rem;border: 1px solid #ddd;'>
+			<b>{$m['nama']}</b><br>
+			{$m['no_telp']} ({$m['email']})<br>
+			{$m['address']}, {$kota->type} {$kota->city_name}, {$kota->province} {$m['kode_pos']}
+		</div>
 			
 		<div class='col-md-8'>
 			<div class='card my-4'>
@@ -709,33 +681,17 @@ echo"
 					<div id='loading'><img src='img/ajax-loader.gif'></div>
 					<p id='kurirname' style='font-weight:700;text-transform:uppercase;color:green;'></p>
 					<table id='details' class='table table-bordered table-responsive'></table>
-					<table id='ongkos' class='table table-bordered table-responsive'></table>
+					<table id='ongkos' class='table table-bordered table-responsive'>
+						{$jasaPengiriman}
+					</table>
 					<div id='ongkir'></div>
 				</div>
 			</div>
 		</div>
 		
 		<div class='control-group'>
-			<label class='control-label' for='inputLname'>Alamat Pengiriman<sup>*</sup></label>
-			<div class='controls'>
-				<textarea name='alamat' id='inputLname' placeholder='Masukkan Alamat Anda' required class='input-block-level'>{$address}</textarea>
-			</div>
-		</div>
-
-		<div class='control-group' style='display:none'>
-			<label class='control-label'>Jenis Pembayaran <sup>*</sup></label>
-			<div class='controls'>
-				<select name='jenis_pembayaran'  required>
-					<option value=''>-- Pilih Jenis Pembayaran --</option>
-					<option value='TRANSFER'>TRANSFER</option>
-					<option selected value='FASAPAY'>FASAPAY</option>
-				</select>
-			</div>
-		</div>
-		
-		<div class='control-group'>
-			<div class='controls'>
-			<input type='submit' name='submitAccount' value='Proses' class='exclusive shopBtn'>
+			<div class='controlsXXX'>
+				<input type='submit' name='submitAccount' value='Proses' class='exclusive shopBtn'>
 			</div>
 		</div>
 	</form>

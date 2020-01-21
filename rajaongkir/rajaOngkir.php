@@ -34,11 +34,11 @@ class Rajaongkir{
 			return json_decode($response)->rajaongkir->results ;
 		}
 	}
-	public static function city($provinciID)
+	public static function city($provinciID,$kotaID=NULL)
 	{
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
-		CURLOPT_URL => "https://api.rajaongkir.com/starter/city?province=" .$provinciID,
+		CURLOPT_URL => "https://api.rajaongkir.com/starter/city?province=" .$provinciID.(empty($kotaID) ? null : '&id='.$kotaID ),
 		CURLOPT_RETURNTRANSFER => true,
 		CURLOPT_ENCODING => "",
 		CURLOPT_MAXREDIRS => 10,
@@ -61,7 +61,7 @@ class Rajaongkir{
 			return json_decode($response)->rajaongkir->results;
 		}
 	}
-	public function cost($data)
+	public static function cost($data)
 	{
 		$curl = curl_init();
 
@@ -73,7 +73,7 @@ class Rajaongkir{
 		CURLOPT_TIMEOUT => 30,
 		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 		CURLOPT_CUSTOMREQUEST => "POST",
-		CURLOPT_POSTFIELDS => "origin=501&destination={$data['destination']}&weight={$data['weight']}&courier={$data['courier']}",
+		CURLOPT_POSTFIELDS => "origin=498&destination={$data['destination']}&weight={$data['weight']}&courier={$data['courier']}",
 		// CURLOPT_POSTFIELDS => "origin=501&destination=114&weight=1700&courier=jne",
 		CURLOPT_HTTPHEADER => array(
 			"content-type: application/x-www-form-urlencoded",
@@ -92,7 +92,7 @@ class Rajaongkir{
 			return $response;
 		}
 	}
-	public function courier()
+	public static function courier()
 	{
 		return [
 			'jne',
@@ -100,11 +100,11 @@ class Rajaongkir{
 			'tiki',
 		];
 	}
-	public function cost_all($get=null){
+	public static function cost_all($get=null){
 		$data= [];
-		foreach ($this->courier() as $key => $value) {
+		foreach (Rajaongkir::courier() as $key => $value) {
 			$kurir= json_decode(
-				$this->cost([
+				Rajaongkir::cost([
 					'destination'=> $get['destination'],
 					'weight'=> $get['weight'],
 					'courier'=> $value,
