@@ -697,7 +697,7 @@ elseif ($_GET['module']=='selesaibelanja'){
 								{$m['no_telp']} ({$m['email']})<br>
 								{$m['address']}, {$kota->type} {$kota->city_name}, {$kota->province} {$m['kode_pos']}'>
 								<input type='hidden' name='payer_email' value='{$m['email']}'>
-								<input type='hidden' name='id_orders' value='".('MA'.date('Ymdhis'))."'>
+								<input type='hidden' name='id_orders' value='".('MN'.date('Ymdhis'))."'>
 								<input type='submit' name='submitAccount' value='Proses' class='exclusive shopBtn'>
 							</div>
 						</div>
@@ -1239,7 +1239,7 @@ elseif ($_GET['module']=='datatransaksi'){
 	<table class='table table-bordered table-condensed'>
 
 	<thead>
-	<tr bgcolor=#D3DCE3><th>No.order</th><th>Tgl. order</th><th>Jam</th><th>Status</th><th>Aksi</th></tr>
+	<tr bgcolor=#D3DCE3><th>No.order</th><th>Tgl. order</th><th>Jam</th><th>Status Pembayaran</th><th>Aksi</th></tr>
 	<tbody>";
 	$tampil = mysql_query("SELECT * FROM orders,kustomer WHERE orders.id_kustomer=kustomer.id_kustomer AND orders.id_kustomer='$_SESSION[kustomer_id]' ORDER BY id_orders DESC ");
 
@@ -1285,42 +1285,42 @@ $edit = mysql_query("SELECT * FROM orders WHERE id_orders='$_GET[id]'");
 	  
 		$invoice_id = $r['external_id'];
 	  
-		// $response = $xenditPHPClient->getInvoice($invoice_id);
-		echo '<pre>';
-		print_r($xenditPHPClient);
+		$response = $xenditPHPClient->getInvoice($invoice_id);
+		// echo '<pre>';
+		// print_r($xenditPHPClient);
 		// print_r($response['payment_channel']);
-		echo '</pre>';
+		// echo '</pre>';
 		// die();
-		// $newDate = date("d F Y & H:i:s", strtotime($response['paid_at']));
+		$newDate = date("d F Y & H:i:s", strtotime($response['paid_at']));
 
-		// $data['statusOrderDinamis'][] = "
-		// 	<tr>
-		// 		<td>Status Pembayaran</td>
-		// 		<td>{$r['status_order']}</td>
-		// 	</tr>
-		// 	<tr>
-		// 		<td>Metode Pembayaran</td>
-		// 		<td>: {$response['payment_method']}</td>
-		// 	</tr>
-		// 	<tr>
-		// 		<td>Kode Bank</td>
-		// 		<td>: {$response['bank_code']}</td>
-		// 	</tr>
-		// 	<tr>
-		// 		<td>Tanggal Pembayaran</td>
-		// 		<td>: {$newDate}</td>
-		// 	</tr>
-		// ";
 		$data['statusOrderDinamis'][] = "
 			<tr>
-				<td>Status Order</td>
-				<td>: {$r['status_order']}</td>
+				<td>Status Pembayaran</td>
+				<td>{$r['status_order']}</td>
+			</tr>
+			<tr>
+				<td>Metode Pembayaran</td>
+				<td>: {$response['payment_method']}</td>
+			</tr>
+			<tr>
+				<td>Kode Bank</td>
+				<td>: {$response['bank_code']}</td>
+			</tr>
+			<tr>
+				<td>Tanggal Pembayaran</td>
+				<td>: {$newDate}</td>
 			</tr>
 		";
+		// $data['statusOrderDinamis'][] = "
+		// 	<tr>
+		// 		<td>Status Order</td>
+		// 		<td>: {$r['status_order']}</td>
+		// 	</tr>
+		// ";
 	} else {
 		$data['statusOrderDinamis'][] = "
 			<tr>
-				<td>Status Order</td>
+				<td>Status Pembayaran</td>
 				<td>: {$r['status_order']}</td>
 			</tr>
 		";
