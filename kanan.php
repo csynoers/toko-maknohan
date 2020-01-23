@@ -371,16 +371,15 @@ elseif ($_GET['module']=='daftaraksi'){
 	// More headers
 	$data['mail']['dari'] .= 'From: <support@tokomaknohan.com>' . "\r\n";
 
-	mail($data['mail']['email'],$data['mail']['subjek'],$data['mail']['pesan'],$data['mail']['dari']);
+	// mail($data['mail']['email'],$data['mail']['subjek'],$data['mail']['pesan'],$data['mail']['dari']);
+
+	$data['sqlCek'] = mysql_query("SELECT * FROM kustomer WHERE email='$_POST[email]' OR no_telp ='$_POST[no_telp]'");
+	$data['numCek'] = mysql_num_rows($data['sqlCek']);
 	echo '<pre>';
 	print_r($data);
 	echo '</pre>';
 	die();
-// Logika utk jika dipinjam, yg masih susah di cari
-$sql = mysql_query("SELECT * FROM kustomer WHERE email='$_POST[email]'
-								OR no_telp ='$_POST[no_telp]'");
 
-$ketemu=mysql_num_rows($sql);
 	if ($ketemu > 0){
 	echo"							
 <div class='span9'>
