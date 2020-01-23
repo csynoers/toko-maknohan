@@ -45,6 +45,7 @@ else{
                         <div class='box-body'>
                             <hr>
                             <form action='' method='GET'>
+                                <input type='hidden' name='module' value='order'>
                                 <div class='input-group'>
                                     <span class='input-group-addon' id='basic-addon3'>Filter Status Pesanan</span>
                                     <select name='status_pesanan' class='form-control' onchange='this.form.submit()'>
@@ -54,7 +55,6 @@ else{
                                         <option value='PESANAN SELESAI'>PESANAN SELESAI</option>
                                         <option value='PESANAN DIBATALKAN'>PESANAN DIBATALKAN</option>
                                     </select>
-                                    <input type='hidden' name='module' value='order'>
                                 </div>
                             </form>
                             <hr>
@@ -64,8 +64,8 @@ else{
                                         <th>no.order</th>
                                         <th>nama konsumen</th>
                                         <th>tgl. order</th>
-                                        <th>jam</th>
-                                        <th>status</th>
+                                        <th>status pembayaran</th>
+                                        <th>status pesanan</th>
                                         <th>aksi</th>
                                     </tr>
                                 </thead>
