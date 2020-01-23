@@ -1246,7 +1246,7 @@ elseif ($_GET['module']=='datatransaksi'){
 	<table class='table table-bordered table-condensed'>
 
 	<thead>
-	<tr bgcolor=#D3DCE3><th>No.order</th><th>Tgl. order</th><th>Jam</th><th>Status Pembayaran</th><th>Aksi</th></tr>
+	<tr bgcolor=#D3DCE3><th>No.order</th><th>Tgl. order</th><th>Jam</th><th>Status Pembayaran</th><th>Status Pesanan</th><th>Aksi</th></tr>
 	<tbody>";
 	$tampil = mysql_query("SELECT * FROM orders,kustomer WHERE orders.id_kustomer=kustomer.id_kustomer AND orders.id_kustomer='$_SESSION[kustomer_id]' ORDER BY id_orders DESC ");
 
@@ -1257,6 +1257,7 @@ elseif ($_GET['module']=='datatransaksi'){
 	<td>$tanggal</td>
 	<td>$r[jam_order]</td>
 	<td>$r[status_order]</td>
+	<td>$r[status_pesanan]</td>
 	<td><a href=media2.php?module=detailtransaksi&id=$r[id_orders]>Detail</a></td></tr>";
 	$no++;
 	}
