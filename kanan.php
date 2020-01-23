@@ -349,12 +349,17 @@ elseif ($_GET['module']=='daftaraksi'){
 	$data['mail']['pesan'] = "
 		<html>
 			<head>
-			<title>TOKO MAK NOHAN</title>
+				<title>TOKO MAK NOHAN</title>
 			</head>
 			<body>
-				Silakan verifikasi email kamu dengan mengklik tautan berikut :<br>
-				<a href='https://www.maknohan.com/konfirmasi-email-{$data['post']['PHPSESSID']}.html'>Klik Disini untuk verifikasi email</a>
-				<p><strong>NOTE! :</strong> jika link tidak bisa di klik silahkan copy url ini [https://www.maknohan.com/konfirmasi-email-{$data['post']['PHPSESSID']}.html]</p>
+				<div style='
+					margin: 10% 20%;
+					background: #ddd;
+					padding: 20px;
+				'>
+					<b>Silakan verifikasi email kamu dengan cara mengklik tautan berikut :</b><br>
+					<a href='https://www.maknohan.com/konfirmasi-email-{$data['post']['PHPSESSID']}.html'>Klik Disini untuk verifikasi email</a>
+				</div>
 			</body>
 		</html>	
 	";
@@ -365,7 +370,7 @@ elseif ($_GET['module']=='daftaraksi'){
 
 	// More headers
 	$data['mail']['dari'] .= 'From: <support@tokomaknohan.com>' . "\r\n";
-	
+
 	mail($data['mail']['email'],$data['mail']['subjek'],$data['mail']['pesan'],$data['mail']['dari']);
 	echo '<pre>';
 	print_r($data);
