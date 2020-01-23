@@ -1,5 +1,6 @@
 <?php
 if ($_GET['module']=='home'){
+	print_r($_REQUEST);
 	echo"
 		<h3>Produk Terbaru </h3>
 		<hr class='soften'/>
