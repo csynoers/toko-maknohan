@@ -55,7 +55,17 @@ else{
                 if ( $_GET['status_pesanan']=='PESANAN DIBATALKAN' ) {
                     echo 'rows pesanan PESANAN DIBATALKAN';
                 }
+            } else {
+                $data['sql'] = "SELECT * FROM orders LEFT JOIN kustomer ON orders.id_kustomer=kustomer.id_kustomer WHERE 1";
+                $data['query'] = mysql_query($data['sql']);
+                while ($value=mysql_fetch_assoc($data['query'])) {
+                    $data['rows'][] = $value;
+                } 
             }
+
+            echo '<pre>';
+            print_r($data);
+            echo '</pre>';
 
             echo "
                 <div class='col-xs-12'>
