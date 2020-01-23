@@ -112,7 +112,7 @@ switch(empty($_GET['act']) ? NULL : $_GET['act']){
 								</div>
 								<div class='form-group'>
 									<label for='exampleInputPassword1'>Berat(kg)</label>
-									<input min='0.1' type='number' name='berat' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Berat Produk ex: 0.5' required>
+									<input type='text' name='berat' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Berat Produk ex: 0.5' required>
 								</div>
 								<div class='form-group'>
 									<label for='exampleInputPassword1'>Harga(hanya angka)</label>
@@ -222,7 +222,7 @@ switch(empty($_GET['act']) ? NULL : $_GET['act']){
 								</div>
 								<div class='form-group'>
 									<label for='exampleInputPassword1'>Berat(kg)</label>
-									<input min='0.1' type='number' name='berat' class='form-control' id='exampleInputPassword1' value=$r[berat] placeholder='Masukkan Berat Produk' required>
+									<input type='text' name='berat' class='form-control' id='exampleInputPassword1' value=$r[berat] placeholder='Masukkan Berat Produk' required>
 								</div>
 								<div class='form-group'>
 									<label for='exampleInputPassword1'>Harga(hanya angka)</label>
