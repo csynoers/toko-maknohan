@@ -880,9 +880,9 @@ elseif ($_GET['module']=='simpantransaksi'){
 		$data['queryKustomer'] 	= mysql_query($data['sqlKustomer']);
 		$data['rowKustomer']	= mysql_fetch_assoc($data['queryKustomer']);
 
-		// $data['sqlCekOrders']   = "SELECT * FROM orders WHERE id_orders='{$data['post']}' ";
-		// $data['queryCekorders']	= mysql_query($data['sqlCekOrders']);
-		// $data['numCekorders']	= mysql_num_rows($data['queryCekorders']);
+		$data['sqlCekOrders']   = "SELECT * FROM orders WHERE id_orders='{$data['post']['id_orders']}' ";
+		$data['queryCekorders']	= mysql_query($data['sqlCekOrders']);
+		$data['numCekorders']	= mysql_num_rows($data['queryCekorders']);
 		
 		// if ( $data['numCekorders'] > 0 ) { # jika orders temp sudah disimpan pada table order dan orders detail
 			
