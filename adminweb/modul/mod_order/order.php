@@ -316,6 +316,8 @@ else{
                 </tr>
             ";
         }
+        
+        $data['rows_order_detail_html'] = implode('',$data['rows_order_detail_html']);
 
     echo"
         <div class='box'>
