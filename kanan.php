@@ -949,7 +949,6 @@ elseif ($_GET['module']=='simpantransaksi'){
 		echo '<pre>';
 		print_r($data);
 		echo '</pre>';
-		die();
 
 		$htmls = "
 			<div class='well well-small'>
