@@ -134,7 +134,24 @@ else{
                     $data['rows'] = implode('',$data['rows']);
                 }
                 if ( $_GET['status_pesanan']=='PESANAN SELESAI' ) {
-                    echo 'rows pesanan PESANAN SELESAI';
+                    $data['sql'] = "SELECT * FROM orders LEFT JOIN kustomer ON orders.id_kustomer=kustomer.id_kustomer WHERE 1 AND orders.status_transaksi='PESANAN SELESAI' ORDER BY orders.tgl_order DESC";
+                    $data['query'] = mysql_query($data['sql']);
+                    while ($value=mysql_fetch_assoc($data['query'])) {
+                        $value['tgl_order'] = tgl_indo($value['tgl_order']);
+                        $data['rows'][] = "
+                            <tr>
+                                <td>{$value['id_orders']}</td>
+                                <td>{$value['nama']}</td>
+                                <td>{$value['tgl_order']}</td>
+                                <td>{$value['status_order']}</td>
+                                <td>{$value['status_transaksi']} dengan No Resi : {$value['no_resi']}</td>
+                                <td>
+                                    <a href='?module=order&act=konfirmasi&id={$value['id_orders']}' class='btn btn-warning'>Pesanan Diterima</a>
+                                </td>
+                            </tr>
+                        ";
+                    }
+                    $data['rows'] = implode('',$data['rows']);
                 }
                 if ( $_GET['status_pesanan']=='PESANAN DIBATALKAN' ) {
                     $data['sql'] = "SELECT * FROM orders LEFT JOIN kustomer ON orders.id_kustomer=kustomer.id_kustomer WHERE 1 AND orders.status_transaksi='PESANAN DIBATALKAN' ORDER BY orders.tgl_order DESC";
