@@ -361,7 +361,7 @@ elseif ($_GET['module']=='daftaraksi'){
 	$data['mail']['dari'] = "From: support@tokomaknohan.com \n Content-type: text/html \r\n";
 
 	// Kirim email ke kustomer
-	// mail($data['mail']['email'],$data['mail']['subjek'],$data['mail']['pesan'],$data['mail']['dari']);
+	mail($data['mail']['email'],$data['mail']['subjek'],$data['mail']['pesan'],$data['mail']['dari']);
 	echo '<pre>';
 	print_r($data);
 	echo '</pre>';
