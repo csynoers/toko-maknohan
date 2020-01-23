@@ -884,20 +884,19 @@ elseif ($_GET['module']=='simpantransaksi'){
 		$data['queryCekorders']	= mysql_query($data['sqlCekOrders']);
 		$data['numCekorders']	= mysql_num_rows($data['queryCekorders']);
 		
-		// if ( $data['numCekorders'] > 0 ) { # jika orders temp sudah disimpan pada table order dan orders detail
+		if ( $data['numCekorders'] < 1 ) { # jika orders temp sudah disimpan pada table order dan orders detail
+			$data['sqlOrdersTemp']	= "SELECT * FROM orders_temp LEFT JOIN produk ON orders_temp.id_produk=produk.id_produk WHERE 1 AND orders_temp.id_session='{$data['sessionID']}'";
+			$data['queryOrdersTemp']= mysql_query($data['sqlOrdersTemp']);
+			while ( $value = mysql_fetch_assoc($data['queryOrdersTemp']) ) {
+				$data['insertOrdersDetail'][] 	= ("INSERT INTO `orders_detail`(`id_orders`, `id_produk`, `jumlah`) VALUES ('{$data['post']['id_orders']}','{$value['id_produk']}','{$value['jumlah']}')");
+				$data['updateProduk'][] 		= ("UPDATE `produk` SET `stok`=(produk.stok-{$value['jumlah']}),dibeli=(produk.dibeli+{$value['jumlah']}) WHERE 1 AND produk.id_produk={$value['id_produk']} ");
+			}
+			$data['tanggalOrders'] 		= date('Y-m-d');
+			$data['jamOrders']	 		= date('h:i:s');
+			$data['insertOrders']		= ("INSERT INTO `orders`(`id_orders`, `id_kustomer`, `alamat`, `status_order`, `tgl_order`, `jam_order`,  `kurir`, `ongkir`) VALUES ('{$data['post']['id_orders']}','{$data['rowKustomer']['id_kustomer']}','{$data['post']['alamat']}','UNPAID','{$data['tanggalOrders']}','{$data['jamOrders']}','{$data['post']['kurir']->valueText}','{$data['post']['kurir']->value}')");
+			$data['deleteOrdersTemp'] 	= ("DELETE FROM `orders_temp` WHERE `id_session`='{$data['sessionID']}' ");
 			
-		// } else {
-		// 	$data['sqlOrdersTemp']	= "SELECT * FROM orders_temp LEFT JOIN produk ON orders_temp.id_produk=produk.id_produk WHERE 1 AND orders_temp.id_session='{$data['sessionID']}'";
-		// 	$data['queryOrdersTemp']= mysql_query($data['sqlOrdersTemp']);
-		// 	while ( $value = mysql_fetch_assoc($data['queryOrdersTemp']) ) {
-		// 		$data['insertOrdersDetail'][] 	= mysql_query("INSERT INTO `orders_detail`(`id_orders`, `id_produk`, `jumlah`) VALUES ('{$data['sessionID']}','{$value['id_produk']}','{$value['jumlah']}')");
-		// 		$data['updateProduk'][] 		= mysql_query("UPDATE `produk` SET `stok`=(produk.stok-{$value['jumlah']}),dibeli=(produk.dibeli+{$value['jumlah']}) WHERE 1 AND produk.id_produk={$value['id_produk']} ");
-		// 	}
-		// 	$data['tanggalOrders'] 		= date('Y-m-d');
-		// 	$data['jamOrders']	 		= date('h:i:s');
-		// 	$data['insertOrders']		= mysql_query("INSERT INTO `orders`(`id_orders`, `id_kustomer`, `alamat`, `status_order`, `tgl_order`, `jam_order`,  `kurir`, `ongkir`) VALUES ('{$data['sessionID']}','{$data['rowKustomer']['id_kustomer']}','{$data['post']['alamat']}','UNPAID','{$data['tanggalOrders']}','{$data['jamOrders']}','{$data['post']['kurir']->valueText}','{$data['post']['kurir']->value}')");
-		// 	$data['deleteOrdersTemp'] 	= mysql_query("DELETE FROM `orders_temp` WHERE `id_session`='{$data['sessionID']}' ");
-		// }
+		}
 
 		// $data['sqlOrdersDetail'] 	= "SELECT * FROM `orders_detail` LEFT JOIN produk ON produk.id_produk=orders_detail.id_produk WHERE 1 AND orders_detail.id_orders='{$data['sessionID']}' ";
 		// $data['queryOrdersDetail']	= mysql_query($data['sqlOrdersDetail']);
