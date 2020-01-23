@@ -853,6 +853,13 @@ elseif ($_GET['module']=='selesaibelanja'){
 						
 						<div class='control-group'>
 							<div class='controlsXXX'>
+								<input type='hidden' name='alamat' value='
+									<b>{$_POST['nama']}</b><br>
+									{$_POST['no_telp']} ({$_POST['email']})<br>
+									{$_POST['address']}, {$kota->type} {$kota->city_name}, {$kota->province} {$m['kode_pos']}
+								'>
+								<input type='hidden' name='payer_email' value='{$_POST['email']}'>
+								<input type='hidden' name='id_orders' value='".('MN'.date('Ymdhis'))."'>
 								<input type='submit' name='submitAccount' value='Proses' class='exclusive shopBtn'>
 							</div>
 						</div>
