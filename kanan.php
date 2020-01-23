@@ -342,7 +342,6 @@ echo"
 elseif ($_GET['module']=='daftaraksi'){
 	$data = [];
 	$data['post'] = $_REQUEST;
-	$data['ser'] = $_SERVER;
 
 	$data['mail']['email'] = $data['post']['email'];
 	$data['mail']['subjek'] = "Konfirmasi Pendaftaran Toko Mak Nohan";
@@ -353,8 +352,8 @@ elseif ($_GET['module']=='daftaraksi'){
 			</head>
 			<body>
 				Silakan verifikasi email kamu dengan mengklik tautan berikut :<br>
-				<a href='{$_SERVER['HTTP_HOST']}?z={$data['post']['PHPSESSID']}'>Klik Disini untuk verifikasi email</a>
-				<p><strong>NOTE! :</strong> jika link tidak bisa di klik silahkan copy url ini [{$_SERVER['HTTP_HOST']}?z={$data['post']['PHPSESSID']}]</p>
+				<a href='https://www.maknohan.com?z={$data['post']['PHPSESSID']}'>Klik Disini untuk verifikasi email</a>
+				<p><strong>NOTE! :</strong> jika link tidak bisa di klik silahkan copy url ini [https://www.maknohan.com?z={$data['post']['PHPSESSID']}]</p>
 			</body>
 		</html>	
 	";
