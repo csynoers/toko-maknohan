@@ -352,8 +352,8 @@ elseif ($_GET['module']=='daftaraksi'){
 			</head>
 			<body>
 				Silakan verifikasi email kamu dengan mengklik tautan berikut :<br>
-				<a href='https://www.maknohan.com?z={$data['post']['PHPSESSID']}'>Klik Disini untuk verifikasi email</a>
-				<p><strong>NOTE! :</strong> jika link tidak bisa di klik silahkan copy url ini [https://www.maknohan.com?z={$data['post']['PHPSESSID']}]</p>
+				<a href='https://www.maknohan.com/konfirmasi-email-{$data['post']['PHPSESSID']}'>Klik Disini untuk verifikasi email</a>
+				<p><strong>NOTE! :</strong> jika link tidak bisa di klik silahkan copy url ini [https://www.maknohan.com/konfirmasi-email-{$data['post']['PHPSESSID']}]</p>
 			</body>
 		</html>	
 	";

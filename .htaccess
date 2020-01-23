@@ -28,4 +28,6 @@ RewriteRule ^lupa-password\.html$ media2.php?module=lupapassword&id=$1 [L]
 RewriteRule ^data-transaksi\.html$ media2.php?module=datatransaksi&id=$1 [L]
 RewriteRule ^konfirmasi-pembayaran\.html$ media2.php?module=konfirmasipembayaran&id=$1 [L]
 RewriteRule ^konfirmasi-aksi\.html$ media2.php?module=konfirmasiaksi&id=$1 [L]
+
+RewriteRule ^konfirmasi-email-(.*)\.html$ media2.php?module=home&z=$1 [L]
 Options All -Indexes
