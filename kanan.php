@@ -1,6 +1,12 @@
 <?php
 if ($_GET['module']=='home'){
-	print_r($_REQUEST);
+	$data = [];
+	if ( $_GET['z'] ) {
+		$data['updateKustomer'] = mysql_query("UPDATE `kustomer` SET `status_konfirmasi`='1' WHERE 1 AND `kode_konfirmasi`='{$_GET['z']}'");
+		if ( $data['updateKustomer'] ) {
+			echo "<script>window.alert('Terimakasih telah melakukan konfirmasi, sekarang akun member kamu sudah aktif silahkan login melalui menu login yang sudah tersedia di website ini ')</script>";
+		}
+	}
 	echo"
 		<h3>Produk Terbaru </h3>
 		<hr class='soften'/>
