@@ -36,6 +36,7 @@ else{
             // }
 
             $data = [];
+            $data['info'] = "";
             if ( $_GET['status_pesanan'] ) {
                 if ( $_GET['status_pesanan']=='SEMUA PESANAN' ) {
                     echo 'rows pesanan SEMUA PESANAN';
@@ -61,6 +62,23 @@ else{
                     $data['rows'] = implode('',$data['rows']);
                 }
                 if ( $_GET['status_pesanan']=='SEDANG DIPROSES' ) {
+                    $data['info'] = "
+                        <div class='panel-body'>
+                            # Informasi pesanan sudah dibayar, harap melakukan pengemasan dan pengiriman paket kepada jasa pengiriman yang sudah dipilih pembeli untuk mendapatkan <b>NO RESI</b>.<br>
+                            # setelah mendapatkan <b>No RESI</b> harap melakukan <b>INPUT RESI</b> di FORM berikut ini: <br>
+                            <form action='?module=order&act=inputresi' method='post'>
+                                <div class='input-group' style='margin-bottom:4px'>
+                                    <span class='input-group-addon'>No order</span>
+                                    <input type='text' class='form-control' name='id_orders' placeholder='Masukan no order disini...'>
+                                </div>
+                                <div class='input-group'>
+                                    <span class='input-group-addon'>No Resi</span>
+                                    <input type='text' class='form-control' name='no_resi' placeholder='Masukan no resi disini...'>
+                                </div>
+                                <button type='submit' class='btn btn-default' style='margin-top:4px'>Simpan</button>
+                            </form>
+                        </div>
+                    ";
                     $data['sql'] = "SELECT * FROM orders LEFT JOIN kustomer ON orders.id_kustomer=kustomer.id_kustomer WHERE 1 AND orders.status_transaksi='SEDANG DIPROSES' ORDER BY orders.tgl_order DESC";
                     $data['query'] = mysql_query($data['sql']);
                     while ($value=mysql_fetch_assoc($data['query'])) {
@@ -155,6 +173,7 @@ else{
                                 </div>
                             </form>
                             <hr>
+                            {$data['info']}
                             <table id='example1' class='table table-bordered table-striped'> 
                                 <thead>
                                     <tr>
