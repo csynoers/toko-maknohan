@@ -146,7 +146,7 @@ else{
                                 <td>{$value['status_order']}</td>
                                 <td>{$value['status_transaksi']} dengan No Resi : {$value['no_resi']}</td>
                                 <td>
-                                    <a href='?module=order&act=konfirmasi&id={$value['id_orders']}' class='btn btn-warning'>Pesanan Diterima</a>
+                                    <a href='?module=order&act=detailorder&id={$value['id_orders']}' class='btn btn-warning'>Detail</a>
                                 </td>
                             </tr>
                         ";
