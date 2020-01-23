@@ -693,11 +693,11 @@ elseif ($_GET['module']=='selesaibelanja'){
 						
 						<div class='control-group'>
 							<div class='controlsXXX'>
-								<input type='text' name='alamat' value='<b>{$m['nama']}</b><br>
+								<input type='hidden' name='alamat' value='<b>{$m['nama']}</b><br>
 								{$m['no_telp']} ({$m['email']})<br>
 								{$m['address']}, {$kota->type} {$kota->city_name}, {$kota->province} {$m['kode_pos']}'>
-								<input type='text' name='payer_email' value='{$m['email']}'>
-								<input type='text' name='id_orders' value='".('MA'.date('Ymdhis'))."'>
+								<input type='hidden' name='payer_email' value='{$m['email']}'>
+								<input type='hidden' name='id_orders' value='".('MA'.date('Ymdhis'))."'>
 								<input type='submit' name='submitAccount' value='Proses' class='exclusive shopBtn'>
 							</div>
 						</div>
@@ -876,80 +876,81 @@ elseif ($_GET['module']=='simpantransaksi'){
 		$data['sessionID'] 		= session_id();
 		$data['post'] 			= $_POST;
 		$data['post']['kurir'] 	= json_decode($data['post']['kurir']); 
-		$data['sqlKustomer'] 	= "SELECT * FROM kustomer WHERE id_kustomer='$_SESSION[kustomer_id]'";
+		$data['sqlKustomer'] 	= "SELECT * FROM kustomer WHERE id_kustomer='{$_SESSION['kustomer_id']}'";
 		$data['queryKustomer'] 	= mysql_query($data['sqlKustomer']);
 		$data['rowKustomer']	= mysql_fetch_assoc($data['queryKustomer']);
 
-		$data['sqlCekOrders']   = "SELECT * FROM orders WHERE id_orders='{$data['sessionID']}' ";
-		$data['queryCekorders']	= mysql_query($data['sqlCekOrders']);
-		$data['numCekorders']	= mysql_num_rows($data['queryCekorders']);
+		// $data['sqlCekOrders']   = "SELECT * FROM orders WHERE id_orders='{$data['post']}' ";
+		// $data['queryCekorders']	= mysql_query($data['sqlCekOrders']);
+		// $data['numCekorders']	= mysql_num_rows($data['queryCekorders']);
 		
-		if ( $data['numCekorders'] > 0 ) { # jika orders temp sudah disimpan pada table order dan orders detail
+		// if ( $data['numCekorders'] > 0 ) { # jika orders temp sudah disimpan pada table order dan orders detail
 			
-		} else {
-			$data['sqlOrdersTemp']	= "SELECT * FROM orders_temp LEFT JOIN produk ON orders_temp.id_produk=produk.id_produk WHERE 1 AND orders_temp.id_session='{$data['sessionID']}'";
-			$data['queryOrdersTemp']= mysql_query($data['sqlOrdersTemp']);
-			while ( $value = mysql_fetch_assoc($data['queryOrdersTemp']) ) {
-				$data['insertOrdersDetail'][] 	= mysql_query("INSERT INTO `orders_detail`(`id_orders`, `id_produk`, `jumlah`) VALUES ('{$data['sessionID']}','{$value['id_produk']}','{$value['jumlah']}')");
-				$data['updateProduk'][] 		= mysql_query("UPDATE `produk` SET `stok`=(produk.stok-{$value['jumlah']}),dibeli=(produk.dibeli+{$value['jumlah']}) WHERE 1 AND produk.id_produk={$value['id_produk']} ");
-			}
-			$data['tanggalOrders'] 		= date('Y-m-d');
-			$data['jamOrders']	 		= date('h:i:s');
-			$data['insertOrders']		= mysql_query("INSERT INTO `orders`(`id_orders`, `id_kustomer`, `alamat`, `status_order`, `tgl_order`, `jam_order`,  `kurir`, `ongkir`) VALUES ('{$data['sessionID']}','{$data['rowKustomer']['id_kustomer']}','{$data['post']['alamat']}','UNPAID','{$data['tanggalOrders']}','{$data['jamOrders']}','{$data['post']['kurir']->valueText}','{$data['post']['kurir']->value}')");
-			$data['deleteOrdersTemp'] 	= mysql_query("DELETE FROM `orders_temp` WHERE `id_session`='{$data['sessionID']}' ");
-		}
+		// } else {
+		// 	$data['sqlOrdersTemp']	= "SELECT * FROM orders_temp LEFT JOIN produk ON orders_temp.id_produk=produk.id_produk WHERE 1 AND orders_temp.id_session='{$data['sessionID']}'";
+		// 	$data['queryOrdersTemp']= mysql_query($data['sqlOrdersTemp']);
+		// 	while ( $value = mysql_fetch_assoc($data['queryOrdersTemp']) ) {
+		// 		$data['insertOrdersDetail'][] 	= mysql_query("INSERT INTO `orders_detail`(`id_orders`, `id_produk`, `jumlah`) VALUES ('{$data['sessionID']}','{$value['id_produk']}','{$value['jumlah']}')");
+		// 		$data['updateProduk'][] 		= mysql_query("UPDATE `produk` SET `stok`=(produk.stok-{$value['jumlah']}),dibeli=(produk.dibeli+{$value['jumlah']}) WHERE 1 AND produk.id_produk={$value['id_produk']} ");
+		// 	}
+		// 	$data['tanggalOrders'] 		= date('Y-m-d');
+		// 	$data['jamOrders']	 		= date('h:i:s');
+		// 	$data['insertOrders']		= mysql_query("INSERT INTO `orders`(`id_orders`, `id_kustomer`, `alamat`, `status_order`, `tgl_order`, `jam_order`,  `kurir`, `ongkir`) VALUES ('{$data['sessionID']}','{$data['rowKustomer']['id_kustomer']}','{$data['post']['alamat']}','UNPAID','{$data['tanggalOrders']}','{$data['jamOrders']}','{$data['post']['kurir']->valueText}','{$data['post']['kurir']->value}')");
+		// 	$data['deleteOrdersTemp'] 	= mysql_query("DELETE FROM `orders_temp` WHERE `id_session`='{$data['sessionID']}' ");
+		// }
 
-		$data['sqlOrdersDetail'] 	= "SELECT * FROM `orders_detail` LEFT JOIN produk ON produk.id_produk=orders_detail.id_produk WHERE 1 AND orders_detail.id_orders='{$data['sessionID']}' ";
-		$data['queryOrdersDetail']	= mysql_query($data['sqlOrdersDetail']);
-		$no = 1;
-		$data['totalberat']	= 0;
-		$data['totalharga']	= 0;
-		$data['grandtotal']	= 0;
-		while ($value = mysql_fetch_assoc($data['queryOrdersDetail'])) {
-			$data['totalberat'] += ($value['jumlah']*$value['berat']);
-			$data['totalharga'] += ($value['jumlah']*$value['harga']);
-			$value['subtotal'] = ($value['jumlah']*$value['harga']);
-			$value['hargaText'] = format_rupiah($value['harga']);
-			$value['subtotalText'] = format_rupiah($value['subtotal']);
-			$data['trBodyOrdersDetail'][] = "
-				<tr>
-					<td>{$no}</td>
-					<td>{$value['nama_produk']}</td>
-					<td>{$value['jumlah']}</td>
-					<td>{$value['berat']}</td>
-					<td>Rp. {$value['hargaText']}</td>
-					<td>Rp. {$value['subtotalText']}</td>
-				</tr>
-			";
-			$no++;
-		}
-		$data['grandtotal'] += ($data['totalharga']+$data['post']['kurir']->value);
-		$data['totalhargaText'] = format_rupiah($data['totalharga']);
-		$data['grandtotalText'] = format_rupiah($data['grandtotal']);
-		$data['trBodyOrdersDetail'] = implode('',$data['trBodyOrdersDetail']);
+		// $data['sqlOrdersDetail'] 	= "SELECT * FROM `orders_detail` LEFT JOIN produk ON produk.id_produk=orders_detail.id_produk WHERE 1 AND orders_detail.id_orders='{$data['sessionID']}' ";
+		// $data['queryOrdersDetail']	= mysql_query($data['sqlOrdersDetail']);
+		// $no = 1;
+		// $data['totalberat']	= 0;
+		// $data['totalharga']	= 0;
+		// $data['grandtotal']	= 0;
+		// while ($value = mysql_fetch_assoc($data['queryOrdersDetail'])) {
+		// 	$data['totalberat'] += ($value['jumlah']*$value['berat']);
+		// 	$data['totalharga'] += ($value['jumlah']*$value['harga']);
+		// 	$value['subtotal'] = ($value['jumlah']*$value['harga']);
+		// 	$value['hargaText'] = format_rupiah($value['harga']);
+		// 	$value['subtotalText'] = format_rupiah($value['subtotal']);
+		// 	$data['trBodyOrdersDetail'][] = "
+		// 		<tr>
+		// 			<td>{$no}</td>
+		// 			<td>{$value['nama_produk']}</td>
+		// 			<td>{$value['jumlah']}</td>
+		// 			<td>{$value['berat']}</td>
+		// 			<td>Rp. {$value['hargaText']}</td>
+		// 			<td>Rp. {$value['subtotalText']}</td>
+		// 		</tr>
+		// 	";
+		// 	$no++;
+		// }
+		// $data['grandtotal'] += ($data['totalharga']+$data['post']['kurir']->value);
+		// $data['totalhargaText'] = format_rupiah($data['totalharga']);
+		// $data['grandtotalText'] = format_rupiah($data['grandtotal']);
+		// $data['trBodyOrdersDetail'] = implode('',$data['trBodyOrdersDetail']);
 
-		$data['sqlOrders'] = "SELECT * FROM orders WHERE id_orders='{$data['sessionID']}' ";
-		$data['queryOrders'] = mysql_query($data['sqlOrders']);
-		$data['rowOrders']  = mysql_fetch_assoc($data['queryOrders']);
-		if ( empty($data['rowOrders']['invoice_url']) ) {
-			include_once("XenditPHPClient.php");
-			define('SECRET_API_KEY', 'xnd_development_jvolJ4f9VT9Y1KNheUMY1XZm8xQ5J7pki8VpllUEb0XXEiiRKxly09RoW4U6ILo');
+		// $data['sqlOrders'] = "SELECT * FROM orders WHERE id_orders='{$data['sessionID']}' ";
+		// $data['queryOrders'] = mysql_query($data['sqlOrders']);
+		// $data['rowOrders']  = mysql_fetch_assoc($data['queryOrders']);
+		// if ( empty($data['rowOrders']['invoice_url']) ) {
+		// 	include_once("XenditPHPClient.php");
+		// 	define('SECRET_API_KEY', 'xnd_development_jvolJ4f9VT9Y1KNheUMY1XZm8xQ5J7pki8VpllUEb0XXEiiRKxly09RoW4U6ILo');
 		
-			$options['secret_api_key'] = constant('SECRET_API_KEY');
-			$xenditPHPClient = new XenditClient\XenditPHPClient($options);
+		// 	$options['secret_api_key'] = constant('SECRET_API_KEY');
+		// 	$xenditPHPClient = new XenditClient\XenditPHPClient($options);
 			
-			$data['external_id'] = $data['sessionID'];
-			$data['amount'] 	 = $data['grandtotal'];
-			$data['payer_email'] = $data['post']['payer_email'];
-			$data['description'] = "Pembayaran dengan No Order {$data['sessionID']}";
-			$response = $xenditPHPClient->createInvoice($data['external_id'], $data['amount'], $data['payer_email'], $data['description']);
-			$data['updateOrders'] = ("UPDATE `orders` SET `external_id`='{$response['id']}',`invoice_url`='{$response['invoice_url']}' WHERE 1 AND id_orders='{$data['sessionID']}' ");
-			$data['rowOrders']['external_id'] = $response['id'];
-			$data['rowOrders']['invoice_url'] = $response['invoice_url'];
-		}
-		// echo '<pre>';
-		// print_r($data);
-		// echo '</pre>';
+		// 	$data['external_id'] = $data['sessionID'];
+		// 	$data['amount'] 	 = $data['grandtotal'];
+		// 	$data['payer_email'] = $data['post']['payer_email'];
+		// 	$data['description'] = "Pembayaran dengan No Order {$data['sessionID']}";
+		// 	$response = $xenditPHPClient->createInvoice($data['external_id'], $data['amount'], $data['payer_email'], $data['description']);
+		// 	$data['updateOrders'] = ("UPDATE `orders` SET `external_id`='{$response['id']}',`invoice_url`='{$response['invoice_url']}' WHERE 1 AND id_orders='{$data['sessionID']}' ");
+		// 	$data['rowOrders']['external_id'] = $response['id'];
+		// 	$data['rowOrders']['invoice_url'] = $response['invoice_url'];
+		// }
+		echo '<pre>';
+		print_r($data);
+		echo '</pre>';
+		die();
 
 		$htmls = "
 			<div class='well well-small'>
