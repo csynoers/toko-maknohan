@@ -326,7 +326,7 @@ echo"
 		 <div class='control-group'>
 			<label class='control-label' for='inputFname'>Alamat <sup>*</sup></label>
 			<div class='controls'>
-				<input type='text' name='address'  placeholder='Masukkan Alamat Anda' required>
+				<textarea name='address' class='input-block-level' placeholder='Nama gedung, jalan dan lainnya ...' required></textarea>
 			</div>
 		 </div>
 	<div class='control-group'>
@@ -340,6 +340,8 @@ echo"
 
 }
 elseif ($_GET['module']=='daftaraksi'){
+	print_r($_REQUEST);
+	die();
 // Logika utk jika dipinjam, yg masih susah di cari
 $sql = mysql_query("SELECT * FROM kustomer WHERE email='$_POST[email]'
 								OR no_telp ='$_POST[no_telp]'");
