@@ -342,6 +342,7 @@ echo"
 elseif ($_GET['module']=='daftaraksi'){
 	$data = [];
 	$data['post'] = $_REQUEST;
+	$data['ser'] = $_SERVER;
 
 	$data['mail']['email'] = $data['post']['email'];
 	$data['mail']['subjek'] = "Konfirmasi Pendaftaran Toko Mak Nohan";
