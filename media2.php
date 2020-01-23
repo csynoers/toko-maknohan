@@ -243,7 +243,7 @@ Alamat :  Jl. Raya Kertek km 05 Sayangan Wonosobo <br>
 	 		<td width="70%">
 				<span>Copyright &copy; <?= date('Y') ?><br> Mak Nohan Oleh-Oleh Khas Dieng Wonosobo</span>
 			</td>
-			<td width="30%">
+			<!-- <td width="30%">
 	 			<table>
 	 				<tr>
 	 					<td>
@@ -254,7 +254,7 @@ Alamat :  Jl. Raya Kertek km 05 Sayangan Wonosobo <br>
 						</td>
 					</tr>
 				</table>
-			</td>
+			</td> -->
 		</tr>
 	</table>
 </div>
