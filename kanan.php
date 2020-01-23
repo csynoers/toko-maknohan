@@ -927,25 +927,25 @@ elseif ($_GET['module']=='simpantransaksi'){
 		$data['grandtotalText'] = format_rupiah($data['grandtotal']);
 		$data['trBodyOrdersDetail'] = implode('',$data['trBodyOrdersDetail']);
 
-		// $data['sqlOrders'] = "SELECT * FROM orders WHERE id_orders='{$data['sessionID']}' ";
-		// $data['queryOrders'] = mysql_query($data['sqlOrders']);
-		// $data['rowOrders']  = mysql_fetch_assoc($data['queryOrders']);
-		// if ( empty($data['rowOrders']['invoice_url']) ) {
-		// 	include_once("XenditPHPClient.php");
-		// 	define('SECRET_API_KEY', 'xnd_development_jvolJ4f9VT9Y1KNheUMY1XZm8xQ5J7pki8VpllUEb0XXEiiRKxly09RoW4U6ILo');
+		$data['sqlOrders'] = "SELECT * FROM orders WHERE id_orders='{$data['post']['id_orders']}' ";
+		$data['queryOrders'] = mysql_query($data['sqlOrders']);
+		$data['rowOrders']  = mysql_fetch_assoc($data['queryOrders']);
+		if ( empty($data['rowOrders']['invoice_url']) ) {
+			include_once("XenditPHPClient.php");
+			define('SECRET_API_KEY', 'xnd_development_jvolJ4f9VT9Y1KNheUMY1XZm8xQ5J7pki8VpllUEb0XXEiiRKxly09RoW4U6ILo');
 		
-		// 	$options['secret_api_key'] = constant('SECRET_API_KEY');
-		// 	$xenditPHPClient = new XenditClient\XenditPHPClient($options);
+			$options['secret_api_key'] = constant('SECRET_API_KEY');
+			$xenditPHPClient = new XenditClient\XenditPHPClient($options);
 			
-		// 	$data['external_id'] = $data['sessionID'];
-		// 	$data['amount'] 	 = $data['grandtotal'];
-		// 	$data['payer_email'] = $data['post']['payer_email'];
-		// 	$data['description'] = "Pembayaran dengan No Order {$data['sessionID']}";
+			$data['external_id'] = $data['sessionID'];
+			$data['amount'] 	 = $data['grandtotal'];
+			$data['payer_email'] = $data['post']['payer_email'];
+			$data['description'] = "Pembayaran dengan No Order {$data['sessionID']}";
 		// 	$response = $xenditPHPClient->createInvoice($data['external_id'], $data['amount'], $data['payer_email'], $data['description']);
 		// 	$data['updateOrders'] = ("UPDATE `orders` SET `external_id`='{$response['id']}',`invoice_url`='{$response['invoice_url']}' WHERE 1 AND id_orders='{$data['sessionID']}' ");
 		// 	$data['rowOrders']['external_id'] = $response['id'];
 		// 	$data['rowOrders']['invoice_url'] = $response['invoice_url'];
-		// }
+		}
 		echo '<pre>';
 		print_r($data);
 		echo '</pre>';
