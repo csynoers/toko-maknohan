@@ -341,12 +341,21 @@ echo"
 }
 elseif ($_GET['module']=='daftaraksi'){
 	$data = [];
-	$data['post'] = $_POST;
+	$data['post'] = $_REQUEST;
 
 	$data['mail']['email'] = $data['post']['email'];
 	$data['mail']['subjek'] = "Konfirmasi Pendaftaran Toko Mak Nohan";
 	$data['mail']['pesan'] = "
-		
+		<html>
+			<head>
+			<title>TOKO MAK NOHAN</title>
+			</head>
+			<body>
+				Silakan verifikasi email kamu dengan mengklik tautan berikut :<br>
+				<a href='{$_SERVER['HTTP_HOST']}?z={$q}'>Klik Disini untuk verifikasi email</a>
+				<p><strong>NOTE! :</strong> jika link tidak bisa di klik silahkan copy url ini [{$_SERVER['HTTP_HOST']}?z={$q}]</p>
+			</body>
+		</html>	
 	";
 	$data['mail']['dari'] = "From: support@tokomaknohan.com \n Content-type: text/html \r\n";
 
