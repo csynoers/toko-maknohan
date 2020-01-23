@@ -11,20 +11,23 @@ $pass     = md5($_POST['password']);
 
 $login=mysql_query("SELECT * FROM kustomer WHERE email='$email' AND password='$pass'");
 $ketemu=mysql_num_rows($login);
-$r=mysql_fetch_array($login);
 
 // Apabila username dan password ditemukan
 if ($ketemu > 0){
-  session_start();
-  
+    $login2=mysql_query("SELECT * FROM kustomer WHERE email='$email' AND password='$pass' AND status_konfirmasi='1' ");
+    $ketemu2=mysql_num_rows($login2);
+    if ( $ketemu2 > 0 ) {
+        $r=mysql_fetch_assoc($login);
+        session_start();
+        $_SESSION['kustomer_id']     = $r['id_kustomer'];
+        $_SESSION['namalengkap']  = $r['nama'];
+        $_SESSION['passuser']     = $r['password'];
+        $_SESSION['kota']    = $r['id_kota'];
+        $_SESSION['email']     = $r['email'];
+        header('location:media2.php?module=home');
 
-  $_SESSION[kustomer_id]     = $r[id_kustomer];
-  $_SESSION[namalengkap]  = $r[nama];
-  $_SESSION[passuser]     = $r[password];
-  $_SESSION[kota]    = $r[id_kota];
-  $_SESSION[email]     = $r[email];
-
-  header('location:media2.php?module=home');
+    }
+    
 }
 
 
