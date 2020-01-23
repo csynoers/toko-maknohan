@@ -11,7 +11,7 @@ echo"
   $sql=mysql_query("SELECT * FROM produk ORDER BY id_produk DESC LIMIT 3");  
   $kolom = 3;
   $i=0;
-  while ($r=mysql_fetch_array($sql)){
+  while ($r=mysql_fetch_assoc($sql)){
     $harga1 = $r['harga'];
     $harga     = number_format($harga1,0,",",".");
 	echo"
@@ -44,7 +44,7 @@ echo"
   $posisi = $p->cariPosisi($batas);
   // Tampilkan semua produk
   $sql=mysql_query("SELECT * FROM produk ORDER BY id_produk DESC LIMIT $posisi,$batas");
-  while($r=mysql_fetch_array($sql)){
+  while($r=mysql_fetch_assoc($sql)){
     $harga1 = $r[harga];
     $harga     = number_format($harga1,0,",",".");
     if ($r[gambar]!=''){
@@ -80,7 +80,7 @@ echo"
 }
 elseif ($_GET['module']=='detailkategori'){
 $sq = mysql_query("SELECT nama_kategori from kategori where id_kategori='$_GET[id]'");
-  $n = mysql_fetch_array($sq);
+  $n = mysql_fetch_assoc($sq);
 echo"
 
 	<h3>Kategori $n[nama_kategori] </h3>
@@ -98,7 +98,7 @@ echo"
 	if ($jumlah > 0){
     $kolom = 2;
     $i=0;
-   while($r=mysql_fetch_array($hasil)){
+   while($r=mysql_fetch_assoc($hasil)){
     $harga1 = $r[harga];
     $harga     = number_format($harga1,0,",",".");
     // Tampilkan hanya sebagian isi berita
@@ -138,7 +138,7 @@ echo"
 }
 elseif ($_GET['module']=='carabeli'){
 $detail=mysql_query("SELECT * FROM halamanstatis WHERE id_halaman='1'");
-	$d   = mysql_fetch_array($detail);
+	$d   = mysql_fetch_assoc($detail);
 echo"							
 <div class='span9'>
 <h2>$d[judul]</h2>
@@ -148,7 +148,7 @@ echo"
 }
 elseif ($_GET['module']=='profilkami'){
 $detail=mysql_query("SELECT * FROM halamanstatis WHERE id_halaman='2'");
-	$d   = mysql_fetch_array($detail);
+	$d   = mysql_fetch_assoc($detail);
 echo"							
 <div class='span9'>
 <h2>$d[judul]</h2>
@@ -159,7 +159,7 @@ echo"
 elseif ($_GET['module']=='detailproduk'){
 $detail=mysql_query("SELECT * FROM produk,kategori    
                       WHERE produk.id_kategori=kategori.id_kategori AND id_produk='$_GET[id]'");
-	$d   = mysql_fetch_array($detail);
+	$d   = mysql_fetch_assoc($detail);
   $harga     = number_format($d['harga'],0,",",".");
   $kategori=$d['id_kategori'];
 echo"
@@ -197,7 +197,7 @@ echo"
 			$sql_ukuran="select a.*,b.kode_ukuran from produk_ukuran a left join ukuran b on a.id_ukuran=b.id_ukuran
 						where a.id_produk='$_GET[id]'";
 			$qry_ukuran=mysql_query($sql_ukuran);
-			while($hasil_ukuran=mysql_fetch_array($qry_ukuran)){
+			while($hasil_ukuran=mysql_fetch_assoc($qry_ukuran)){
 				echo "<option value='$hasil_ukuran[id_ukuran]'>$hasil_ukuran[kode_ukuran]</option>";
 			}
 			echo "</select>	
@@ -224,7 +224,7 @@ echo"
 			// Tampilkan semua produk
   $sql=mysql_query("SELECT * FROM produk,kategori    
 					WHERE produk.id_kategori=kategori.id_kategori AND produk.id_kategori='$kategori' ORDER BY rand() LIMIT 3");
-  while($r=mysql_fetch_array($sql)){
+  while($r=mysql_fetch_assoc($sql)){
      $harga2     = number_format($r['harga'],0,",",".");
 											
 											echo"
@@ -423,7 +423,7 @@ echo"
 }
 elseif ($_GET['module']=='editmember'){
 	$edit=mysql_query("SELECT * FROM kustomer WHERE id_kustomer='$_SESSION[kustomer_id]'");
-	$r=mysql_fetch_array($edit);
+	$r=mysql_fetch_assoc($edit);
 
 	/* load api raja ongkir */
 	require_once 'rajaongkir/rajaOngkir.php';
@@ -546,7 +546,7 @@ echo"
 			  $no=1;
 			  $totalberat=0;
 			  $total=0;
-  while($r=mysql_fetch_array($sql)){
+  while($r=mysql_fetch_assoc($sql)){
       $produk=$r['id_produk'];
    $subtotalberat = $r['berat'] * $r['jumlah']; // total berat per item produk 
    $totalberat  = $totalberat + $subtotalberat; // grand total berat all produk yang dibeli
@@ -568,7 +568,7 @@ echo"
 			echo"
 									<td class='hide'><select name='ukuran[$no]'>";
 			
-			while($hasil_ukuran=mysql_fetch_array($qry_ukuran)){
+			while($hasil_ukuran=mysql_fetch_assoc($qry_ukuran)){
 			   if ($r[id_ukuran]==$hasil_ukuran[id_ukuran]){
 				echo "<option value='$hasil_ukuran[id_ukuran]' selected>$hasil_ukuran[kode_ukuran]</option>";
 			}
@@ -623,16 +623,16 @@ elseif ($_GET['module']=='selesaibelanja'){
 	} else {
 		/* start halaman selesai belanja (checkout) */
 		if ( $_GET['id'] ) {
-			$sid = session_id();
-			$member=mysql_query("SELECT * FROM kustomer WHERE id_kustomer='$_SESSION[kustomer_id]'");
-			$m=mysql_fetch_array($member);
-			$address=$m['address'];
-			$edit = mysql_query("SELECT SUM(berat) AS weight FROM orders_temp a left join produk b on a.id_produk=b.id_produk
+			$sid 		= session_id();
+			$member 	= mysql_query("SELECT * FROM kustomer WHERE id_kustomer='$_SESSION[kustomer_id]'");
+			$m			= mysql_fetch_assoc($member);
+			$address	= $m['address'];
+			$edit 		= mysql_query("SELECT SUM(berat) AS weight FROM orders_temp a left join produk b on a.id_produk=b.id_produk
 			left join ukuran c on a.id_ukuran=c.id_ukuran 
 			WHERE id_session='$sid'");
-			$w    = mysql_fetch_array($edit);
-			$totalberat=$w['weight'];
-			$berat_gram=$totalberat*1000;
+			$w    		= mysql_fetch_assoc($edit);
+			$totalberat	= $w['weight'];
+			$berat_gram	= $totalberat*1000;
 		
 			# load rajaongkir api
 			require_once('rajaongkir/rajaOngkir.php');
@@ -640,10 +640,14 @@ elseif ($_GET['module']=='selesaibelanja'){
 			$jasaPengiriman = [];
 			foreach (Rajaongkir::cost_all(['destination'=> $m['kota'],'weight'=> $berat_gram]) as $key => $value) {
 				$value['valueText'] = format_rupiah($value['value']);
+				$value['kurir'] = json_encode([
+					'value' => $value['value'],
+					'valueText' => "{$value['code']} {$value['service']} Rp. {$value['valueText']} {$value['etd']}"
+				]);
 				$jasaPengiriman[] = "
 					<tr>
 						<td style='text-align:left;'>
-							<input required type='radio' name='radio' value='{$value['value']}'> {$value['code']} {$value['service']} Rp. {$value['valueText']} {$value['etd']}
+							<input required type='radio' name='kurir' value='{$value['kurir']}'> {$value['code']} {$value['service']} Rp. {$value['valueText']} {$value['etd']}
 						</td>
 					</tr>
 				";
@@ -689,6 +693,10 @@ elseif ($_GET['module']=='selesaibelanja'){
 						
 						<div class='control-group'>
 							<div class='controlsXXX'>
+								<input type='hidden' name='alamat' value='<b>{$m['nama']}</b><br>
+								{$m['no_telp']} ({$m['email']})<br>
+								{$m['address']}, {$kota->type} {$kota->city_name}, {$kota->province} {$m['kode_pos']}'>
+								<input type='hidden' name='payer_email' value='{$m['email']}'>
 								<input type='submit' name='submitAccount' value='Proses' class='exclusive shopBtn'>
 							</div>
 						</div>
@@ -780,12 +788,12 @@ elseif ($_GET['module']=='selesaibelanja'){
 		if ( $_GET['checkout-new-alamat'] ) {
 			$sid = session_id();
 			$member=mysql_query("SELECT * FROM kustomer WHERE id_kustomer='$_SESSION[kustomer_id]'");
-			$m=mysql_fetch_array($member);
+			$m=mysql_fetch_assoc($member);
 			$address=$m['address'];
 			$edit = mysql_query("SELECT SUM(berat) AS weight FROM orders_temp a left join produk b on a.id_produk=b.id_produk
 			left join ukuran c on a.id_ukuran=c.id_ukuran 
 			WHERE id_session='$sid'");
-			$w    = mysql_fetch_array($edit);
+			$w    = mysql_fetch_assoc($edit);
 			$totalberat=$w['weight'];
 			$berat_gram=$totalberat*1000;
 		
@@ -858,21 +866,148 @@ elseif ($_GET['module']=='selesaibelanja'){
 	// echo '</pre>';
 }
 elseif ($_GET['module']=='simpantransaksi'){
-if (empty($_SESSION['namalengkap']) AND empty($_SESSION['passuser'])){
+	if (empty($_SESSION['namalengkap']) AND empty($_SESSION['passuser'])){
+		echo "<script>window.alert('Anda belum Login, Silahkan Login Terlebih dahulu');
+			window.location=('index.php')</script>";
+	}
+	else {
+		$data = [];
+		$data['sessionID'] 		= session_id();
+		$data['post'] 			= $_POST;
+		$data['post']['kurir'] 	= json_decode($data['post']['kurir']); 
+		$data['sqlKustomer'] 	= "SELECT * FROM kustomer WHERE id_kustomer='$_SESSION[kustomer_id]'";
+		$data['queryKustomer'] 	= mysql_query($data['sqlKustomer']);
+		$data['rowKustomer']	= mysql_fetch_assoc($data['queryKustomer']);
 
-echo "<script>window.alert('Anda belum Login, Silahkan Login Terlebih dahulu');
-        window.location=('index.php')</script>";
-}
-else {
-	echo json_encode([
-		"status" => FALSE,
-		"message" => "Halaman Ini masih dalam proses maintenance"
-	]);
-	die();
-//$sql = "SELECT * FROM	kustomer WHERE email='$email' AND password='$password'";
-$sql = "SELECT * FROM kustomer WHERE id_kustomer='$_SESSION[kustomer_id]'";
-$hasil = mysql_query($sql);
-$r = mysql_fetch_array($hasil);
+		$data['sqlCekOrders']   = "SELECT * FROM orders WHERE id_orders='{$data['sessionID']}' ";
+		$data['queryCekorders']	= mysql_query($data['sqlCekOrders']);
+		$data['numCekorders']	= mysql_num_rows($data['queryCekorders']);
+		
+		if ( $data['numCekorders'] > 0 ) { # jika orders temp sudah disimpan pada table order dan orders detail
+			
+		} else {
+			$data['sqlOrdersTemp']	= "SELECT * FROM orders_temp LEFT JOIN produk ON orders_temp.id_produk=produk.id_produk WHERE 1 AND orders_temp.id_session='{$data['sessionID']}'";
+			$data['queryOrdersTemp']= mysql_query($data['sqlOrdersTemp']);
+			while ( $value = mysql_fetch_assoc($data['queryOrdersTemp']) ) {
+				$data['insertOrdersDetail'][] 	= mysql_query("INSERT INTO `orders_detail`(`id_orders`, `id_produk`, `jumlah`) VALUES ('{$data['sessionID']}','{$value['id_produk']}','{$value['jumlah']}')");
+				$data['updateProduk'][] 		= mysql_query("UPDATE `produk` SET `stok`=(produk.stok-{$value['jumlah']}),dibeli=(produk.dibeli+{$value['jumlah']}) WHERE 1 AND produk.id_produk={$value['id_produk']} ");
+			}
+			$data['tanggalOrders'] 		= date('Y-m-d');
+			$data['jamOrders']	 		= date('h:i:s');
+			$data['insertOrders']		= mysql_query("INSERT INTO `orders`(`id_orders`, `id_kustomer`, `alamat`, `status_order`, `tgl_order`, `jam_order`,  `kurir`, `ongkir`) VALUES ('{$data['sessionID']}','{$data['rowKustomer']['id_kustomer']}','{$data['post']['alamat']}','UNPAID','{$data['tanggalOrders']}','{$data['jamOrders']}','{$data['post']['kurir']->valueText}','{$data['post']['kurir']->value}')");
+			$data['deleteOrdersTemp'] 	= mysql_query("DELETE FROM `orders_temp` WHERE `id_session`='{$data['sessionID']}' ");
+		}
+
+		$data['sqlOrdersDetail'] 	= "SELECT * FROM `orders_detail` LEFT JOIN produk ON produk.id_produk=orders_detail.id_produk WHERE 1 AND orders_detail.id_orders='{$data['sessionID']}' ";
+		$data['queryOrdersDetail']	= mysql_query($data['sqlOrdersDetail']);
+		$no = 1;
+		$data['totalberat']	= 0;
+		$data['totalharga']	= 0;
+		$data['grandtotal']	= 0;
+		while ($value = mysql_fetch_assoc($data['queryOrdersDetail'])) {
+			$data['totalberat'] += ($value['jumlah']*$value['berat']);
+			$data['totalharga'] += ($value['jumlah']*$value['harga']);
+			$value['subtotal'] = ($value['jumlah']*$value['harga']);
+			$value['hargaText'] = format_rupiah($value['harga']);
+			$value['subtotalText'] = format_rupiah($value['subtotal']);
+			$data['trBodyOrdersDetail'][] = "
+				<tr>
+					<td>{$no}</td>
+					<td>{$value['nama_produk']}</td>
+					<td>{$value['jumlah']}</td>
+					<td>{$value['berat']}</td>
+					<td>Rp. {$value['hargaText']}</td>
+					<td>Rp. {$value['subtotalText']}</td>
+				</tr>
+			";
+			$no++;
+		}
+		$data['grandtotal'] += ($data['totalharga']+$data['post']['kurir']->value);
+		$data['totalhargaText'] = format_rupiah($data['totalharga']);
+		$data['grandtotalText'] = format_rupiah($data['grandtotal']);
+		$data['trBodyOrdersDetail'] = implode('',$data['trBodyOrdersDetail']);
+
+		$data['sqlOrders'] = "SELECT * FROM orders WHERE id_orders='{$data['sessionID']}' ";
+		$data['queryOrders'] = mysql_query($data['sqlOrders']);
+		$data['rowOrders']  = mysql_fetch_assoc($data['queryOrders']);
+		if ( empty($data['rowOrders']['invoice_url']) ) {
+			include_once("XenditPHPClient.php");
+			define('SECRET_API_KEY', 'xnd_development_jvolJ4f9VT9Y1KNheUMY1XZm8xQ5J7pki8VpllUEb0XXEiiRKxly09RoW4U6ILo');
+		
+			$options['secret_api_key'] = constant('SECRET_API_KEY');
+			$xenditPHPClient = new XenditClient\XenditPHPClient($options);
+			
+			$data['external_id'] = $data['sessionID'];
+			$data['amount'] 	 = $data['grandtotal'];
+			$data['payer_email'] = $data['post']['payer_email'];
+			$data['description'] = "Pembayaran dengan No Order {$data['sessionID']}";
+			$response = $xenditPHPClient->createInvoice($data['external_id'], $data['amount'], $data['payer_email'], $data['description']);
+			$data['updateOrders'] = ("UPDATE `orders` SET `external_id`='{$response['id']}',`invoice_url`='{$response['invoice_url']}' WHERE 1 AND id_orders='{$data['sessionID']}' ");
+			$data['rowOrders']['external_id'] = $response['id'];
+			$data['rowOrders']['invoice_url'] = $response['invoice_url'];
+		}
+		// echo '<pre>';
+		// print_r($data);
+		// echo '</pre>';
+
+		$htmls = "
+			<div class='well well-small'>
+				<h1>Data Order Anda <small class='pull-right'> </small></h1>
+				<hr class='soften'/>
+				<table style='border:1px solid #ddd;width:100%'>
+					<thead>
+						<tr>
+							<td style='padding:0px 15px'><b>Alamat Pengiriman :</b><br></td>
+							<td style='padding:0px 15px'><b>Kurir :</b><br></td>
+						</tr>
+					</thead
+					<tbody>
+						<tr>
+							<td style='padding:0px 15px'>{$data['post']['alamat']}</td>
+							<td style='padding:0px 15px'>
+								{$data['post']['kurir']->valueText}<br>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<hr class='soften'/>
+				<table class='table table-bordered table-condensed'>
+					<thead>
+						<tr>
+							<th>No</th>
+							<th>Nama Produk</th>
+							<th>Jumlah</th>
+							<th>Berat</th>
+							<th>Harga</th>
+							<th>Sub Total</th>
+						</tr>
+						<tbody>
+							{$data['trBodyOrdersDetail']}
+							<tr>
+								<td colspan='5' align='right'>Total Harga </td>
+								<td align='right'><b>Rp. {$data['totalhargaText']}</b></td></tr>      
+							<tr>
+							<tr>
+								<td colspan='5' align='right'>Total Berat </td>
+								<td align='right'><b>{$data['totalberat']}</b> Kg</td></tr>      
+							<tr>
+								<td colspan='5' align='right'>Ongkos Kirim</td>
+								<td align=right><b>Rp. ".format_rupiah($data['post']['kurir']->value)."</b></td></tr>
+							<tr>
+								<td colspan='5' align='right'>Grand Total</td>
+								<td align=right><b>Rp. {$data['grandtotalText']}</b></td></tr>
+						</tbody>
+					</thead>
+				</table>
+				<a target='_blank' class='btn btn-block btn-inverse' href='{$data['rowOrders']['invoice_url']}'>Proses Bayar</a>
+			</div>
+		";
+		echo $htmls;
+	}
+		/* 
+		die();
+// $hasil = mysql_query($sql);
+// $r = mysql_fetch_assoc($hasil);
 
 // fungsi untuk mendapatkan isi keranjang belanja
 function isi_keranjang(){
@@ -880,7 +1015,7 @@ function isi_keranjang(){
 	$sid = session_id();
 	$sql = mysql_query("SELECT * FROM orders_temp WHERE id_session='$sid'");
 	
-	while ($r=mysql_fetch_array($sql)) {
+	while ($r=mysql_fetch_assoc($sql)) {
 		$isikeranjang[] = $r;
 	}
 	return $isikeranjang;
@@ -888,8 +1023,8 @@ function isi_keranjang(){
 $sesid = session_id();
 $tgl_skrg = date("Y-m-d");
 $jam_skrg = date("H:i:s");
- $jumlah_order = mysql_fetch_array(mysql_query("select count(*) as total from orders WHERE tgl_order='" . date("Y-m-d") . "'"));
- $allitem = mysql_fetch_array(mysql_query("SELECT * FROM orders_temp,produk "
+ $jumlah_order = mysql_fetch_assoc(mysql_query("select count(*) as total from orders WHERE tgl_order='" . date("Y-m-d") . "'"));
+ $allitem = mysql_fetch_assoc(mysql_query("SELECT * FROM orders_temp,produk "
             . "WHERE orders_temp.id_produk=produk.id_produk "
             . "AND id_session='$sesid'"));
             $rekap = "Pembelian di Toko Mak Nohan ";
@@ -972,7 +1107,7 @@ echo"
         Nomor Order: $id_orders <br />
         Data order Anda adalah sebagai berikut: <br /><br />";
 			  $no=1;
-while ($d=mysql_fetch_array($daftarproduk)){
+while ($d=mysql_fetch_assoc($daftarproduk)){
    $subtotalberat = $d['berat'] * $d['jumlah']; // total berat per item produk 
    $totalberat  = $totalberat + $subtotalberat; // grand total berat all produk yang dibeli
 
@@ -999,14 +1134,14 @@ while ($d=mysql_fetch_array($daftarproduk)){
 						}
 						
 $norek = mysql_query("SELECT * FROM norek LIMIT 1");
-    $z    = mysql_fetch_array($norek);
+    $z    = mysql_fetch_assoc($norek);
 	
 $edit=mysql_query("SELECT * FROM kustomer WHERE id_kustomer='$_SESSION[kustomer_id]'");
-$x=mysql_fetch_array($edit);
+$x=mysql_fetch_assoc($edit);
 $email=$x['email'];
 $kota=$x['id_kota'];
 
-$ongkos=mysql_fetch_array(mysql_query("SELECT ongkir FROM orders WHERE id_orders='$id_orders'"));
+$ongkos=mysql_fetch_assoc(mysql_query("SELECT ongkir FROM orders WHERE id_orders='$id_orders'"));
 $ongkoskirim1=$ongkos[ongkir];
 $ongkoskirim = $ongkoskirim1 * $totalberat;
 
@@ -1086,78 +1221,146 @@ echo"
 
 	</div>
 							</div>";
-	}
+	} */
 
 }
 elseif ($_GET['module']=='datatransaksi'){
-session_start();
+	session_start();
 
-echo"							
-<div class='span9'>
-<h3> Riwayat Data Order Anda</h3>	
+	echo"
+	<h3> Riwayat Data Order Anda</h3>	
 	<hr class='soft'/>
 	<div class='well'>
 	<form action=edit_profil.php method=POST class='form-horizontal'>
 	<input type=hidden name=id value='$r[id_kustomer]'>
-		
-		<table class='table table-bordered table-condensed'>
-                
+
+	<table class='table table-bordered table-condensed'>
+
 	<thead>
-          <tr bgcolor=#D3DCE3><th>No.order</th><th>Tgl. order</th><th>Jam</th><th>Status</th><th>Aksi</th></tr>
-		  <tbody>";
-    $tampil = mysql_query("SELECT * FROM orders,kustomer WHERE orders.id_kustomer=kustomer.id_kustomer AND orders.id_kustomer='$_SESSION[kustomer_id]' ORDER BY id_orders DESC ");
-  
-    while($r=mysql_fetch_array($tampil)){
-      $tanggal=tgl_indo($r[tgl_order]);
-	  
-      echo "<tr><td align=center>$r[id_orders]</td>
-                <td>$tanggal</td>
-                <td>$r[jam_order]</td>
-                <td>$r[status_order]</td>
-		            <td><a href=media2.php?module=detailtransaksi&id=$r[id_orders]>Detail</a></td></tr>";
-      $no++;
-    }
-    echo "</tbody></table>
-		
-</div>
-							</div>";
+	<tr bgcolor=#D3DCE3><th>No.order</th><th>Tgl. order</th><th>Jam</th><th>Status</th><th>Aksi</th></tr>
+	<tbody>";
+	$tampil = mysql_query("SELECT * FROM orders,kustomer WHERE orders.id_kustomer=kustomer.id_kustomer AND orders.id_kustomer='$_SESSION[kustomer_id]' ORDER BY id_orders DESC ");
+
+	while($r=mysql_fetch_assoc($tampil)){
+	$tanggal=tgl_indo($r['tgl_order']);
+
+	echo "<tr><td align=center>$r[id_orders]</td>
+	<td>$tanggal</td>
+	<td>$r[jam_order]</td>
+	<td>$r[status_order]</td>
+	<td><a href=media2.php?module=detailtransaksi&id=$r[id_orders]>Detail</a></td></tr>";
+	$no++;
+	}
+	echo "</tbody></table>
+
+	</div>";
 
 }
 elseif ($_GET['module']=='detailtransaksi'){
 session_start();
 $edit = mysql_query("SELECT * FROM orders WHERE id_orders='$_GET[id]'");
-    $r    = mysql_fetch_array($edit);
+    $r    = mysql_fetch_assoc($edit);
     $status=$r['status_order'];
     $metode=$r['jenis_pembayaran'];
     $id_orders=$r['id_orders'];
     $tanggal=tgl_indo($r['tgl_order']);
 	$customer=mysql_query("select * from kustomer where id_kustomer='$r[id_kustomer]'");
-  $c=mysql_fetch_array($customer);
-echo"							
-<div class='span9'>
-<h3> Riwayat Data Order Anda</h3>	
+  $c=mysql_fetch_assoc($customer);
+	$data = [];
+	if ( $r['status_order']=='UNPAID' ) {
+		$data['statusOrderDinamis'][] = "
+			<tr>
+				<td>Status Pembayaran</td>
+				<td>{$r['status_order']} <a class='badge btn btn-inverse btn-mini' href='{$r['invoice_url']}' target='_blank'>Bayar Sekarang</a></td>
+			</tr>
+		";
+	} elseif ( $r['status_order']=='PAID' ) {
+		include_once("XenditPHPClient.php");
+
+		$options['secret_api_key'] = 'xnd_development_jvolJ4f9VT9Y1KNheUMY1XZm8xQ5J7pki8VpllUEb0XXEiiRKxly09RoW4U6ILo';
+	  
+		$xenditPHPClient = new XenditClient\XenditPHPClient($options);
+	  
+		$invoice_id = $r['external_id'];
+	  
+		// $response = $xenditPHPClient->getInvoice($invoice_id);
+		echo '<pre>';
+		print_r($xenditPHPClient);
+		// print_r($response['payment_channel']);
+		echo '</pre>';
+		// die();
+		// $newDate = date("d F Y & H:i:s", strtotime($response['paid_at']));
+
+		// $data['statusOrderDinamis'][] = "
+		// 	<tr>
+		// 		<td>Status Pembayaran</td>
+		// 		<td>{$r['status_order']}</td>
+		// 	</tr>
+		// 	<tr>
+		// 		<td>Metode Pembayaran</td>
+		// 		<td>: {$response['payment_method']}</td>
+		// 	</tr>
+		// 	<tr>
+		// 		<td>Kode Bank</td>
+		// 		<td>: {$response['bank_code']}</td>
+		// 	</tr>
+		// 	<tr>
+		// 		<td>Tanggal Pembayaran</td>
+		// 		<td>: {$newDate}</td>
+		// 	</tr>
+		// ";
+		$data['statusOrderDinamis'][] = "
+			<tr>
+				<td>Status Order</td>
+				<td>: {$r['status_order']}</td>
+			</tr>
+		";
+	} else {
+		$data['statusOrderDinamis'][] = "
+			<tr>
+				<td>Status Order</td>
+				<td>: {$r['status_order']}</td>
+			</tr>
+		";
+	}
+	$data['statusOrderDinamis'] = implode('',$data['statusOrderDinamis']);
+
+echo"				
+	<h3> Riwayat Data Order Anda</h3>	
 	<hr class='soft'/>
 	<div class='well'>
-	
-	<table id='example1' class='table table-bordered table-striped'>
-          <tr><td>No. Order</td>        <td> : $r[id_orders]</td></tr>
-          <tr><td>Tgl. & Jam Order</td> <td> : $tanggal & $r[jam_order]</td></tr>
-          <tr><td>Status Order      </td><td>: $r[status_order]</td></tr>
-		  <tr><td>Metode Pembayaran      </td><td>: $r[jenis_pembayaran]</td></tr>
-		 <tr><td>Alamat Pengiriman</td>        <td> : $r[alamat]</td></tr>
-		 <tr><td>Kurir      </td><td>: $r[kurir]</td></tr>
-		 <tr><td>Paket Kurir</td>        <td> : $r[paket]</td></tr>
-          </table>";
+		<table id='example1' class='table table-bordered table-striped'>
+			<tr>
+				<td>No. Order</td>
+				<td> : $r[id_orders]</td></tr>
+			<tr>
+				<td>Tgl. & Jam Order</td>
+				<td> : $tanggal & $r[jam_order]</td>
+			</tr>
+			{$data['statusOrderDinamis']}
+			<tr class='hidden'>
+				<td>Metode Pembayaran      </td>
+				<td>: $r[jenis_pembayaran]</td>
+			</tr>
+			<tr>
+				<td>Alamat Pengiriman</td>        
+				<td> : $r[alamat]</td>
+			</tr>
+			<tr>
+				<td>Kurir      </td>
+				<td>: $r[kurir]</td>
+			</tr>
+		</table>";
 		
 		// tampilkan rincian produk yang di order
-  $sql2=mysql_query("SELECT * FROM orders_detail a left join produk b on a.id_produk=b.id_produk
+		$sql2=mysql_query("SELECT * FROM orders_detail a left join produk b on a.id_produk=b.id_produk
 		left join ukuran c on a.id_ukuran=c.id_ukuran WHERE id_orders='$_GET[id]'");
+
+		echo "<table class='table table-bordered table-condensed'>
+
+		<tr><td>Nama Produk</td><!--<td>Ukuran</td>--><td>Berat(kg)</td><td>Jumlah</td><td>Harga Satuan</td><td>Sub Total</td></tr>";
   
-  echo "<table class='table table-bordered table-condensed'>
-	
-        <tr><td>Nama Produk</td><!--<td>Ukuran</td>--><td>Berat(kg)</td><td>Jumlah</td><td>Harga Satuan</td><td>Sub Total</td></tr>";
-  
-  while($s=mysql_fetch_array($sql2)){
+  while($s=mysql_fetch_assoc($sql2)){
   $subtotalberat = $s[berat] * $s[jumlah]; // total berat per item produk 
    $totalberat  = $totalberat + $subtotalberat; // grand total berat all produk yang dibeli
 
@@ -1226,7 +1429,7 @@ echo "<tr><td colspan=4 align=right>Total              Rp. : </td><td align=righ
       }
       echo"
 </div>
-							</div>";
+";
 
 }
 elseif ($_GET['module']=='hasilcari'){
@@ -1257,7 +1460,7 @@ echo"
 
   if ($ketemu > 0){
     echo "<p align=center>Ditemukan <b>$ketemu</b> produk dengan kata <font style='background-color:#00FFFF'><b>$kata</b></font> : </p>"; 
-    while($r=mysql_fetch_array($hasil)){
+    while($r=mysql_fetch_assoc($hasil)){
 	$harga1 = $r[harga];
     $harga     = number_format($harga1,0,",",".");
 //		echo "<table><tr><td><span class=judul><a href=produk-$t[id_produk]-$t[produk_seo].html>$t[nama_produk]</a></span><br />";
@@ -1291,7 +1494,7 @@ echo"
 }
 elseif ($_GET['module']=='hubungikami'){
 $detail=mysql_query("SELECT * FROM halamanstatis WHERE id_halaman='3'");
-	$d   = mysql_fetch_array($detail);
+	$d   = mysql_fetch_assoc($detail);
 echo"							
 <div class='span9'>
 <h2>$d[judul]</h2>
@@ -1363,7 +1566,7 @@ echo"
 			  <select name='id_orders'  required>
       <option value='' selected>- -Pilih ID Orders- -</option>";
       $tampil=mysql_query("SELECT * FROM orders WHERE status_order='Belum-Dibayar' AND id_kustomer='$_SESSION[kustomer_id]' ORDER BY id_orders");
-      while($r=mysql_fetch_array($tampil)){
+      while($r=mysql_fetch_assoc($tampil)){
          echo "<option value=$r[id_orders]>$r[id_orders]</option>";
       }
   echo "</select>
