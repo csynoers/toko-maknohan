@@ -958,16 +958,16 @@ elseif ($_GET['module']=='simpantransaksi'){
 					<thead>
 						<tr>
 							<td style='padding:0px 15px'><b>Alamat Pengiriman :</b><br></td>
-							<td style='padding:0px 15px'><b>Kurir :</b><br></td>
+							<td style='padding:0px 15px'><b>ID ORDER :</b></td>
 						</tr>
 					</thead
 					<tbody>
 						<tr>
 							<td style='padding:0px 15px'>{$data['post']['alamat']}</td>
 							<td style='padding:0px 15px'>
-								{$data['post']['kurir']->valueText}<br>
-								<b>ID ORDER :</b>
 								{$data['post']['id_orders']}
+								<b>Kurir :</b><br>
+								{$data['post']['kurir']->valueText}<br>
 							</td>
 						</tr>
 					</tbody>
