@@ -12,7 +12,7 @@ if ($_GET['module']=='home'){
 					$harga1 = $r['harga'];
 					$harga     = number_format($harga1,0,",",".");
 					echo"
-					<li class='span4'>
+					<li class='span3'>
 						<div class='thumbnail'>
 							<a class='zoomTool' href='produk-$r[id_produk]-$r[produk_seo].html' title='add to cart'><span class='icon-search'></span> DETAIL</a>
 							<a href='produk-$r[id_produk]-$r[produk_seo].html'><img src='foto_produk/medium_$r[gambar]' alt=''></a>
