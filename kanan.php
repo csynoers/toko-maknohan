@@ -391,7 +391,7 @@ elseif ($_GET['module']=='daftaraksi'){
 		";
 	} else {
 		$pass = md5($_POST['password']);
-		echo ("
+		mysql_query("
 		INSERT INTO
 			kustomer(
 				nama,
