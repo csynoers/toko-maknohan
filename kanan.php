@@ -905,27 +905,27 @@ elseif ($_GET['module']=='simpantransaksi'){
 		$data['totalharga']	= 0;
 		$data['grandtotal']	= 0;
 		while ($value = mysql_fetch_assoc($data['queryOrdersDetail'])) {
-		// 	$data['totalberat'] += ($value['jumlah']*$value['berat']);
-		// 	$data['totalharga'] += ($value['jumlah']*$value['harga']);
-		// 	$value['subtotal'] = ($value['jumlah']*$value['harga']);
-		// 	$value['hargaText'] = format_rupiah($value['harga']);
-		// 	$value['subtotalText'] = format_rupiah($value['subtotal']);
-		// 	$data['trBodyOrdersDetail'][] = "
-		// 		<tr>
-		// 			<td>{$no}</td>
-		// 			<td>{$value['nama_produk']}</td>
-		// 			<td>{$value['jumlah']}</td>
-		// 			<td>{$value['berat']}</td>
-		// 			<td>Rp. {$value['hargaText']}</td>
-		// 			<td>Rp. {$value['subtotalText']}</td>
-		// 		</tr>
-		// 	";
+			$data['totalberat'] += ($value['jumlah']*$value['berat']);
+			$data['totalharga'] += ($value['jumlah']*$value['harga']);
+			$value['subtotal'] = ($value['jumlah']*$value['harga']);
+			$value['hargaText'] = format_rupiah($value['harga']);
+			$value['subtotalText'] = format_rupiah($value['subtotal']);
+			$data['trBodyOrdersDetail'][] = "
+				<tr>
+					<td>{$no}</td>
+					<td>{$value['nama_produk']}</td>
+					<td>{$value['jumlah']}</td>
+					<td>{$value['berat']}</td>
+					<td>Rp. {$value['hargaText']}</td>
+					<td>Rp. {$value['subtotalText']}</td>
+				</tr>
+			";
 			$no++;
 		}
-		// $data['grandtotal'] += ($data['totalharga']+$data['post']['kurir']->value);
-		// $data['totalhargaText'] = format_rupiah($data['totalharga']);
-		// $data['grandtotalText'] = format_rupiah($data['grandtotal']);
-		// $data['trBodyOrdersDetail'] = implode('',$data['trBodyOrdersDetail']);
+		$data['grandtotal'] += ($data['totalharga']+$data['post']['kurir']->value);
+		$data['totalhargaText'] = format_rupiah($data['totalharga']);
+		$data['grandtotalText'] = format_rupiah($data['grandtotal']);
+		$data['trBodyOrdersDetail'] = implode('',$data['trBodyOrdersDetail']);
 
 		// $data['sqlOrders'] = "SELECT * FROM orders WHERE id_orders='{$data['sessionID']}' ";
 		// $data['queryOrders'] = mysql_query($data['sqlOrders']);
