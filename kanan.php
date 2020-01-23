@@ -1257,7 +1257,7 @@ elseif ($_GET['module']=='datatransaksi'){
 	<td>$tanggal</td>
 	<td>$r[jam_order]</td>
 	<td>$r[status_order]</td>
-	<td>$r[status_pesanan]</td>
+	<td>$r[status_transaksi]</td>
 	<td><a href=media2.php?module=detailtransaksi&id=$r[id_orders]>Detail</a></td></tr>";
 	$no++;
 	}
