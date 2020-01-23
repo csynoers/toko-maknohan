@@ -391,7 +391,7 @@ elseif ($_GET['module']=='daftaraksi'){
 		";
 	} else {
 		$pass = md5($_POST['password']);
-		mysql_query("
+		echo ("
 		INSERT INTO
 			kustomer(
 				nama,
@@ -418,6 +418,7 @@ elseif ($_GET['module']=='daftaraksi'){
 				'{$data['post']['PHPSESSID']}',
 			)
 		");
+		die();
 		mail($data['mail']['email'],$data['mail']['subjek'],$data['mail']['pesan'],$data['mail']['dari']);
 		echo"							
 			<div class='span9'>
