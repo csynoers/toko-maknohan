@@ -100,7 +100,24 @@ else{
                     $data['rows'] = implode('',$data['rows']);
                 }
                 if ( $_GET['status_pesanan']=='SEDANG DIKIRIM' ) {
-                    echo 'rows pesanan SEDANG DIKIRIM';
+                    $data['sql'] = "SELECT * FROM orders LEFT JOIN kustomer ON orders.id_kustomer=kustomer.id_kustomer WHERE 1 AND orders.status_transaksi='SEDANG DIKIRIM' ORDER BY orders.tgl_order DESC";
+                    $data['query'] = mysql_query($data['sql']);
+                    while ($value=mysql_fetch_assoc($data['query'])) {
+                        $value['tgl_order'] = tgl_indo($value['tgl_order']);
+                        $data['rows'][] = "
+                            <tr>
+                                <td>{$value['id_orders']}</td>
+                                <td>{$value['nama']}</td>
+                                <td>{$value['tgl_order']}</td>
+                                <td>{$value['status_order']}</td>
+                                <td>{$value['status_transaksi']} <small>dengan No Resi : {$value['no_resi']}</small></td>
+                                <td>
+                                    <a href='?module=order&act=detailorder&id={$value['id_orders']}' class='btn btn-warning'>Detail</a>
+                                </td>
+                            </tr>
+                        ";
+                    }
+                    $data['rows'] = implode('',$data['rows']);
                 }
                 if ( $_GET['status_pesanan']=='PESANAN SELESAI' ) {
                     echo 'rows pesanan PESANAN SELESAI';
