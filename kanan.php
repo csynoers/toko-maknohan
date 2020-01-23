@@ -20,7 +20,7 @@ echo"
 				<a class='zoomTool' href='produk-$r[id_produk]-$r[produk_seo].html' title='add to cart'><span class='icon-search'></span> DETAIL</a>
 				<a href='produk-$r[id_produk]-$r[produk_seo].html'><img src='foto_produk/medium_$r[gambar]' alt=''></a>
 				<div class='caption cntr'>
-					<p>$r[nama_produk]</p>
+					<p>".substr($r['nama_produk'], 0, 24)."</p>
 					<p><strong> Rp. $harga</strong></p>
 					<br class='clr'>
 				</div>
