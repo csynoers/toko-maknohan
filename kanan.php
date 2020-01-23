@@ -8,7 +8,7 @@ echo"
 		<div class='row-fluid'>
 		  <ul class='thumbnails'>";
 		  // Tampilkan 4 produk terbaru
-  $sql=mysql_query("SELECT * FROM produk ORDER BY id_produk DESC LIMIT 3");  
+  $sql=mysql_query("SELECT * FROM produk ORDER BY id_produk DESC LIMIT 6");  
   $kolom = 3;
   $i=0;
   while ($r=mysql_fetch_assoc($sql)){
