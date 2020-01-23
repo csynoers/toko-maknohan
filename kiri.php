@@ -14,7 +14,7 @@ echo"
 
 			  <div class='well well-small' >
 			  	<h5>Metode Pembayaran</h5>
-			  	<a href='#'><img src='img/fasapay.png' alt='payment method fasapay'></a>
+			  	<a href='#'><img src='img/4-bank.jpg' alt='payment method'></a>
 			  <!--<center><h4>Mandiri</h4>
 				  <p>An. Toko Maknohan</p>
 				  <p>No. Rek : 0867564-9876-876</p>
