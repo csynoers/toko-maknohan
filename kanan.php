@@ -415,10 +415,9 @@ elseif ($_GET['module']=='daftaraksi'){
 				'{$_POST['provinsi']}',
 				'{$_POST['kota']}',
 				'{$_POST['kode_pos']}',
-				'{$data['post']['PHPSESSID']}',
+				'{$data['post']['PHPSESSID']}'
 			)
 		");
-		die();
 		mail($data['mail']['email'],$data['mail']['subjek'],$data['mail']['pesan'],$data['mail']['dari']);
 		echo"							
 			<div class='span9'>
