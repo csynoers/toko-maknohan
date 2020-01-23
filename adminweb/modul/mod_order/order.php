@@ -274,170 +274,123 @@ else{
         break;
 
     case "detailorder":
-    
-$edit = mysql_query("SELECT * FROM orders WHERE id_orders='$_GET[id]'");
-    $r    = mysql_fetch_array($edit);
-    $tanggal=tgl_indo($r['tgl_order']);
-	$customer=mysql_query("select * from kustomer where id_kustomer='$r[id_kustomer]'");
-  $c=mysql_fetch_array($customer);
-    $pilihan_status = array('Belum-Dibayar','Sudah-Dibayar','Sudah-Dikirim');
-    $pilihan_order = '';
-    foreach ($pilihan_status as $status) {
-	   $pilihan_order .= "<option value=$status";
-	   if ($status == $r['status_order']) {
-		    $pilihan_order .= " selected";
-	   }
-	   $pilihan_order .= ">$status</option>\r\n";
-    }		
-echo"
+        $data       = [];
+        $edit       = mysql_query("SELECT * FROM orders WHERE id_orders='{$_GET['id']}' ");
+        $r          = mysql_fetch_assoc($edit);
+        $tanggal    = tgl_indo($r['tanggal']);
+        
+        $trMod= "";
+        if ( $r['status']== 'PAID' ) {
+            include_once("../XenditPHPClient.php");
+        
+            $options['secret_api_key'] = 'xnd_development_jvolJ4f9VT9Y1KNheUMY1XZm8xQ5J7pki8VpllUEb0XXEiiRKxly09RoW4U6ILo';
+            
+            $xenditPHPClient = new XenditClient\XenditPHPClient($options);
+            
+            $invoice_id = $r['external_id'];
+            
+            $response = $xenditPHPClient->getInvoice($invoice_id);
+            //   echo '<pre>';
+            //   print_r($response);
+            //   echo '</pre>';
+            $newDate = date("d F Y & H:i:s", strtotime($response['paid_at']));
+            $trMod .= "
+                <b>Metode Pembayaran : </b> {$response['payment_method']}<br>
+                <b>Kode Bank : </b> {$response['bank_code']}<br>
+                <b>Tanggal Pembayaran : </b> {$newDate}<br>
+            ";
+        }
+        
+        // tampilkan rincian produk yang di order
+        $data['rows_order_detail_html'] = [];
+        $sql    = mysql_query("SELECT * FROM orders_detail,produk WHERE orders_detail.id_produk=produk.id_produk AND id_orders='$_GET[id]'");
+        while( $s= mysql_fetch_array($sql) ){
+            $produk_attr = [];
+            if ( $s['kondisi'] ) {
+                $produk_attr[]= "Kondisi : {$s['kondisi']}";
+            }
+            if ( $s['warna'] ) {
+                $produk_attr[]= "Warna : {$s['warna']}";
+            }
+            if ( $s['ukuran'] ) {
+                $produk_attr[]= "Ukuran : {$s['ukuran']}";
+            }
+            $produk_attr = implode(',',$produk_attr);
+            $produk_attr = "<small>({$produk_attr})</small>";
 
+            $data['rows_order_detail_html'][] = "
+                <tr>
+                    <td>{$s['nama_produk']} {$produk_attr}</td>
+                    <td>{$s['berat']}</td>
+                    <td>{$s['jumlah']}</td>
+                    <td>Rp. ".format_rupiah($s['harga'])."</td>
+                    <td>Rp. ".format_rupiah($s['harga']*$s['jumlah'])."</td>
+                </tr>
+            ";
+        }
+        	
+    echo"
         <div class='box'>
             <div class='box-header'>
-              <h3 class='box-title'><b>Detail Order</b></h3>
+                <h3 class='box-title'>DETAIL ORDERS</h3>
             </div>
             <!-- /.box-header -->
             <div class='box-body'>
-      <!-- info row -->
-      <div class='row invoice-info'>
-        
-        <div class='col-sm-4 invoice-col'>
-          Kepada
-          <address>
-            <strong>$c[nama]</strong><br>
-            $r[alamat]<br>
-            Phone: $c[no_telp]<br>
-            Email: $c[email]
-          </address>
-        </div>
-        <!-- /.col -->
-		<form method=POST action=$aksi?module=order&act=update>
-          <input type=hidden name=id value=$r[id_orders]>
-          <input type=hidden name=status_order_lama value='$r[status_order]'>
-        <div class='col-sm-4 invoice-col'>
-          <b>Invoice</b><br>
-          <br>
-          <b>Order ID:</b> $r[id_orders]<br>
-          <b>Tgl. Transaksi:</b> $tanggal<br>
-          <b>Metode Pembayaran:</b> $r[jenis_pembayaran]<br>
-		  <b>Kurir:</b> $r[kurir]<br>
-		  <b>Paket Kurir:</b> $r[paket]<br>
-		  <b>Status:</b>  <select name=status_order>$pilihan_order</select> 
-          <input type=submit value='Ubah Status'>
-        </div>
-		</form>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
+                <!-- info row -->
+                <div class='row invoice-info'>
+                    <div class='col-sm-4 invoice-col'>
+                        Kepada :
+                        <address>
+                            {$r['alamat_pengiriman']}
+                        </address>
+                    </div>
+                    <!-- /.col -->
 
-      <!-- Table row -->
-      <div class='row'>
-        <div class='col-xs-12 table-responsive'>
-          <table class='table table-striped'>
-            <thead>
-            <tr>
-              <th>Produk</th>
-              <th>Berat(Kg)</th>
-              <!--<th>Ukuran</th>-->
-              <th>Jumlah</th>
-              <th>Harga</th>
-			  <th>Subtotal</th>
-            </tr>
-            </thead>";
-			// tampilkan rincian produk yang di order
-  $sql2=mysql_query("SELECT * FROM orders_detail a left join produk b on a.id_produk=b.id_produk
-		left join ukuran c on a.id_ukuran=c.id_ukuran WHERE id_orders='$_GET[id]'");
-		 while($s=mysql_fetch_array($sql2)){
-  $subtotalberat = $s[berat] * $s[jumlah]; // total berat per item produk 
-   $totalberat  = $totalberat + $subtotalberat; // grand total berat all produk yang dibeli
+                    <form method=POST action=$aksi?module=order&act=update>
+                        <input type=hidden name=id value=$r[id_orders]>
+                        <div class='col-sm-4 invoice-col'>
+                            <b>Invoice</b><br><br>
+                            <b>Order ID : </b> {$r['id_orders']}<br>
+                            <b>Tgl. orders : </b> {$tanggal}<br>
+                            <b>Kurir : </b> {$r['kurir']}<br>
+                            {$trMod}
+                        </div>
+                        <!-- /.col -->
+                    </form>
+                </div>
+                <!-- /.row -->
 
-    $harga1 = $s[harga];
-	
-   
-   $subtotal    = $harga1 * $s[jumlah];
-   $total       = $total + $subtotal;
-   $subtotal_rp = format_rupiah($subtotal);    
-   $total_rp    = format_rupiah($total);    
-   $harga       = format_rupiah($harga1);
-		echo"
-            <tbody>
-            <tr>
-              <td>$s[nama_produk]</td>
-              <td>$s[berat]</td>
-              <!--<td>$s[kode_ukuran]</td>-->
-              <td>$s[jumlah]</td>
-              <td>Rp. $harga</td>
-			  <td>Rp. $subtotal_rp</td>
-            </tr>
-			</tbody>";
-			}
-  
-  $ongkoskirim1=$r[ongkir];
-  $ongkoskirim=$ongkoskirim1 * $totalberat;
-	
-  $grandtotal    = $total + $ongkoskirim; 
+                <!-- Table row -->
+                <div class='row'>
+                    <div class='col-xs-12 table-responsive'>
+                        <table class='table table-striped'>
+                            <thead>
+                                <tr>
+                                    <th>Produk</th>
+                                    <th>Berat(Gram)</th>
+                                    <th>Jumlah</th>
+                                    <th>Harga</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>{$data['rows_order_detail_html']}</tbody>
+                        </table>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
 
-  $ongkoskirim_rp = format_rupiah($ongkoskirim);
-  $ongkoskirim1_rp = format_rupiah($ongkoskirim1); 
-  $grandtotal_rp  = format_rupiah($grandtotal); 
-			echo"
-          </table>
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-
-      <div class='row'>
-        <!-- accepted payments column -->
-        <div class='col-xs-6'>
-          
-        </div>
-        <!-- /.col -->
-        <div class='col-xs-6'>
-          
-
-          <div class='table-responsive'>
-            <table class='table'>
-              <tr>
-                <th style='width:60%'>Total:</th>
-                <td>Rp. $total_rp</td>
-              </tr>
-              <tr>
-                <th>Ongkos Kirim:</th>
-                <td>Rp. $ongkoskirim1_rp/Kg</td>
-              </tr>
-              <tr>
-                <th>Total Berat:</th>
-                <td>$totalberat Kg</td>
-              </tr>
-              <tr>
-                <th>Total Ongkos Kirim:</th>
-                <td>Rp. $ongkoskirim_rp</td>
-              </tr>
-			  <tr>
-                <th>Grand Total:</th>
-                <td>Rp. $grandtotal_rp</td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-
-      <!-- this row will not appear when printing -->
-      <div class='row no-print'>
-        <div class='col-xs-12'>
-          
-         
-			<a href=modul/mod_order/cetak.php?id=$r[id_orders] target='_blank' class='btn btn-default'><i class='fa fa-print'></i> Print</a><br>
-        </div>
-      </div>
-	  
-	  
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>";
+                <!-- this row will not appear when printing -->
+                <div class='row no-print'>
+                    <div class='col-xs-12'>
+                        <a href=modul/mod_order/cetak.php?id={$r['id_orders']} target='_blank' class='btn btn-primary pull-right'><i class='fa fa-print'></i> Print</a><br>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>    
+    ";
     break;  
 }
 }
