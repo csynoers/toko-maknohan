@@ -358,9 +358,14 @@ elseif ($_GET['module']=='daftaraksi'){
 			</body>
 		</html>	
 	";
-	$data['mail']['dari'] = "From: support@tokomaknohan.com \n Content-type: text/html \r\n";
 
-	// Kirim email ke kustomer
+	// Always set content-type when sending HTML email
+	$data['mail']['dari'] = "MIME-Version: 1.0" . "\r\n";
+	$data['mail']['dari'] .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+	// More headers
+	$data['mail']['dari'] .= 'From: <support@tokomaknohan.com>' . "\r\n";
+	
 	mail($data['mail']['email'],$data['mail']['subjek'],$data['mail']['pesan'],$data['mail']['dari']);
 	echo '<pre>';
 	print_r($data);
