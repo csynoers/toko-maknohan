@@ -9,7 +9,7 @@
         }
 
         if ( $result->status == 'EXPIRED' ) {
-            mysql_query("UPDATE `orders` SET `status_order`='{$result->status}',`status_transaksi`='DIBATALKAN' WHERE `external_id`='{$result->id}' ");
+            mysql_query("UPDATE `orders` SET `status_order`='{$result->status}',`status_transaksi`='PESANAN DIBATALKAN' WHERE `external_id`='{$result->id}' ");
         }
         print_r("\n\$data contains the updated invoice data \n\n");
         print_r($data);

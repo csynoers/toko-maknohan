@@ -45,13 +45,19 @@ else{
                         <div class='box-body'>
                             <hr>
                             <form action='' method='GET'>
-                                <select name='myselect' id='myselect' onchange='this.form.submit()'>
-                                    <option value='1'>One</option>
-                                    <option value='2'>Two</option>
-                                    <option value='3'>Three</option>
-                                    <option value='4'>Four</option>
-                                </select>
+                                <div class='input-group'>
+                                    <span class='input-group-addon' id='basic-addon3'>Filter Status Pesanan</span>
+                                    <select name='status_pesanan' class='form-control' onchange='this.form.submit()'>
+                                        <option value='BELUM BAYAR'>BELUM BAYAR</option>
+                                        <option value='SEDANG DIPROSES'>SEDANG DIPROSES</option>
+                                        <option value='SEDANG DIKIRIM'>SEDANG DIKIRIM</option>
+                                        <option value='PESANAN SELESAI'>PESANAN SELESAI</option>
+                                        <option value='PESANAN DIBATALKAN'>PESANAN DIBATALKAN</option>
+                                    </select>
+                                    <input type='hidden' name='module' value='order'>
+                                </div>
                             </form>
+                            <hr>
                             <table id='example1' class='table table-bordered table-striped'> 
                                 <thead>
                                     <tr>
