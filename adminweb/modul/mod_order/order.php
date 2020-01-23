@@ -204,7 +204,7 @@ else{
     case "inputresi":
             $update = mysql_query("UPDATE orders SET status_transaksi='SEDANG DIKIRIM',no_resi='{$_POST['no_resi']}' where id_orders='{$_POST['id_orders']}'");
             if ( $update ) {
-                $alert = "<script>window.alert('No Resi berhasil disimpan');window.location=('media.php?module=order&status_transaksi=SEDANG DIKIRIM')</script>";
+                $alert = "<script>window.alert('No Resi berhasil disimpan');window.location=('media.php?module=order&status_pesanan=SEDANG_DIKIRIM')</script>";
             } else {
                 $alert = "<script>window.alert('No Resi gagal disimpan, pastikan id order sudah benar');window.history.go(-1)</script>";
             }
