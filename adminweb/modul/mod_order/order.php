@@ -10,63 +10,68 @@ else{
     switch($_GET['act']){
             // Tampil Order
         default:
-            $kemarin = date('Y-m-d', mktime(0,0,0, date('m'), date('d') - 1, date('Y')));
-            // Update untuk menambah stok 
-            mysql_query("UPDATE produk,orders_detail,orders SET produk.stok=produk.stok+orders_detail.jumlah 
-            WHERE produk.id_produk=orders_detail.id_produk 
-            AND orders.id_orders=orders_detail.id_orders
-            AND orders.tgl_order < '$kemarin' 
-            AND orders.status_order='Belum Dibayar'
-            ");
-            mysql_query("DELETE FROM orders 
-            WHERE status_order='Baru'
-            AND tgl_order < '$kemarin'");
-            echo "<div class='col-xs-12'>
-            <div class='box'>
-                <div class='box-header'>
-                    <h3 class='box-title'><b>Order</b></h3>
+            // $kemarin = date('Y-m-d', mktime(0,0,0, date('m'), date('d') - 1, date('Y')));
+            // // Update untuk menambah stok 
+            // mysql_query("UPDATE produk,orders_detail,orders SET produk.stok=produk.stok+orders_detail.jumlah 
+            // WHERE produk.id_produk=orders_detail.id_produk 
+            // AND orders.id_orders=orders_detail.id_orders
+            // AND orders.tgl_order < '$kemarin' 
+            // AND orders.status_order='Belum Dibayar'
+            // ");
+            // mysql_query("DELETE FROM orders 
+            // WHERE status_order='Baru'
+            // AND tgl_order < '$kemarin'");
+
+            // $tampil = mysql_query("SELECT * FROM orders,kustomer WHERE orders.id_kustomer=kustomer.id_kustomer ORDER BY status_order ASC ");					
+            // while($r=mysql_fetch_array($tampil)){
+            //     $tanggal=tgl_indo($r[tgl_order]);
+
+            //     echo "<tr><td align=center>$r[id_orders]</td>
+            //     <td>$r[nama]</td>
+            //     <td>$tanggal</td>
+            //     <td>$r[jam_order]</td>
+            //     <td>$r[status_order]</td>
+            //     <td><a href=?module=order&act=detailorder&id=$r[id_orders] class='btn btn-warning'>Detail</a></td></tr>";
+            //     $no++;
+            // }
+
+            echo "
+                <div class='col-xs-12'>
+                    <div class='box'>
+                        <div class='box-header'>
+                            <h3 class='box-title'><b>Order</b></h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class='box-body'>
+                            <hr>
+                            <form action='' method='GET'>
+                                <select name='myselect' id='myselect' onchange='this.form.submit()'>
+                                    <option value='1'>One</option>
+                                    <option value='2'>Two</option>
+                                    <option value='3'>Three</option>
+                                    <option value='4'>Four</option>
+                                </select>
+                            </form>
+                            <table id='example1' class='table table-bordered table-striped'> 
+                                <thead>
+                                    <tr>
+                                        <th>no.order</th>
+                                        <th>nama konsumen</th>
+                                        <th>tgl. order</th>
+                                        <th>jam</th>
+                                        <th>status</th>
+                                        <th>aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
                 </div>
-                <!-- /.box-header -->
-                <div class='box-body'>
-                    <hr>
-                    <form action="" method='GET'>
-                        <select name='myselect' id='myselect' onchange='this.form.submit()'>
-                            <option value='1'>One</option>
-                            <option value='2'>Two</option>
-                            <option value='3'>Three</option>
-                            <option value='4'>Four</option>
-                        </select>
-                    </form>
-                    <table id='example1' class='table table-bordered table-striped'> 
-                        <thead>
-                            <tr>
-                                <th>no.order</th>
-                                <th>nama konsumen</th>
-                                <th>tgl. order</th>
-                                <th>jam</th>
-                                <th>status</th>
-                                <th>aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>";
-
-            $tampil = mysql_query("SELECT * FROM orders,kustomer WHERE orders.id_kustomer=kustomer.id_kustomer ORDER BY status_order ASC ");					
-            while($r=mysql_fetch_array($tampil)){
-            $tanggal=tgl_indo($r[tgl_order]);
-
-            echo "<tr><td align=center>$r[id_orders]</td>
-            <td>$r[nama]</td>
-            <td>$tanggal</td>
-            <td>$r[jam_order]</td>
-            <td>$r[status_order]</td>
-            <td><a href=?module=order&act=detailorder&id=$r[id_orders] class='btn btn-warning'>Detail</a></td></tr>";
-            $no++;
-            }
-            echo "</tbody></table></div>
-            <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
-            </div>";
+            ";
 
         
         break;
