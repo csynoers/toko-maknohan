@@ -26,6 +26,8 @@ if ($ketemu > 0){
         $_SESSION['email']     = $r['email'];
         header('location:media2.php?module=home');
 
+    } else {
+        echo "<script>alert('Login Gagal, anda belum melakukan konfirmasi email'); window.location = 'index.php'</script>";
     }
     
 }
