@@ -966,6 +966,8 @@ elseif ($_GET['module']=='simpantransaksi'){
 							<td style='padding:0px 15px'>{$data['post']['alamat']}</td>
 							<td style='padding:0px 15px'>
 								{$data['post']['kurir']->valueText}<br>
+								<b>ID ORDER :</b>
+								{$data['post']['id_orders']}
 							</td>
 						</tr>
 					</tbody>
