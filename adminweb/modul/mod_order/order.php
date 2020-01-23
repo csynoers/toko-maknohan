@@ -35,6 +35,28 @@ else{
             //     $no++;
             // }
 
+            $data = [];
+            if ( $_GET['status_pesanan'] ) {
+                if ( $_GET['status_pesanan']=='SEMUA PESANAN' ) {
+                    echo 'rows pesanan SEMUA PESANAN';
+                }
+                if ( $_GET['status_pesanan']=='BELUM BAYAR' ) {
+                    echo 'rows pesanan belum bayar';
+                }
+                if ( $_GET['status_pesanan']=='SEDANG DIPROSES' ) {
+                    echo 'rows pesanan SEDANG DIPROSES';
+                }
+                if ( $_GET['status_pesanan']=='SEDANG DIKIRIM' ) {
+                    echo 'rows pesanan SEDANG DIKIRIM';
+                }
+                if ( $_GET['status_pesanan']=='PESANAN SELESAI' ) {
+                    echo 'rows pesanan PESANAN SELESAI';
+                }
+                if ( $_GET['status_pesanan']=='PESANAN DIBATALKAN' ) {
+                    echo 'rows pesanan PESANAN DIBATALKAN';
+                }
+            }
+
             echo "
                 <div class='col-xs-12'>
                     <div class='box'>
@@ -48,8 +70,8 @@ else{
                                 <input type='hidden' name='module' value='order'>
                                 <div class='input-group'>
                                     <span class='input-group-addon' id='basic-addon3'>Filter Status Pesanan</span>
-                                    <select name='status_pesanan' class='form-control' onchange='this.form.submit()' required=''>
-                                        <option value=''> -- Pilih Status Pesanan -- </option>
+                                    <select name='status_pesanan' class='form-control' onchange='this.form.submit()'>
+                                        <option value='SEMUA PESANAN'> SEMUA PESANAN </option>
                                         <option value='BELUM BAYAR'>BELUM BAYAR</option>
                                         <option value='SEDANG DIPROSES'>SEDANG DIPROSES</option>
                                         <option value='SEDANG DIKIRIM'>SEDANG DIKIRIM</option>
