@@ -888,23 +888,23 @@ elseif ($_GET['module']=='simpantransaksi'){
 			$data['sqlOrdersTemp']	= "SELECT * FROM orders_temp LEFT JOIN produk ON orders_temp.id_produk=produk.id_produk WHERE 1 AND orders_temp.id_session='{$data['sessionID']}'";
 			$data['queryOrdersTemp']= mysql_query($data['sqlOrdersTemp']);
 			while ( $value = mysql_fetch_assoc($data['queryOrdersTemp']) ) {
-				$data['insertOrdersDetail'][] 	= ("INSERT INTO `orders_detail`(`id_orders`, `id_produk`, `jumlah`) VALUES ('{$data['post']['id_orders']}','{$value['id_produk']}','{$value['jumlah']}')");
-				$data['updateProduk'][] 		= ("UPDATE `produk` SET `stok`=(produk.stok-{$value['jumlah']}),dibeli=(produk.dibeli+{$value['jumlah']}) WHERE 1 AND produk.id_produk={$value['id_produk']} ");
+				$data['insertOrdersDetail'][] 	= mysql_query("INSERT INTO `orders_detail`(`id_orders`, `id_produk`, `jumlah`) VALUES ('{$data['post']['id_orders']}','{$value['id_produk']}','{$value['jumlah']}')");
+				$data['updateProduk'][] 		= mysql_query("UPDATE `produk` SET `stok`=(produk.stok-{$value['jumlah']}),dibeli=(produk.dibeli+{$value['jumlah']}) WHERE 1 AND produk.id_produk={$value['id_produk']} ");
 			}
 			$data['tanggalOrders'] 		= date('Y-m-d');
 			$data['jamOrders']	 		= date('h:i:s');
-			$data['insertOrders']		= ("INSERT INTO `orders`(`id_orders`, `id_kustomer`, `alamat`, `status_order`, `tgl_order`, `jam_order`,  `kurir`, `ongkir`) VALUES ('{$data['post']['id_orders']}','{$data['rowKustomer']['id_kustomer']}','{$data['post']['alamat']}','UNPAID','{$data['tanggalOrders']}','{$data['jamOrders']}','{$data['post']['kurir']->valueText}','{$data['post']['kurir']->value}')");
-			$data['deleteOrdersTemp'] 	= ("DELETE FROM `orders_temp` WHERE `id_session`='{$data['sessionID']}' ");
+			$data['insertOrders']		= mysql_query("INSERT INTO `orders`(`id_orders`, `id_kustomer`, `alamat`, `status_order`, `tgl_order`, `jam_order`,  `kurir`, `ongkir`) VALUES ('{$data['post']['id_orders']}','{$data['rowKustomer']['id_kustomer']}','{$data['post']['alamat']}','UNPAID','{$data['tanggalOrders']}','{$data['jamOrders']}','{$data['post']['kurir']->valueText}','{$data['post']['kurir']->value}')");
+			$data['deleteOrdersTemp'] 	= mysql_query("DELETE FROM `orders_temp` WHERE `id_session`='{$data['sessionID']}' ");
 			
 		}
 
-		// $data['sqlOrdersDetail'] 	= "SELECT * FROM `orders_detail` LEFT JOIN produk ON produk.id_produk=orders_detail.id_produk WHERE 1 AND orders_detail.id_orders='{$data['sessionID']}' ";
-		// $data['queryOrdersDetail']	= mysql_query($data['sqlOrdersDetail']);
-		// $no = 1;
-		// $data['totalberat']	= 0;
-		// $data['totalharga']	= 0;
-		// $data['grandtotal']	= 0;
-		// while ($value = mysql_fetch_assoc($data['queryOrdersDetail'])) {
+		$data['sqlOrdersDetail'] 	= "SELECT * FROM `orders_detail` LEFT JOIN produk ON produk.id_produk=orders_detail.id_produk WHERE 1 AND orders_detail.id_orders='{$data['post']['id_orders']}' ";
+		$data['queryOrdersDetail']	= mysql_query($data['sqlOrdersDetail']);
+		$no = 1;
+		$data['totalberat']	= 0;
+		$data['totalharga']	= 0;
+		$data['grandtotal']	= 0;
+		while ($value = mysql_fetch_assoc($data['queryOrdersDetail'])) {
 		// 	$data['totalberat'] += ($value['jumlah']*$value['berat']);
 		// 	$data['totalharga'] += ($value['jumlah']*$value['harga']);
 		// 	$value['subtotal'] = ($value['jumlah']*$value['harga']);
@@ -920,8 +920,8 @@ elseif ($_GET['module']=='simpantransaksi'){
 		// 			<td>Rp. {$value['subtotalText']}</td>
 		// 		</tr>
 		// 	";
-		// 	$no++;
-		// }
+			$no++;
+		}
 		// $data['grandtotal'] += ($data['totalharga']+$data['post']['kurir']->value);
 		// $data['totalhargaText'] = format_rupiah($data['totalharga']);
 		// $data['grandtotalText'] = format_rupiah($data['grandtotal']);
