@@ -56,11 +56,24 @@ else{
                     echo 'rows pesanan PESANAN DIBATALKAN';
                 }
             } else {
-                $data['sql'] = "SELECT * FROM orders LEFT JOIN kustomer ON orders.id_kustomer=kustomer.id_kustomer WHERE 1";
+                $data['sql'] = "SELECT * FROM orders LEFT JOIN kustomer ON orders.id_kustomer=kustomer.id_kustomer WHERE 1 ORDER BY orders.tgl_order DESC";
                 $data['query'] = mysql_query($data['sql']);
                 while ($value=mysql_fetch_assoc($data['query'])) {
-                    $data['rows'][] = $value;
-                } 
+                    $value['tgl_order'] = tgl_indo($value['tgl_order']);
+                    $data['rows'][] = "
+                        <tr>
+                            <td>{$value['id_orders']}</td>
+                            <td>{$value['nama']}</td>
+                            <td>{$value['tgl_order']}</td>
+                            <td>{$value['status_order']}</td>
+                            <td>{$value['status_transaksi']}</td>
+                            <td>
+                                <a href='?module=order&act=detailorder&id={$value['id_orders']}' class='btn btn-warning'>Detail</a>
+                            </td>
+                        </tr>
+                    ";
+                }
+                $data['rows'] = implode('',$data['rows']); 
             }
 
             echo '<pre>';
@@ -103,6 +116,7 @@ else{
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {$data['rows']}
                                 </tbody>
                             </table>
                         </div>
