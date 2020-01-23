@@ -126,8 +126,7 @@ else{
                                 <td>{$value['status_order']}</td>
                                 <td>{$value['status_transaksi']} dengan No Resi : {$value['no_resi']}</td>
                                 <td>
-                                    <a href='?module=order&act=detailorder&id={$value['id_orders']}' class='btn btn-warning'>Pesanan Diterima</a>
-                                    <a href='?module=order&act=detailorder&id={$value['id_orders']}' class='btn btn-warning'>Detail</a>
+                                    <a href='?module=order&act=konfirmasi&id={$value['id_orders']}' class='btn btn-warning'>Pesanan Diterima</a>
                                 </td>
                             </tr>
                         ";
@@ -239,6 +238,20 @@ else{
                 $alert = "<script>window.alert('No Resi berhasil disimpan');window.location=('media.php?module=order&status_pesanan=SEDANG_DIKIRIM')</script>";
             } else {
                 $alert = "<script>window.alert('No Resi gagal disimpan, pastikan id order sudah benar');window.history.go(-1)</script>";
+            }
+            echo $alert;
+        break;
+
+    case "konfirmasi":
+            $data 								= [];
+            $data['id_orders'] 					= $_GET['id'];
+            $data['query_update_tabel_orders'] 	= "UPDATE `orders` SET `status_transaksi`='PESANAN SELESAI' WHERE id_orders='{$data['id_orders']}' ";
+            $data['exec_update_tabel_orders'] 	= mysql_query($data['query_update_tabel_orders']);
+    
+            if ( $data['exec_update_tabel_orders'] ) { # update berhasil
+                $alert = "<script>window.alert('pesanan berhasil diselesaikan');window.location=('media.php?module=order&status_pesanan=PESANAN+SELESAI')</script>";
+            } else { # update gagal
+                $alert = "<script>window.alert('pesanan gagal diselesaikan ');window.history.go(-1)</script>";
             }
             echo $alert;
         break;
