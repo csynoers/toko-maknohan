@@ -49,7 +49,7 @@ else{
                                 <div class='input-group'>
                                     <span class='input-group-addon' id='basic-addon3'>Filter Status Pesanan</span>
                                     <select name='status_pesanan' class='form-control' onchange='this.form.submit()'>
-                                        <option selected disabled> -- Pilih Status Pesanan -- </option>
+                                        <option disabled> -- Pilih Status Pesanan -- </option>
                                         <option value='BELUM BAYAR'>BELUM BAYAR</option>
                                         <option value='SEDANG DIPROSES'>SEDANG DIPROSES</option>
                                         <option value='SEDANG DIKIRIM'>SEDANG DIKIRIM</option>
