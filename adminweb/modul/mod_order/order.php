@@ -100,6 +100,20 @@ else{
                     $data['rows'] = implode('',$data['rows']);
                 }
                 if ( $_GET['status_pesanan']=='SEDANG DIKIRIM' ) {
+                    $data['info'] = "
+                        <div class='panel panel-default' style='margin-top:20px'>
+                            <div class='panel-body'>
+                                Untuk melacak pesanan silahkan lakukan seperti langkah berikut ini:<br>
+                                1. copy nomor resi pada kolom Status Pesanan No Resi dibawah ini.<br>
+                                2. klik jasa pengiriman sesuai dengan kolom Kurir.<br>
+                                <a href='https://www.posindonesia.co.id/id/tracking' class='badge btn btn-sm' target='_blank'>Lacak POS</a>
+                                <a href='https://www.tiki.id/id/tracking' class='badge btn btn-sm' target='_blank'>Lacak TIKI</a>
+                                <a href='https://cekresi.com/' class='badge btn btn-sm' target='_blank'>Lacak JNE</a><br>
+                                3. jika pesanan sudah sampai mohon untuk konfirmasi dengan cara memilih menu Pesanan Diterima pada kolom aksi di bawah ini.
+                            </div>
+                        </div>
+                        <hr>
+                    ";
                     $data['sql'] = "SELECT * FROM orders LEFT JOIN kustomer ON orders.id_kustomer=kustomer.id_kustomer WHERE 1 AND orders.status_transaksi='SEDANG DIKIRIM' ORDER BY orders.tgl_order DESC";
                     $data['query'] = mysql_query($data['sql']);
                     while ($value=mysql_fetch_assoc($data['query'])) {
@@ -110,8 +124,9 @@ else{
                                 <td>{$value['nama']}</td>
                                 <td>{$value['tgl_order']}</td>
                                 <td>{$value['status_order']}</td>
-                                <td>{$value['status_transaksi']} <small>dengan No Resi : {$value['no_resi']}</small></td>
+                                <td>{$value['status_transaksi']} dengan No Resi : {$value['no_resi']}</td>
                                 <td>
+                                    <a href='?module=order&act=detailorder&id={$value['id_orders']}' class='btn btn-warning'>Pesanan Diterima</a>
                                     <a href='?module=order&act=detailorder&id={$value['id_orders']}' class='btn btn-warning'>Detail</a>
                                 </td>
                             </tr>
