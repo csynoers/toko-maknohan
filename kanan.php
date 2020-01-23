@@ -340,7 +340,21 @@ echo"
 
 }
 elseif ($_GET['module']=='daftaraksi'){
-	print_r($_REQUEST);
+	$data = [];
+	$data['post'] = $_POST;
+
+	$data['mail']['email'] = $data['post']['email'];
+	$data['mail']['subjek'] = "Konfirmasi Pendaftaran Toko Mak Nohan";
+	$data['mail']['pesan'] = "
+		
+	";
+	$data['mail']['dari'] = "From: support@tokomaknohan.com \n Content-type: text/html \r\n";
+
+	// Kirim email ke kustomer
+	// mail($data['mail']['email'],$data['mail']['subjek'],$data['mail']['pesan'],$data['mail']['dari']);
+	echo '<pre>';
+	print_r($data);
+	echo '</pre>';
 	die();
 // Logika utk jika dipinjam, yg masih susah di cari
 $sql = mysql_query("SELECT * FROM kustomer WHERE email='$_POST[email]'
