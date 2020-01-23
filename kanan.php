@@ -617,88 +617,245 @@ echo"
 
 }
 elseif ($_GET['module']=='selesaibelanja'){
- $sid = session_id();
-$member=mysql_query("SELECT * FROM kustomer WHERE id_kustomer='$_SESSION[kustomer_id]'");
-    $m=mysql_fetch_array($member);
-    $address=$m['address'];
-$edit = mysql_query("SELECT SUM(berat) AS weight FROM orders_temp a left join produk b on a.id_produk=b.id_produk
-		left join ukuran c on a.id_ukuran=c.id_ukuran 
-			                WHERE id_session='$sid'");
-    $w    = mysql_fetch_array($edit);
-	$totalberat=$w['weight'];
-	$berat_gram=$totalberat*1000;
-
-	# load rajaongkir api
-	require_once('rajaongkir/rajaOngkir.php');
-
-	$jasaPengiriman = [];
-	foreach (Rajaongkir::cost_all(['destination'=> $m['kota'],'weight'=> $berat_gram]) as $key => $value) {
-		$value['valueText'] = format_rupiah($value['value']);
-		$jasaPengiriman[] = "
-			<tr>
-				<td style='text-align:left;'>
-					<input type='radio' name='radio' value='{$value['value']}'> {$value['code']} {$value['service']} Rp. {$value['valueText']} {$value['etd']}
-				</td>
-			</tr>
-		";
-	}
-	$jasaPengiriman = implode('',$jasaPengiriman);
-	$jasaPengiriman = "
-		<thead style='background-color:green;color:white;'>
-			<tr>
-				<th style='text-align:left'>Pilih Jasa Pengiriman</th>
-			</tr>
-		</thead>
-		<tbody>
-			{$jasaPengiriman}
-		</tbody>
-	";
-
-	$kota = RajaOngkir::city($m['provinsi'],$m['kota']);
-
-  if (empty($_SESSION['namalengkap']) AND empty($_SESSION['passuser'])){
-
-echo "<script>window.alert('Anda belum Login, Silahkan Login Terlebih dahulu');
+	if (empty($_SESSION['namalengkap']) AND empty($_SESSION['passuser'])){
+		echo "<script>window.alert('Anda belum Login, Silahkan Login Terlebih dahulu');
         window.location=('media2.php?module=loginmember')</script>";
-}
-else {
-echo"							
-<div class='span9'>
-<h3> Form Checkout</h3>	
-	<hr class='soft'/>
-	<div class='well'>
-	<form action=simpan-transaksi.html method=POST class='form-horizontal'>
-		<h3>Alamat Pengiriman</h3>
-		<div id='alamatPengiriman' style='padding: 1rem;border: 1px solid #ddd;'>
-			<b>{$m['nama']}</b><br>
-			{$m['no_telp']} ({$m['email']})<br>
-			{$m['address']}, {$kota->type} {$kota->city_name}, {$kota->province} {$m['kode_pos']}
-		</div>
-			
-		<div class='col-md-8'>
-			<div class='card my-4'>
-				<div class='card-body'>
-					<div id='loading'><img src='img/ajax-loader.gif'></div>
-					<p id='kurirname' style='font-weight:700;text-transform:uppercase;color:green;'></p>
-					<table id='details' class='table table-bordered table-responsive'></table>
-					<table id='ongkos' class='table table-bordered table-responsive'>
-						{$jasaPengiriman}
-					</table>
-					<div id='ongkir'></div>
-				</div>
-			</div>
-		</div>
+	} else {
+		/* start halaman selesai belanja (checkout) */
+		if ( $_GET['id'] ) {
+			$sid = session_id();
+			$member=mysql_query("SELECT * FROM kustomer WHERE id_kustomer='$_SESSION[kustomer_id]'");
+			$m=mysql_fetch_array($member);
+			$address=$m['address'];
+			$edit = mysql_query("SELECT SUM(berat) AS weight FROM orders_temp a left join produk b on a.id_produk=b.id_produk
+			left join ukuran c on a.id_ukuran=c.id_ukuran 
+			WHERE id_session='$sid'");
+			$w    = mysql_fetch_array($edit);
+			$totalberat=$w['weight'];
+			$berat_gram=$totalberat*1000;
 		
-		<div class='control-group'>
-			<div class='controlsXXX'>
-				<input type='submit' name='submitAccount' value='Proses' class='exclusive shopBtn'>
-			</div>
-		</div>
-	</form>
-</div>
-							</div>";
+			# load rajaongkir api
+			require_once('rajaongkir/rajaOngkir.php');
+		
+			$jasaPengiriman = [];
+			foreach (Rajaongkir::cost_all(['destination'=> $m['kota'],'weight'=> $berat_gram]) as $key => $value) {
+				$value['valueText'] = format_rupiah($value['value']);
+				$jasaPengiriman[] = "
+					<tr>
+						<td style='text-align:left;'>
+							<input required type='radio' name='radio' value='{$value['value']}'> {$value['code']} {$value['service']} Rp. {$value['valueText']} {$value['etd']}
+						</td>
+					</tr>
+				";
+			}
+			$jasaPengiriman = implode('',$jasaPengiriman);
+			$jasaPengiriman = "
+				<thead style='background-color:green;color:white;'>
+					<tr>
+						<th style='text-align:left'>Pilih Jasa Pengiriman</th>
+					</tr>
+				</thead>
+				<tbody>
+					{$jasaPengiriman}
+				</tbody>
+			";
+		
+			$kota = RajaOngkir::city($m['provinsi'],$m['kota']);
+			echo "
+				<h3> Form Checkout</h3>	
+				<hr class='soft'/>
+				<div class='well'>
+					<form action=simpan-transaksi.html method=POST class='form-horizontal'>
+						<h3>Alamat Pengiriman <a href='ganti-alamat-pengiriman-1.html' class='btn btn-inverse btn-mini pull-right'>Kirim ke alamat lain</a></h3>
+						<div id='alamatPengiriman' style='padding: 1rem;border: 1px solid #ddd;'>
+							<b>{$m['nama']}</b><br>
+							{$m['no_telp']} ({$m['email']})<br>
+							{$m['address']}, {$kota->type} {$kota->city_name}, {$kota->province} {$m['kode_pos']}
+						</div>
+							
+						<div class='col-md-8'>
+							<div class='card my-4'>
+								<div class='card-body'>
+									<div id='loading'><img src='img/ajax-loader.gif'></div>
+									<p id='kurirname' style='font-weight:700;text-transform:uppercase;color:green;'></p>
+									<table id='details' class='table table-bordered table-responsive'></table>
+									<table id='ongkos' class='table table-bordered table-responsive'>
+										{$jasaPengiriman}
+									</table>
+									<div id='ongkir'></div>
+								</div>
+							</div>
+						</div>
+						
+						<div class='control-group'>
+							<div class='controlsXXX'>
+								<input type='submit' name='submitAccount' value='Proses' class='exclusive shopBtn'>
+							</div>
+						</div>
+					</form>
+				</div>
+			";
+		}
+		/* end halaman selesai belanja (checkout) */
 
-}
+		/* start halaman ganti alamat */
+		if ( $_GET['ganti-alamat'] ) {
+			/* load api raja ongkir */
+			require_once 'rajaongkir/rajaOngkir.php';
+				
+			$htmls= [];
+			$htmls['option_provinsi'][] = "<option value='' selected disabled> -- Pilih Provinsi -- </option>";
+			foreach (Rajaongkir::province() as $key => $value) {
+				$htmls['option_provinsi'][] = "<option value='{$value->province_id}'>{$value->province}</option>";
+			}
+			$htmls['option_provinsi'] 	= implode('',$htmls['option_provinsi']);
+			$htmls['option_kota'] 	= "<option value='' selected disabled> -- Pilih Provinsi Terlebih Dahulu -- </option>";
+
+			echo"			
+				<div class='well'>
+					<form action='checkout-new-alamat-1.html' method='POST' class='form-horizontal'>
+						<h3>Masukan Data Alamat Pengiriman Baru</h3>
+						
+						<div class='control-group'>
+							<label class='control-label' for='inputFname'>Nama Lengkap <sup>*</sup></label>
+							<div class='controls'>
+								<input type='text' name='nama'  placeholder='Masukkan Nama Lengkap Anda' required>
+							</div>
+						</div>
+						
+						<div class='control-group'>
+							<label class='control-label' for='inputEmail'>Email <sup>*</sup></label>
+							<div class='controls'>
+								<input type='email' name='email' placeholder='Masukkan Email Anda' required>
+							</div>
+						</div>
+						<div class='control-group'>
+							<label class='control-label' for='inputFname'>Nomot Telepon <sup>*</sup></label>
+							<div class='controls'>
+								<input type='text' name='no_telp'  placeholder='Masukkan Nomor Telepon Anda' required>
+							</div>
+						</div>
+						<div class='control-group'>
+							<label class='control-label'>Provinsi <sup>*</sup></label>
+							<div class='controls'>
+								<select class='input-block-level mod-width-fit-content' name='provinsi' required>
+									{$htmls['option_provinsi']}
+								</select>
+							</div>
+						</div>
+
+						<div class='control-group'>
+							<label class='control-label'>Kota/Kabupaten <sup>*</sup></label>
+							<div class='controls'>
+								<select class='input-block-level mod-width-fit-content' name='kota' required>
+									{$htmls['option_kota']}
+								</select>
+							</div>
+						</div>
+						
+						<div class='control-group'>
+							<label class='control-label' for='inputFname'>Kode Pos <sup>*</sup></label>
+							<div class='controls'>
+								<input type='text' class='input-block-level mod-width-fit-content input-number-only'  name='kode_pos'  placeholder='Kode Pos' required>
+							</div>
+						</div>		 
+						<div class='control-group'>
+							<label class='control-label' for='inputFname'>Alamat <sup>*</sup></label>
+							<div class='controls'>
+								<textarea class='input-block-level' name='address'   required placeholder='Masukkan Alamat Anda'></textarea>
+							</div>
+						</div>
+						<div class='control-group'>
+							<div class='controls'>
+								<input type='submit' name='submitAccount' value='Checkout dengan Alamat Baru' class='exclusive shopBtn'>
+							</div>
+						</div>
+					</form>
+				</div>
+			";
+		}
+		/* end halaman ganti alamat */
+
+		/* start halaman ganti alamat */
+		if ( $_GET['checkout-new-alamat'] ) {
+			$sid = session_id();
+			$member=mysql_query("SELECT * FROM kustomer WHERE id_kustomer='$_SESSION[kustomer_id]'");
+			$m=mysql_fetch_array($member);
+			$address=$m['address'];
+			$edit = mysql_query("SELECT SUM(berat) AS weight FROM orders_temp a left join produk b on a.id_produk=b.id_produk
+			left join ukuran c on a.id_ukuran=c.id_ukuran 
+			WHERE id_session='$sid'");
+			$w    = mysql_fetch_array($edit);
+			$totalberat=$w['weight'];
+			$berat_gram=$totalberat*1000;
+		
+			# load rajaongkir api
+			require_once('rajaongkir/rajaOngkir.php');
+		
+			$jasaPengiriman = [];
+			foreach (Rajaongkir::cost_all(['destination'=> $_POST['kota'],'weight'=> $berat_gram]) as $key => $value) {
+				$value['valueText'] = format_rupiah($value['value']);
+				$jasaPengiriman[] = "
+					<tr>
+						<td style='text-align:left;'>
+							<input required type='radio' name='radio' value='{$value['value']}'> {$value['code']} {$value['service']} Rp. {$value['valueText']} {$value['etd']}
+						</td>
+					</tr>
+				";
+			}
+			$jasaPengiriman = implode('',$jasaPengiriman);
+			$jasaPengiriman = "
+				<thead style='background-color:green;color:white;'>
+					<tr>
+						<th style='text-align:left'>Pilih Jasa Pengiriman</th>
+					</tr>
+				</thead>
+				<tbody>
+					{$jasaPengiriman}
+				</tbody>
+			";
+		
+			$kota = RajaOngkir::city($_POST['provinsi'],$_POST['kota']);
+			echo "
+				<h3> Form Checkout</h3>	
+				<hr class='soft'/>
+				<div class='well'>
+					<form action=simpan-transaksi.html method=POST class='form-horizontal'>
+						<h3>Alamat Pengiriman <a href='ganti-alamat-pengiriman-1.html' class='btn btn-inverse btn-mini pull-right'>Kirim ke alamat lain</a></h3>
+						<div id='alamatPengiriman' style='padding: 1rem;border: 1px solid #ddd;'>
+							<b>{$_POST['nama']}</b><br>
+							{$_POST['no_telp']} ({$_POST['email']})<br>
+							{$_POST['address']}, {$kota->type} {$kota->city_name}, {$kota->province} {$m['kode_pos']}
+						</div>
+							
+						<div class='col-md-8'>
+							<div class='card my-4'>
+								<div class='card-body'>
+									<div id='loading'><img src='img/ajax-loader.gif'></div>
+									<p id='kurirname' style='font-weight:700;text-transform:uppercase;color:green;'></p>
+									<table id='details' class='table table-bordered table-responsive'></table>
+									<table id='ongkos' class='table table-bordered table-responsive'>
+										{$jasaPengiriman}
+									</table>
+									<div id='ongkir'></div>
+								</div>
+							</div>
+						</div>
+						
+						<div class='control-group'>
+							<div class='controlsXXX'>
+								<input type='submit' name='submitAccount' value='Proses' class='exclusive shopBtn'>
+							</div>
+						</div>
+					</form>
+				</div>
+			";
+		}
+		/* end halaman ganti alamat */
+	}
+	// echo '<pre>';
+	// print_r($_REQUEST);
+	// echo '</pre>';
 }
 elseif ($_GET['module']=='simpantransaksi'){
 if (empty($_SESSION['namalengkap']) AND empty($_SESSION['passuser'])){
@@ -707,6 +864,11 @@ echo "<script>window.alert('Anda belum Login, Silahkan Login Terlebih dahulu');
         window.location=('index.php')</script>";
 }
 else {
+	echo json_encode([
+		"status" => FALSE,
+		"message" => "Halaman Ini masih dalam proses maintenance"
+	]);
+	die();
 //$sql = "SELECT * FROM	kustomer WHERE email='$email' AND password='$password'";
 $sql = "SELECT * FROM kustomer WHERE id_kustomer='$_SESSION[kustomer_id]'";
 $hasil = mysql_query($sql);
