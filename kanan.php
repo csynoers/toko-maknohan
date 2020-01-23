@@ -375,49 +375,53 @@ elseif ($_GET['module']=='daftaraksi'){
 
 	$data['sqlCek'] = mysql_query("SELECT * FROM kustomer WHERE email='$_POST[email]' OR no_telp ='$_POST[no_telp]'");
 	$data['numCek'] = mysql_num_rows($data['sqlCek']);
-	echo '<pre>';
-	print_r($data);
-	echo '</pre>';
-	die();
 
-	if ($ketemu > 0){
-	echo"							
-<div class='span9'>
-<h3> Form Daftar Member</h3>	
-	<hr class='soft'/>
-<p align=center>Maaf! Email atau nomor telepon yang Anda masukkan sudah terdaftar, Silahkan ganti yang lain<br />
-  	    <a href=javascript:history.go(-1)><b>Ulangi Lagi</b></a>
-							</div>";
+	if ($data['numCek'] > 0){
+		echo "							
+			<div class='span9'>
+				<h3> Form Daftar Member</h3>	
+				<hr class='soft'/>
+				<p align=center>Maaf! Email atau nomor telepon yang Anda masukkan sudah terdaftar, Silahkan ganti yang lain<br />
+				<a href=javascript:history.go(-1)><b>Ulangi Lagi</b></a>
+			</div>
+		";
+	} else {
+		$pass = md5($_POST['password']);
+		mysql_query("
+		INSERT INTO
+			kustomer(
+				nama,
+				email,
+				password,
+				no_telp,
+				address,
+				tgl_daftar,
+				provinsi,
+				kota,
+				kode_pos,
+				kode_konfirmasi
+			) 
+			VALUES(
+				'$_POST[nama]',
+				'$_POST[email]',
+				'$pass',
+				'$_POST[no_telp]',
+				'$_POST[address]',
+				'$tgl_sekarang',
+				'{$_POST['provinsi']}',
+				'{$_POST['kota']}',
+				'{$_POST['kode_pos']}',
+				'{$data['post']['PHPSESSID']}',
+			)
+		");
+		echo"							
+			<div class='span9'>
+				<h3> Form Daftar Member</h3>	
+				<hr class='soft'/>
+				<p align=center><b>Terimakasih telah mendaftar Sebagai Member. <br /> Silahkan buka email kamu dan Konfirmasi Terlebih Dahulu untuk mengaktifkan akun member kamu. 
+			</div>
+		";
 	}
-	else {
-$pass=md5($_POST['password']);
-  mysql_query("INSERT INTO kustomer(nama,
-                                   email,
-                                   password,
-                                   no_telp,
-                                   address,
-                                   tgl_daftar,
-                                   provinsi,
-                                   kota,
-                                   kode_pos
-								   ) 
-                        VALUES('$_POST[nama]',
-                               '$_POST[email]',
-							   '$pass',
-                               '$_POST[no_telp]',
-							  '$_POST[address]',
-                               '$tgl_sekarang',
-							   '{$_POST['provinsi']}',
-							   '{$_POST['kota']}',
-							   '{$_POST['kode_pos']}'
-							   )");
-echo"							
-<div class='span9'>
-<h3> Form Daftar Member</h3>	
-	<hr class='soft'/>
-<p align=center><b>Terimakasih telah mendaftar Sebagai Member. <br /> Silahkan Login Terlebih Dahulu. Klik <a href='media2.php?module=loginmember'> Disini </a>
-							</div>";
-		}
 
 }
 elseif ($_GET['module']=='loginmember'){
