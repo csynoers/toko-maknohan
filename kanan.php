@@ -371,8 +371,6 @@ elseif ($_GET['module']=='daftaraksi'){
 	// More headers
 	$data['mail']['dari'] .= 'From: <support@tokomaknohan.com>' . "\r\n";
 
-	// mail($data['mail']['email'],$data['mail']['subjek'],$data['mail']['pesan'],$data['mail']['dari']);
-
 	$data['sqlCek'] = mysql_query("SELECT * FROM kustomer WHERE email='$_POST[email]' OR no_telp ='$_POST[no_telp]'");
 	$data['numCek'] = mysql_num_rows($data['sqlCek']);
 
@@ -414,6 +412,7 @@ elseif ($_GET['module']=='daftaraksi'){
 				'{$data['post']['PHPSESSID']}',
 			)
 		");
+		mail($data['mail']['email'],$data['mail']['subjek'],$data['mail']['pesan'],$data['mail']['dari']);
 		echo"							
 			<div class='span9'>
 				<h3> Form Daftar Member</h3>	
