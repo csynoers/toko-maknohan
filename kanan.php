@@ -965,7 +965,7 @@ elseif ($_GET['module']=='simpantransaksi'){
 						<tr>
 							<td style='padding:0px 15px'>{$data['post']['alamat']}</td>
 							<td style='padding:0px 15px'>
-								{$data['post']['id_orders']}
+								{$data['post']['id_orders']}<br>
 								<b>Kurir :</b><br>
 								{$data['post']['kurir']->valueText}<br>
 							</td>
