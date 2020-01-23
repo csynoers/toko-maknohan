@@ -277,7 +277,7 @@ else{
         $data       = [];
         $edit       = mysql_query("SELECT * FROM orders WHERE id_orders='{$_GET['id']}' ");
         $r          = mysql_fetch_assoc($edit);
-        $tanggal    = tgl_indo($r['tanggal']);
+        $tanggal    = tgl_indo($r['tgl_order']);
         
         $trMod= "";
         if ( $r['status']== 'PAID' ) {
@@ -305,22 +305,10 @@ else{
         $data['rows_order_detail_html'] = [];
         $sql    = mysql_query("SELECT * FROM orders_detail,produk WHERE orders_detail.id_produk=produk.id_produk AND id_orders='$_GET[id]'");
         while( $s= mysql_fetch_array($sql) ){
-            $produk_attr = [];
-            if ( $s['kondisi'] ) {
-                $produk_attr[]= "Kondisi : {$s['kondisi']}";
-            }
-            if ( $s['warna'] ) {
-                $produk_attr[]= "Warna : {$s['warna']}";
-            }
-            if ( $s['ukuran'] ) {
-                $produk_attr[]= "Ukuran : {$s['ukuran']}";
-            }
-            $produk_attr = implode(',',$produk_attr);
-            $produk_attr = "<small>({$produk_attr})</small>";
 
             $data['rows_order_detail_html'][] = "
                 <tr>
-                    <td>{$s['nama_produk']} {$produk_attr}</td>
+                    <td>{$s['nama_produk']}</td>
                     <td>{$s['berat']}</td>
                     <td>{$s['jumlah']}</td>
                     <td>Rp. ".format_rupiah($s['harga'])."</td>
@@ -328,7 +316,7 @@ else{
                 </tr>
             ";
         }
-        	
+
     echo"
         <div class='box'>
             <div class='box-header'>
@@ -341,7 +329,7 @@ else{
                     <div class='col-sm-4 invoice-col'>
                         Kepada :
                         <address>
-                            {$r['alamat_pengiriman']}
+                            {$r['alamat']}
                         </address>
                     </div>
                     <!-- /.col -->
