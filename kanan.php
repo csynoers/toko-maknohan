@@ -940,7 +940,7 @@ elseif ($_GET['module']=='simpantransaksi'){
 			$data['external_id'] = $data['sessionID'];
 			$data['amount'] 	 = $data['grandtotal'];
 			$data['payer_email'] = $data['post']['payer_email'];
-			$data['description'] = "Pembayaran dengan No Order {$data['sessionID']}";
+			$data['description'] = "Pembayaran dengan No Order {$data['post']['id_orders']}";
 		// 	$response = $xenditPHPClient->createInvoice($data['external_id'], $data['amount'], $data['payer_email'], $data['description']);
 		// 	$data['updateOrders'] = ("UPDATE `orders` SET `external_id`='{$response['id']}',`invoice_url`='{$response['invoice_url']}' WHERE 1 AND id_orders='{$data['sessionID']}' ");
 		// 	$data['rowOrders']['external_id'] = $response['id'];
