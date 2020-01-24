@@ -284,7 +284,7 @@ else{
         $data['external_id']    = $data['rowOrder']['external_id'];
         
         $data['paymentHtml'] = "";
-        if ( $data['rowOrder']['status']== 'PAID' ) {
+        if ( $data['rowOrder']['status_order']== 'PAID' ) {
             include_once("../XenditPHPClient.php");
         
             $options['secret_api_key'] = 'xnd_development_jvolJ4f9VT9Y1KNheUMY1XZm8xQ5J7pki8VpllUEb0XXEiiRKxly09RoW4U6ILo';
