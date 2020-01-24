@@ -1415,19 +1415,19 @@ elseif ($_GET['module']=='datatransaksi'){
 			$data['rows'] = implode('',$data['rows']);
 		}
 	} else {
-		$data['sql'] = "SELECT * FROM orders LEFT JOIN kustomer ON orders.id_kustomer=kustomer.id_kustomer WHERE 1 ORDER BY orders.tgl_order DESC";
+		$data['sql'] = "SELECT * FROM orders LEFT JOIN kustomer ON orders.id_kustomer=kustomer.id_kustomer WHERE 1 AND orders.id_kustomer='{$_SESSION['kustomer_id']}' ORDER BY orders.tgl_order DESC";
 		$data['query'] = mysql_query($data['sql']);
 		while ($value=mysql_fetch_assoc($data['query'])) {
 			$value['tgl_order'] = tgl_indo($value['tgl_order']);
 			$data['rows'][] = "
 				<tr>
 					<td>{$value['id_orders']}</td>
-					<td>{$value['nama']}</td>
 					<td>{$value['tgl_order']}</td>
+					<td>{$value['jam']}</td>
 					<td>{$value['status_order']}</td>
 					<td>{$value['status_transaksi']}</td>
 					<td>
-						<a href='?module=order&act=detailorder&id={$value['id_orders']}' class='btn btn-warning'>Detail</a>
+						<a href='media2.php?module=detailtransaksi&id={$value['id_orders']}' class='btn btn-warning'>Detail</a>
 					</td>
 				</tr>
 			";
@@ -1438,7 +1438,7 @@ elseif ($_GET['module']=='datatransaksi'){
 	echo '<pre>';
 	print_r($data);
 	echo '</pre>';
-	
+
 	echo"
 	<h3> Riwayat Data Order Anda</h3>	
 	<hr class='soft'/>
@@ -1469,21 +1469,8 @@ elseif ($_GET['module']=='datatransaksi'){
 
 	<thead>
 	<tr bgcolor=#D3DCE3><th>No.order</th><th>Tgl. order</th><th>Jam</th><th>Status Pembayaran</th><th>Status Pesanan</th><th>Aksi</th></tr>
-	<tbody>";
-	$tampil = mysql_query("SELECT * FROM orders,kustomer WHERE orders.id_kustomer=kustomer.id_kustomer AND orders.id_kustomer='$_SESSION[kustomer_id]' ORDER BY id_orders DESC ");
-
-	while($r=mysql_fetch_assoc($tampil)){
-	$tanggal=tgl_indo($r['tgl_order']);
-
-	echo "<tr><td align=center>$r[id_orders]</td>
-	<td>$tanggal</td>
-	<td>$r[jam_order]</td>
-	<td>$r[status_order]</td>
-	<td>$r[status_transaksi]</td>
-	<td><a href=media2.php?module=detailtransaksi&id=$r[id_orders]>Detail</a></td></tr>";
-	$no++;
-	}
-	echo "</tbody></table>
+		<tbody>{$data['rows']}</tbody>
+	</table>
 
 	</div>";
 
