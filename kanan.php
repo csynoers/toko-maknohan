@@ -1283,19 +1283,19 @@ elseif ($_GET['module']=='datatransaksi'){
 			echo 'rows pesanan SEMUA PESANAN';
 		}
 		if ( $_GET['status_pesanan']=='BELUM BAYAR' ) {
-			$data['sql'] = "SELECT * FROM orders LEFT JOIN kustomer ON orders.id_kustomer=kustomer.id_kustomer WHERE 1 AND orders.status_transaksi='BELUM BAYAR' ORDER BY orders.tgl_order DESC";
+			$data['sql'] = "SELECT * FROM orders LEFT JOIN kustomer ON orders.id_kustomer=kustomer.id_kustomer WHERE 1 AND orders.status_transaksi='BELUM BAYAR' AND orders.id_kustomer='{$_SESSION['kustomer_id']}' ORDER BY orders.tgl_order DESC";
 			$data['query'] = mysql_query($data['sql']);
 			while ($value=mysql_fetch_assoc($data['query'])) {
 				$value['tgl_order'] = tgl_indo($value['tgl_order']);
 				$data['rows'][] = "
 					<tr>
 						<td>{$value['id_orders']}</td>
-						<td>{$value['nama']}</td>
 						<td>{$value['tgl_order']}</td>
+						<td>{$value['jam_order']}</td>
 						<td>{$value['status_order']}</td>
 						<td>{$value['status_transaksi']}</td>
 						<td>
-							<a href='?module=order&act=detailorder&id={$value['id_orders']}' class='btn btn-warning'>Detail</a>
+							<a href='media2.php?module=detailtransaksi&id={$value['id_orders']}' class='btn btn-warning'>Detail</a>
 						</td>
 					</tr>
 				";
@@ -1303,37 +1303,19 @@ elseif ($_GET['module']=='datatransaksi'){
 			$data['rows'] = implode('',$data['rows']);
 		}
 		if ( $_GET['status_pesanan']=='SEDANG DIPROSES' ) {
-			$data['info'] = "
-				<div class='panel-body' style='border:1px solid #ddd'>
-					# Jika status pembayaran <b>PAID</b>, harap melakukan pengemasan dan pengiriman paket kepada jasa pengiriman yang sudah dipilih pembeli untuk mendapatkan <b>NO RESI</b>.<br>
-					# setelah mendapatkan <b>No RESI</b> harap melakukan <b>INPUT RESI</b> di FORM berikut ini: <br>
-					<form action='?module=order&act=inputresi' method='post'>
-						<div class='input-group' style='margin-bottom:4px'>
-							<span class='input-group-addon'>No order</span>
-							<input type='text' class='form-control' name='id_orders' placeholder='Masukan no order disini...' required>
-						</div>
-						<div class='input-group'>
-							<span class='input-group-addon'>No Resi</span>
-							<input type='text' class='form-control' name='no_resi' placeholder='Masukan no resi disini...' required>
-						</div>
-						<button type='submit' class='btn btn-default' style='margin-top:4px'>Simpan</button>
-					</form>
-				</div>
-				<hr>
-			";
-			$data['sql'] = "SELECT * FROM orders LEFT JOIN kustomer ON orders.id_kustomer=kustomer.id_kustomer WHERE 1 AND orders.status_transaksi='SEDANG DIPROSES' ORDER BY orders.tgl_order DESC";
+			$data['sql'] = "SELECT * FROM orders LEFT JOIN kustomer ON orders.id_kustomer=kustomer.id_kustomer WHERE 1 AND orders.status_transaksi='SEDANG DIPROSES' AND orders.id_kustomer='{$_SESSION['kustomer_id']}' ORDER BY orders.tgl_order DESC";
 			$data['query'] = mysql_query($data['sql']);
 			while ($value=mysql_fetch_assoc($data['query'])) {
 				$value['tgl_order'] = tgl_indo($value['tgl_order']);
 				$data['rows'][] = "
 					<tr>
 						<td>{$value['id_orders']}</td>
-						<td>{$value['nama']}</td>
 						<td>{$value['tgl_order']}</td>
+						<td>{$value['jam_order']}</td>
 						<td>{$value['status_order']}</td>
 						<td>{$value['status_transaksi']}</td>
 						<td>
-							<a href='?module=order&act=detailorder&id={$value['id_orders']}' class='btn btn-warning'>Detail</a>
+							<a href='media2.php?module=detailtransaksi&id={$value['id_orders']}' class='btn btn-warning'>Detail</a>
 						</td>
 					</tr>
 				";
@@ -1355,19 +1337,19 @@ elseif ($_GET['module']=='datatransaksi'){
 				</div>
 				<hr>
 			";
-			$data['sql'] = "SELECT * FROM orders LEFT JOIN kustomer ON orders.id_kustomer=kustomer.id_kustomer WHERE 1 AND orders.status_transaksi='SEDANG DIKIRIM' ORDER BY orders.tgl_order DESC";
+			$data['sql'] = "SELECT * FROM orders LEFT JOIN kustomer ON orders.id_kustomer=kustomer.id_kustomer WHERE 1 AND orders.status_transaksi='SEDANG DIKIRIM' AND orders.id_kustomer='{$_SESSION['kustomer_id']}' ORDER BY orders.tgl_order DESC";
 			$data['query'] = mysql_query($data['sql']);
 			while ($value=mysql_fetch_assoc($data['query'])) {
 				$value['tgl_order'] = tgl_indo($value['tgl_order']);
 				$data['rows'][] = "
 					<tr>
 						<td>{$value['id_orders']}</td>
-						<td>{$value['nama']}</td>
 						<td>{$value['tgl_order']}</td>
+						<td>{$value['jam_order']}</td>
 						<td>{$value['status_order']}</td>
 						<td>{$value['status_transaksi']} dengan No Resi : {$value['no_resi']}</td>
 						<td>
-							<a href='?module=order&act=konfirmasi&id={$value['id_orders']}' class='btn btn-warning'>Pesanan Diterima</a>
+							<a href='media2.php?module=detailtransaksi&id={$value['id_orders']}' class='btn btn-warning'>Pesanan Diterima</a>
 						</td>
 					</tr>
 				";
@@ -1375,19 +1357,19 @@ elseif ($_GET['module']=='datatransaksi'){
 			$data['rows'] = implode('',$data['rows']);
 		}
 		if ( $_GET['status_pesanan']=='PESANAN SELESAI' ) {
-			$data['sql'] = "SELECT * FROM orders LEFT JOIN kustomer ON orders.id_kustomer=kustomer.id_kustomer WHERE 1 AND orders.status_transaksi='PESANAN SELESAI' ORDER BY orders.tgl_order DESC";
+			$data['sql'] = "SELECT * FROM orders LEFT JOIN kustomer ON orders.id_kustomer=kustomer.id_kustomer WHERE 1 AND orders.status_transaksi='PESANAN SELESAI' AND orders.id_kustomer='{$_SESSION['kustomer_id']}' ORDER BY orders.tgl_order DESC";
 			$data['query'] = mysql_query($data['sql']);
 			while ($value=mysql_fetch_assoc($data['query'])) {
 				$value['tgl_order'] = tgl_indo($value['tgl_order']);
 				$data['rows'][] = "
 					<tr>
 						<td>{$value['id_orders']}</td>
-						<td>{$value['nama']}</td>
 						<td>{$value['tgl_order']}</td>
+						<td>{$value['jam_order']}</td>
 						<td>{$value['status_order']}</td>
 						<td>{$value['status_transaksi']} dengan No Resi : {$value['no_resi']}</td>
 						<td>
-							<a href='?module=order&act=detailorder&id={$value['id_orders']}' class='btn btn-warning'>Detail</a>
+							<a href='media2.php?module=detailtransaksi&id={$value['id_orders']}' class='btn btn-warning'>Detail</a>
 						</td>
 					</tr>
 				";
@@ -1395,7 +1377,7 @@ elseif ($_GET['module']=='datatransaksi'){
 			$data['rows'] = implode('',$data['rows']);
 		}
 		if ( $_GET['status_pesanan']=='PESANAN DIBATALKAN' ) {
-			$data['sql'] = "SELECT * FROM orders LEFT JOIN kustomer ON orders.id_kustomer=kustomer.id_kustomer WHERE 1 AND orders.status_transaksi='PESANAN DIBATALKAN' ORDER BY orders.tgl_order DESC";
+			$data['sql'] = "SELECT * FROM orders LEFT JOIN kustomer ON orders.id_kustomer=kustomer.id_kustomer WHERE 1 AND orders.status_transaksi='PESANAN DIBATALKAN' AND orders.id_kustomer='{$_SESSION['kustomer_id']}' ORDER BY orders.tgl_order DESC";
 			$data['query'] = mysql_query($data['sql']);
 			while ($value=mysql_fetch_assoc($data['query'])) {
 				$value['tgl_order'] = tgl_indo($value['tgl_order']);
@@ -1404,10 +1386,11 @@ elseif ($_GET['module']=='datatransaksi'){
 						<td>{$value['id_orders']}</td>
 						<td>{$value['nama']}</td>
 						<td>{$value['tgl_order']}</td>
+						<td>{$value['jam_order']}</td>
 						<td>{$value['status_order']}</td>
 						<td>{$value['status_transaksi']}</td>
 						<td>
-							<a href='?module=order&act=detailorder&id={$value['id_orders']}' class='btn btn-warning'>Detail</a>
+							<a href='media2.php?module=detailtransaksi&id={$value['id_orders']}' class='btn btn-warning'>Detail</a>
 						</td>
 					</tr>
 				";
