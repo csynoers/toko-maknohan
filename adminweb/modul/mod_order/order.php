@@ -288,7 +288,7 @@ else{
         
             $options['secret_api_key'] = 'xnd_development_jvolJ4f9VT9Y1KNheUMY1XZm8xQ5J7pki8VpllUEb0XXEiiRKxly09RoW4U6ILo';
             $xenditPHPClient = new XenditClient\XenditPHPClient($options);
-            $invoice_id = $r['external_id'];
+            $invoice_id = $data['rowOrder']['external_id'];
             $data['payment'] = $xenditPHPClient->getInvoice($invoice_id);
             $newDate = date("d F Y & H:i:s", strtotime($data['payment']['paid_at']));
             $data['paymentHtmls'] .= "
