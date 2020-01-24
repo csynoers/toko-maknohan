@@ -1276,10 +1276,28 @@ echo"
 }
 elseif ($_GET['module']=='datatransaksi'){
 	session_start();
+	$data = [];
 
 	echo"
 	<h3> Riwayat Data Order Anda</h3>	
 	<hr class='soft'/>
+	<div class='well'>
+		<form action='' method='GET' class='form-horizontal'>
+			<div class='control-group'>
+				<label class='control-label' for='inputFname'>Filter Status Pesanan <sup>*</sup></label>
+				<div class='controls'>
+					<select name='status_pesanan' class='form-control' onchange='this.form.submit()'>
+						<option value='SEMUA PESANAN'> SEMUA PESANAN </option>
+						<option value='BELUM BAYAR'>BELUM BAYAR</option>
+						<option value='SEDANG DIPROSES'>SEDANG DIPROSES</option>
+						<option value='SEDANG DIKIRIM'>SEDANG DIKIRIM</option>
+						<option value='PESANAN SELESAI'>PESANAN SELESAI</option>
+						<option value='PESANAN DIBATALKAN'>PESANAN DIBATALKAN</option>
+					</select>
+				</div>
+			</div>
+		</form>
+	</div>
 	<div class='well'>
 	<form action=edit_profil.php method=POST class='form-horizontal'>
 	<input type=hidden name=id value='$r[id_kustomer]'>
