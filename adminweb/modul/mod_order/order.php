@@ -328,6 +328,28 @@ else{
         $data['grandTotalText']     = format_rupiah($data['grandTotal']);
         $data['ongkosKirimText']    = format_rupiah($data['ongkosKirim']);
 
+        $data['rows_order_detail_html'][] = "
+            <tr>
+                <td colspan='3'></td>
+                <td><b>Total Harga</b></td>
+                <td>Rp. {$data['totalHargaText']}</td>
+            </tr>
+            <tr>
+                <td colspan='3'></td>
+                <td><b>Total Berat</b></td>
+                <td>{$data['totalBerat']} (Kg)</td>
+            </tr>
+            <tr>
+                <td colspan='3'></td>
+                <td><b>Ongkos Kirim</b></td>
+                <td>Rp. {$data['ongkosKirimText']}</td>
+            </tr>
+            <tr>
+                <td colspan='3'></td>
+                <td><b>Grand Total</b></td>
+                <td>Rp. {$data['grandTotalText']}</td>
+            </tr>
+        ";
         $data['rows_order_detail_html'] = implode('',$data['rows_order_detail_html']);
 
         echo '<pre>';
