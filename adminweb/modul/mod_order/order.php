@@ -280,30 +280,24 @@ else{
         $data['orderAlamat']    = $data['rowOrder']['alamat'];
         $data['orderID']        = $data['rowOrder']['id_orders'];
         $data['orderTanggal']   = tgl_indo($data['rowOrder']['tgl_order']);
-        $data['orderKurir']     = tgl_indo($data['rowOrder']['kurir']);
+        $data['orderKurir']     = $data['rowOrder']['kurir'];
         
-        $trMod= "";
+        $data['paymentHtml'] = "";
         if ( $r['status']== 'PAID' ) {
             include_once("../XenditPHPClient.php");
         
             $options['secret_api_key'] = 'xnd_development_jvolJ4f9VT9Y1KNheUMY1XZm8xQ5J7pki8VpllUEb0XXEiiRKxly09RoW4U6ILo';
-            
             $xenditPHPClient = new XenditClient\XenditPHPClient($options);
-            
             $invoice_id = $r['external_id'];
-            
-            $response = $xenditPHPClient->getInvoice($invoice_id);
-            //   echo '<pre>';
-            //   print_r($response);
-            //   echo '</pre>';
-            $newDate = date("d F Y & H:i:s", strtotime($response['paid_at']));
-            $trMod .= "
-                <b>Metode Pembayaran : </b> {$response['payment_method']}<br>
-                <b>Kode Bank : </b> {$response['bank_code']}<br>
+            $data['payment'] = $xenditPHPClient->getInvoice($invoice_id);
+            $newDate = date("d F Y & H:i:s", strtotime($data['payment']['paid_at']));
+            $data['paymentHtmls'] .= "
+                <b>Metode Pembayaran : </b> {$data['payment']['payment_method']}<br>
+                <b>Kode Bank : </b> {$data['payment']['bank_code']}<br>
                 <b>Tanggal Pembayaran : </b> {$newDate}<br>
             ";
         }
-        
+
         echo '<pre>';
         print_r($data);
         echo '</pre>';
