@@ -352,70 +352,70 @@ else{
         ";
         $data['rows_order_detail_html'] = implode('',$data['rows_order_detail_html']);
 
-        echo '<pre>';
-        print_r($data);
-        echo '</pre>';
+        // echo '<pre>';
+        // print_r($data);
+        // echo '</pre>';
 
-    echo"
-        <div class='box'>
-            <div class='box-header'>
-                <h3 class='box-title'>DETAIL ORDERS</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class='box-body'>
-                <!-- info row -->
-                <div class='row invoice-info'>
-                    <div class='col-sm-4 invoice-col'>
-                        Kepada :
-                        <address>
-                            {$data['orderAlamat']}
-                        </address>
-                    </div>
-                    <!-- /.col -->
-
-                    
-                    <div class='col-sm-4 invoice-col'>
-                        <b>Invoice</b><br><br>
-                        <b>Order ID : </b> {$data['orderID']}<br>
-                        <b>Tgl. orders : </b> {$data['orderTanggal']}<br>
-                        <b>Kurir : </b> {$data['orderKurir']}<br>
-                        {$data['paymentHtmls']}
-                    </div>
-                    <!-- /.col -->
+        echo"
+            <div class='box'>
+                <div class='box-header'>
+                    <h3 class='box-title'>DETAIL ORDERS</h3>
                 </div>
-                <!-- /.row -->
+                <!-- /.box-header -->
+                <div class='box-body'>
+                    <!-- info row -->
+                    <div class='row invoice-info'>
+                        <div class='col-sm-4 invoice-col'>
+                            Kepada :
+                            <address>
+                                {$data['orderAlamat']}
+                            </address>
+                        </div>
+                        <!-- /.col -->
 
-                <!-- Table row -->
-                <div class='row'>
-                    <div class='col-xs-12 table-responsive'>
-                        <table class='table table-striped'>
-                            <thead>
-                                <tr>
-                                    <th>Produk</th>
-                                    <th>Berat(Kg)</th>
-                                    <th>Jumlah</th>
-                                    <th>Harga</th>
-                                    <th>Subtotal</th>
-                                </tr>
-                            </thead>
-                            <tbody>{$data['rows_order_detail_html']}</tbody>
-                        </table>
+                        
+                        <div class='col-sm-4 invoice-col'>
+                            <b>Invoice</b><br><br>
+                            <b>Order ID : </b> {$data['orderID']}<br>
+                            <b>Tgl. orders : </b> {$data['orderTanggal']}<br>
+                            <b>Kurir : </b> {$data['orderKurir']}<br>
+                            {$data['paymentHtmls']}
+                        </div>
+                        <!-- /.col -->
                     </div>
-                    <!-- /.col -->
-                </div>
-                <!-- /.row -->
+                    <!-- /.row -->
 
-                <!-- this row will not appear when printing -->
-                <div class='row no-print'>
-                    <div class='col-xs-12'>
-                        <a href=modul/mod_order/cetak.php?id={$r['id_orders']} target='_blank' class='btn btn-primary pull-right'><i class='fa fa-print'></i> Print</a><br>
+                    <!-- Table row -->
+                    <div class='row'>
+                        <div class='col-xs-12 table-responsive'>
+                            <table class='table table-striped'>
+                                <thead>
+                                    <tr>
+                                        <th>Produk</th>
+                                        <th>Berat(Kg)</th>
+                                        <th>Jumlah</th>
+                                        <th>Harga</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>{$data['rows_order_detail_html']}</tbody>
+                            </table>
+                        </div>
+                        <!-- /.col -->
                     </div>
+                    <!-- /.row -->
+
+                    <!-- this row will not appear when printing -->
+                    <div class='row no-print'>
+                        <div class='col-xs-12'>
+                            <a href=modul/mod_order/cetak.php?id={$data['orderID']} target='_blank' class='btn btn-primary pull-right'><i class='fa fa-print'></i> Print</a><br>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
                 </div>
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
-        </div>    
-    ";
+                <!-- /.box -->
+            </div>    
+        ";
     break;  
 }
 }
