@@ -298,11 +298,6 @@ else{
                 <b>Tanggal Pembayaran : </b> {$newDate}<br>
             ";
         }
-
-        echo '<pre>';
-        print_r($data);
-        echo '</pre>';
-        die();
         
         // tampilkan rincian produk yang di order
         $data['rows_order_detail_html'] = [];
@@ -321,6 +316,11 @@ else{
         }
 
         $data['rows_order_detail_html'] = implode('',$data['rows_order_detail_html']);
+        
+        echo '<pre>';
+        print_r($data);
+        echo '</pre>';
+        die();
 
     echo"
         <div class='box'>
