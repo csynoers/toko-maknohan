@@ -1444,6 +1444,7 @@ elseif ($_GET['module']=='datatransaksi'){
 		</form>
 	</div>
 	<hr>
+	{$data['info']}
 	<div class='well'>
 	<form action=edit_profil.php method=POST class='form-horizontal'>
 	<input type=hidden name=id value='$r[id_kustomer]'>
