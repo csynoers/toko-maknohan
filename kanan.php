@@ -1282,7 +1282,7 @@ elseif ($_GET['module']=='datatransaksi'){
 	<h3> Riwayat Data Order Anda</h3>	
 	<hr class='soft'/>
 	<div class='wellXXX'>
-		<form action='' method='GET' class='form-horizontal'>
+		<form action='media2.php?module=datatransaksi' method='GET' class='form-horizontal'>
 			<div class='control-groupXXX'>
 				<label class='control-label' for='inputFname'>Filter Status Pesanan </label>
 				<div class='controls'>
