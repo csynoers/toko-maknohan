@@ -346,7 +346,7 @@ else{
                     <div class='col-sm-4 invoice-col'>
                         Kepada :
                         <address>
-                            {$r['alamat']}
+                            {$data['orderAlamat']}
                         </address>
                     </div>
                     <!-- /.col -->
