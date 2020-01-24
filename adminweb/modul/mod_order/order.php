@@ -351,17 +351,15 @@ else{
                     </div>
                     <!-- /.col -->
 
-                    <form method=POST action=$aksi?module=order&act=update>
-                        <input type=hidden name=id value=$r[id_orders]>
-                        <div class='col-sm-4 invoice-col'>
-                            <b>Invoice</b><br><br>
-                            <b>Order ID : </b> {$r['id_orders']}<br>
-                            <b>Tgl. orders : </b> {$tanggal}<br>
-                            <b>Kurir : </b> {$r['kurir']}<br>
-                            {$trMod}
-                        </div>
-                        <!-- /.col -->
-                    </form>
+                    
+                    <div class='col-sm-4 invoice-col'>
+                        <b>Invoice</b><br><br>
+                        <b>Order ID : </b> {$data['orderID']}<br>
+                        <b>Tgl. orders : </b> {$data['orderTanggal']}<br>
+                        <b>Kurir : </b> {$data['orderKurir']}<br>
+                        {$data['paymentHtmls']}
+                    </div>
+                    <!-- /.col -->
                 </div>
                 <!-- /.row -->
 
