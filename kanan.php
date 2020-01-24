@@ -1325,13 +1325,13 @@ elseif ($_GET['module']=='datatransaksi'){
 		if ( $_GET['status_pesanan']=='SEDANG DIKIRIM' ) {
 			$data['info'] = "
 				<div class='panel panel-default' style='margin-top:20px'>
-					<div class='panel-body'>
+					<div class='panel-body' style='padding:0px 20px'>
 						Untuk melacak pesanan silahkan lakukan seperti langkah berikut ini:<br>
 						1. copy nomor resi pada kolom Status Pesanan No Resi dibawah ini.<br>
 						2. klik jasa pengiriman sesuai dengan kolom Kurir.<br>
-						<a href='https://www.posindonesia.co.id/id/tracking' class='badge btn btn-sm' target='_blank'>Lacak POS</a>
-						<a href='https://www.tiki.id/id/tracking' class='badge btn btn-sm' target='_blank'>Lacak TIKI</a>
-						<a href='https://cekresi.com/' class='badge btn btn-sm' target='_blank'>Lacak JNE</a><br>
+						<a href='https://www.posindonesia.co.id/id/tracking' class='badge btn btn-inverse btn-mini' target='_blank'>Lacak POS</a>
+						<a href='https://www.tiki.id/id/tracking' class='badge btn btn-inverse btn-mini' target='_blank'>Lacak TIKI</a>
+						<a href='https://cekresi.com/' class='badge btn btn-inverse btn-mini' target='_blank'>Lacak JNE</a><br>
 						3. jika pesanan sudah sampai mohon untuk konfirmasi dengan cara memilih menu Pesanan Diterima pada kolom aksi di bawah ini.
 					</div>
 				</div>
@@ -1349,7 +1349,7 @@ elseif ($_GET['module']=='datatransaksi'){
 						<td>{$value['status_order']}</td>
 						<td>{$value['status_transaksi']} dengan No Resi : {$value['no_resi']}</td>
 						<td>
-							<a href='media2.php?module=detailtransaksi&id={$value['id_orders']}' class='btn btn-warning'>Pesanan Diterima</a>
+							<a href='media2.php?module=konfirmasipesanan&id={$value['id_orders']}' class='btn btn-warning'>Pesanan Diterima</a>
 						</td>
 					</tr>
 				";
@@ -1458,6 +1458,19 @@ elseif ($_GET['module']=='datatransaksi'){
 
 	</div>";
 
+}
+elseif ($_GET['module']=='konfirmasipesanan'){
+	$data 								= [];
+	$data['id_orders'] 					= $_GET['id'];
+	$data['query_update_tabel_orders'] 	= "UPDATE `orders` SET `status_transaksi`='PESANAN SELESAI' WHERE id_orders='{$data['id_orders']}' ";
+	$data['exec_update_tabel_orders'] 	= mysql_query($data['query_update_tabel_orders']);
+
+	if ( $data['exec_update_tabel_orders'] ) { # update berhasil
+		$alert = "<script>window.alert('pesanan berhasil diselesaikan');window.location=('media2.php?module=datatransaksi&status_pesanan=PESANAN+SELESAI')</script>";
+	} else { # update gagal
+		$alert = "<script>window.alert('pesanan gagal diselesaikan ');window.history.go(-1)</script>";
+	}
+	echo $alert;
 }
 elseif ($_GET['module']=='detailtransaksi'){
 session_start();
