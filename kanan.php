@@ -1418,9 +1418,9 @@ elseif ($_GET['module']=='datatransaksi'){
 		$data['rows'] = implode('',$data['rows']); 
 	}
 
-	echo '<pre>';
-	print_r($data);
-	echo '</pre>';
+	// echo '<pre>';
+	// print_r($data);
+	// echo '</pre>';
 
 	echo"
 	<h3> Riwayat Data Order Anda</h3>	
