@@ -275,8 +275,10 @@ else{
 
     case "detailorder":
         $data       = [];
-        $edit       = mysql_query("SELECT * FROM orders WHERE id_orders='{$_GET['id']}' ");
-        $r          = mysql_fetch_assoc($edit);
+        $data['queryOrder'] = mysql_query("SELECT * FROM orders WHERE id_orders='{$_GET['id']}' ");
+        $data['rowOrder']   = mysql_fetch_assoc($edit);
+        print_r($data);
+        die();
         $tanggal    = tgl_indo($r['tgl_order']);
         
         $trMod= "";
@@ -316,7 +318,7 @@ else{
                 </tr>
             ";
         }
-        
+
         $data['rows_order_detail_html'] = implode('',$data['rows_order_detail_html']);
 
     echo"
@@ -357,7 +359,7 @@ else{
                             <thead>
                                 <tr>
                                     <th>Produk</th>
-                                    <th>Berat(Gram)</th>
+                                    <th>Berat(Kg)</th>
                                     <th>Jumlah</th>
                                     <th>Harga</th>
                                     <th>Subtotal</th>
