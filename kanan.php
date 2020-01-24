@@ -1423,7 +1423,7 @@ elseif ($_GET['module']=='datatransaksi'){
 				<tr>
 					<td>{$value['id_orders']}</td>
 					<td>{$value['tgl_order']}</td>
-					<td>{$value['jam']}</td>
+					<td>{$value['jam_order']}</td>
 					<td>{$value['status_order']}</td>
 					<td>{$value['status_transaksi']}</td>
 					<td>
