@@ -1281,12 +1281,12 @@ elseif ($_GET['module']=='datatransaksi'){
 	echo"
 	<h3> Riwayat Data Order Anda</h3>	
 	<hr class='soft'/>
-	<div class='well'>
+	<div class='wellXXX'>
 		<form action='' method='GET' class='form-horizontal'>
-			<div class='control-group'>
-				<label class='control-label' for='inputFname'>Filter Status Pesanan <sup>*</sup></label>
+			<div class='control-groupXXX'>
+				<label class='control-label' for='inputFname'>Filter Status Pesanan </label>
 				<div class='controls'>
-					<select name='status_pesanan' class='form-control' onchange='this.form.submit()'>
+					<select name='status_pesanan' class='input-block-level' onchange='this.form.submit()'>
 						<option value='SEMUA PESANAN'> SEMUA PESANAN </option>
 						<option value='BELUM BAYAR'>BELUM BAYAR</option>
 						<option value='SEDANG DIPROSES'>SEDANG DIPROSES</option>
@@ -1298,6 +1298,7 @@ elseif ($_GET['module']=='datatransaksi'){
 			</div>
 		</form>
 	</div>
+	<hr>
 	<div class='well'>
 	<form action=edit_profil.php method=POST class='form-horizontal'>
 	<input type=hidden name=id value='$r[id_kustomer]'>
