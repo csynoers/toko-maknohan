@@ -275,11 +275,14 @@ else{
 
     case "detailorder":
         $data       = [];
-        $data['queryOrder'] = mysql_query("SELECT * FROM orders WHERE id_orders='{$_GET['id']}' ");
-        $data['rowOrder']   = mysql_fetch_assoc($data['queryOrder']);
+        $data['queryOrder']     = mysql_query("SELECT * FROM orders WHERE id_orders='{$_GET['id']}' ");
+        $data['rowOrder']       = mysql_fetch_assoc($data['queryOrder']);
+        $data['tanggal_order']  = tgl_indo($data['rowOrder']['tgl_order']);
+
+        echo '<pre>';
         print_r($data);
+        echo '</pre>';
         die();
-        $tanggal    = tgl_indo($r['tgl_order']);
         
         $trMod= "";
         if ( $r['status']== 'PAID' ) {
