@@ -277,12 +277,10 @@ else{
         $data       = [];
         $data['queryOrder']     = mysql_query("SELECT * FROM orders WHERE id_orders='{$_GET['id']}' ");
         $data['rowOrder']       = mysql_fetch_assoc($data['queryOrder']);
-        $data['tanggal_order']  = tgl_indo($data['rowOrder']['tgl_order']);
-
-        echo '<pre>';
-        print_r($data);
-        echo '</pre>';
-        die();
+        $data['orderAlamat']    = $data['rowOrder']['alamat'];
+        $data['orderID']        = $data['rowOrder']['id_orders'];
+        $data['orderTanggal']   = tgl_indo($data['rowOrder']['tgl_order']);
+        $data['orderKurir']     = tgl_indo($data['rowOrder']['kurir']);
         
         $trMod= "";
         if ( $r['status']== 'PAID' ) {
@@ -305,6 +303,11 @@ else{
                 <b>Tanggal Pembayaran : </b> {$newDate}<br>
             ";
         }
+        
+        echo '<pre>';
+        print_r($data);
+        echo '</pre>';
+        die();
         
         // tampilkan rincian produk yang di order
         $data['rows_order_detail_html'] = [];
