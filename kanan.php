@@ -1716,34 +1716,36 @@ echo"
 <h2>$d[judul]</h2>
 <p>$d[isi_halaman]</p>
 <br>
-<p>Silahkan Isi Form Dibawah ini untuk menghubungi kami secara online</p>
-<h4>Email Us</h4>
+	<div class='hidden'>
+		<p>Silahkan Isi Form Dibawah ini untuk menghubungi kami secara online</p>
+		<h4>Email Us</h4>
 		<form action=hubungi-aksi.html method=POST class='form-horizontal'>
-        <fieldset>
-          <div class='control-group'>
-           
-              <input type='text' name='nama' placeholder='nama' class='input-xlarge'/ required>
-           
-          </div>
-		   <div class='control-group'>
-           
-              <input type='email' name='email' placeholder='email' class='input-xlarge'/ required>
-           
-          </div>
-		   <div class='control-group'>
-           
-              <input type='text' name='subjek' placeholder='subjek' class='input-xlarge'/ required>
-          
-          </div>
-          <div class='control-group'>
-              <textarea rows='3' name='pesan' id='textarea' class='input-xlarge'></textarea>
-           
-          </div>
+		<fieldset>
+		<div class='control-group'>
 
-            <button class='shopBtn' type='submit'>Kirim</button>
+		<input type='text' name='nama' placeholder='nama' class='input-xlarge'/ required>
 
-        </fieldset>
-      </form>
+		</div>
+		<div class='control-group'>
+
+		<input type='email' name='email' placeholder='email' class='input-xlarge'/ required>
+
+		</div>
+		<div class='control-group'>
+
+		<input type='text' name='subjek' placeholder='subjek' class='input-xlarge'/ required>
+
+		</div>
+		<div class='control-group'>
+		<textarea rows='3' name='pesan' id='textarea' class='input-xlarge'></textarea>
+
+		</div>
+
+		<button class='shopBtn' type='submit'>Kirim</button>
+
+		</fieldset>
+		</form>
+	</div>
 							</div>";
 
 }
