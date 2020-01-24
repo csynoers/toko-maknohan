@@ -304,7 +304,6 @@ else{
         $data['totalHarga']             = 0;
         $data['totalBerat']             = 0;
         $data['ongkosKirim']            = $data['rowOrder']['ongkir'];
-        $data['grandTotal']             = 0;
 
         $sql    = mysql_query("SELECT * FROM orders_detail,produk WHERE orders_detail.id_produk=produk.id_produk AND id_orders='$_GET[id]'");
         while( $value= mysql_fetch_array($sql) ){
@@ -324,16 +323,16 @@ else{
                 </tr>
             ";
         }
-        $data['totalHargaText'] = format_rupiah($data['totalHarga']);
-        $data['grandTotalText'] = format_rupiah($data['totalHarga']+$data['ongkosKirim']);
-        $data['ongkosKirimText'] = format_rupiah($data['ongkosKirim']);
+        $data['totalHargaText']     = format_rupiah($data['totalHarga']);
+        $data['grandTotal']         = ($data['totalHarga']+$data['ongkosKirim']);
+        $data['grandTotalText']     = format_rupiah($data['grandTotal']);
+        $data['ongkosKirimText']    = format_rupiah($data['ongkosKirim']);
 
         $data['rows_order_detail_html'] = implode('',$data['rows_order_detail_html']);
 
         echo '<pre>';
         print_r($data);
         echo '</pre>';
-        die();
 
     echo"
         <div class='box'>
