@@ -301,22 +301,35 @@ else{
         
         // tampilkan rincian produk yang di order
         $data['rows_order_detail_html'] = [];
-        $sql    = mysql_query("SELECT * FROM orders_detail,produk WHERE orders_detail.id_produk=produk.id_produk AND id_orders='$_GET[id]'");
-        while( $s= mysql_fetch_array($sql) ){
+        $data['totalHarga']             = 0;
+        $data['totalBerat']             = 0;
+        $data['ongkosKirim']            = $data['rowOrder']['ongkir'];
+        $data['grandTotal']             = 0;
 
+        $sql    = mysql_query("SELECT * FROM orders_detail,produk WHERE orders_detail.id_produk=produk.id_produk AND id_orders='$_GET[id]'");
+        while( $value= mysql_fetch_array($sql) ){
+            $value['hargaText'] = format_rupiah($value['harga']);
+            $value['subTotal'] = ($value['jumlah']*$value['harga']);
+            $value['subTotalText'] = format_rupiah($value['subTotal']);
+
+            $data['totalHarga'] += $value['subTotal']; 
+            $data['totalBerat'] += ($value['jumlah']*$value['berat']); 
             $data['rows_order_detail_html'][] = "
                 <tr>
-                    <td>{$s['nama_produk']}</td>
-                    <td>{$s['berat']}</td>
-                    <td>{$s['jumlah']}</td>
-                    <td>Rp. ".format_rupiah($s['harga'])."</td>
-                    <td>Rp. ".format_rupiah($s['harga']*$s['jumlah'])."</td>
+                    <td>{$value['nama_produk']}</td>
+                    <td>{$value['berat']}</td>
+                    <td>{$value['jumlah']}</td>
+                    <td>Rp. {$value['hargaText']}</td>
+                    <td>Rp. {$value['subTotalText']}</td>
                 </tr>
             ";
         }
+        $data['totalHargaText'] = format_rupiah($data['totalHarga']);
+        $data['grandTotalText'] = format_rupiah($data['totalHarga']+$data['ongkosKirim']);
+        $data['ongkosKirimText'] = format_rupiah($data['ongkosKirim']);
 
         $data['rows_order_detail_html'] = implode('',$data['rows_order_detail_html']);
-        
+
         echo '<pre>';
         print_r($data);
         echo '</pre>';
