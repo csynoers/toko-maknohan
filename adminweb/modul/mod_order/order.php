@@ -276,7 +276,7 @@ else{
     case "detailorder":
         $data       = [];
         $data['queryOrder'] = mysql_query("SELECT * FROM orders WHERE id_orders='{$_GET['id']}' ");
-        $data['rowOrder']   = mysql_fetch_assoc($edit);
+        $data['rowOrder']   = mysql_fetch_assoc($data['queryOrder']);
         print_r($data);
         die();
         $tanggal    = tgl_indo($r['tgl_order']);
