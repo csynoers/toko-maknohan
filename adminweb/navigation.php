@@ -8,9 +8,14 @@
         </li>
 
         <li class='".($_GET['module']=='admin'? 'bg-blue-active' : NULL)."'>
-        <a href='media.php?module=admin'>
-        <i class='fa fa-users'></i> <span>Admin</span>
-        </a>
+            <a href='media.php?module=admin'>
+                <i class='fa fa-users'></i> <span>Admin</span>
+            </a>
+        </li>
+        <li class='".($_GET['module']=='hubungi'? 'bg-blue-active' : NULL)."'>
+            <a href='media.php?module=hubungi'>
+                <i class='fa fa-envelope'></i> <span>Hubungi</span>
+            </a>
         </li>
 
         <li class='treeview ".($_GET['module']=='kategori'||$_GET['module']=='produk'||$_GET['module']=='ukuran'||$_GET['module']=='slide'||$_GET['module']=='halamanstatis'? 'active' : NULL)."'>

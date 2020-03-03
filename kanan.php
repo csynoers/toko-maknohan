@@ -1716,7 +1716,7 @@ echo"
 <h2>$d[judul]</h2>
 <p>$d[isi_halaman]</p>
 <br>
-	<div class='hidden'>
+	<div class=''>
 		<p>Silahkan Isi Form Dibawah ini untuk menghubungi kami secara online</p>
 		<h4>Email Us</h4>
 		<form action=hubungi-aksi.html method=POST class='form-horizontal'>
@@ -1755,10 +1755,10 @@ mysql_query("INSERT INTO hubungi(nama,
                                    subjek,
                                    pesan,
                                    tanggal) 
-                        VALUES('$_POST[nama]',
+                        VALUES('".strip_tags($_POST['nama'])."',
                                '$_POST[email]',
-                               '$_POST[subjek]',
-                               '$_POST[pesan]',
+                               '".strip_tags($_POST['subjek'])."',
+                               '".strip_tags($_POST['pesan'])."',
                                '$tgl_sekarang')");
 echo"							
 <div class='span9'>

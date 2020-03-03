@@ -7,7 +7,7 @@ session_start();
 }
 else{
 $aksi="modul/mod_hubungi/aksi_hubungi.php";
-switch($_GET[act]){
+switch($_GET['act']){
   // Tampil Hubungi Kami
   default:
     echo"<div class='col-xs-12'>
@@ -30,7 +30,7 @@ switch($_GET[act]){
 
     $no = $posisi+1;
     while ($r=mysql_fetch_array($tampil)){
-      $tgl=tgl_indo($r[tanggal]);
+      $tgl=tgl_indo($r['tanggal']);
       echo "<tr><td>$no</td>
                 <td>$r[nama]</td>
                 <td><a href=?module=hubungi&act=balasemail&id=$r[id_hubungi]>$r[email]</a></td>
@@ -76,7 +76,7 @@ switch($_GET[act]){
      break;
     
   case "kirimemail":
-    mail($_POST[email],$_POST[subjek],$_POST[pesan],"From: redaksi@bukulokomedia.com");
+    mail($_POST['email'],$_POST['subjek'],$_POST['pesan'],"From: support@maknohan.com");
     echo "<h5>Status Email</h5>
           <p>Email telah sukses terkirim ke tujuan</p>
           <p>[ <a href=javascript:history.go(-2)>Kembali</a> ]</p>";	 		  
