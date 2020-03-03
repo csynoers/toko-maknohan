@@ -980,7 +980,7 @@ elseif ($_GET['module']=='simpantransaksi'){
 		$data['rowOrders']  = mysql_fetch_assoc($data['queryOrders']);
 		if ( empty($data['rowOrders']['invoice_url']) ) {
 			include_once("XenditPHPClient.php");
-			define('SECRET_API_KEY', 'xnd_development_jvolJ4f9VT9Y1KNheUMY1XZm8xQ5J7pki8VpllUEb0XXEiiRKxly09RoW4U6ILo');
+			define('SECRET_API_KEY', 'xnd_production_xc2NVAeNio0YeMAWOWE1yXqcfZiMHfG0VfW0GCi4Q7TyW7fihjTegcl1yCTAVZ9');
 		
 			$options['secret_api_key'] = constant('SECRET_API_KEY');
 			$xenditPHPClient = new XenditClient\XenditPHPClient($options);
@@ -1493,7 +1493,7 @@ $edit = mysql_query("SELECT * FROM orders WHERE id_orders='$_GET[id]'");
 	} elseif ( $r['status_order']=='PAID' ) {
 		include_once("XenditPHPClient.php");
 
-		$options['secret_api_key'] = 'xnd_development_jvolJ4f9VT9Y1KNheUMY1XZm8xQ5J7pki8VpllUEb0XXEiiRKxly09RoW4U6ILo';
+		$options['secret_api_key'] = 'xnd_production_xc2NVAeNio0YeMAWOWE1yXqcfZiMHfG0VfW0GCi4Q7TyW7fihjTegcl1yCTAVZ9';
 	  
 		$xenditPHPClient = new XenditClient\XenditPHPClient($options);
 	  

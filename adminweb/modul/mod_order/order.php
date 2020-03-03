@@ -287,7 +287,7 @@ else{
         if ( $data['rowOrder']['status_order']== 'PAID' ) {
             include_once("../XenditPHPClient.php");
         
-            $options['secret_api_key'] = 'xnd_development_jvolJ4f9VT9Y1KNheUMY1XZm8xQ5J7pki8VpllUEb0XXEiiRKxly09RoW4U6ILo';
+            $options['secret_api_key'] = 'xnd_production_xc2NVAeNio0YeMAWOWE1yXqcfZiMHfG0VfW0GCi4Q7TyW7fihjTegcl1yCTAVZ9';
             $xenditPHPClient = new XenditClient\XenditPHPClient($options);
             $invoice_id = $data['external_id'];
             $data['payment'] = $xenditPHPClient->getInvoice($invoice_id);
