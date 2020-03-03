@@ -1,7 +1,11 @@
 RewriteEngine on
 
-RewriteCond %{SERVER_PORT} 80 
-RewriteRule ^(.*)$ https://www.maknohan.com/$1 [R,L]
+# DO NOT REMOVE THIS LINE AND THE LINES BELOW SSL_REDIRECT:maknohan.com
+RewriteCond %{SERVER_PORT} 80
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} ^maknohan.com$
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# DO NOT REMOVE THIS LINE AND THE LINES ABOVE SSL_REDIRECT:maknohan.com 
 
 RewriteRule ^home$ media2.php?module=home [L]
 RewriteRule ^profil-kami\.html$ media2.php?module=profilkami&id=$1 [L]

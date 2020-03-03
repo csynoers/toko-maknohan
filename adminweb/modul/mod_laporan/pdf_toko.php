@@ -33,8 +33,8 @@ $pdf->closeObject();
 $pdf->addObject($all, 'all');
 
 // Baca input tanggal yang dikirimkan user
-$mulai=$_POST[thn_mulai].'-'.$_POST[bln_mulai].'-'.$_POST[tgl_mulai];
-$selesai=$_POST[thn_selesai].'-'.$_POST[bln_selesai].'-'.$_POST[tgl_selesai];
+$mulai=$_POST['thn_mulai'].'-'.$_POST['bln_mulai'].'-'.$_POST['tgl_mulai'];
+$selesai=$_POST['thn_selesai'].'-'.$_POST['bln_selesai'].'-'.$_POST['tgl_selesai'];
 
 // Koneksi ke database dan tampilkan datanya
 include "../../../config/koneksi.php";
@@ -45,43 +45,46 @@ $sql = mysql_query("SELECT orders.id_orders as faktur,DATE_FORMAT(tgl_order, '%d
                     FROM orders, orders_detail, produk  
                     WHERE (orders_detail.id_produk=produk.id_produk) 
                     AND (orders_detail.id_orders=orders.id_orders) 
-                    AND (orders.status_order=!'Belum Diabayar') 
+                    AND (orders.status_transaksi='PESANAN SELESAI') 
                     AND (orders.tgl_order BETWEEN '$mulai' AND '$selesai')");
 $jml = mysql_num_rows($sql);
 
 if ($jml > 0){
-$i = 1;
-while($r = mysql_fetch_array($sql)){
-  $quantityharga=rp($r[jumlah]*$r[harga]);
-  $hargarp=rp($r[harga]); 
-  $faktur=$r[faktur];
+    $i = 1;
+    while($r = mysql_fetch_array($sql)){
+        $quantityharga=rp($r['jumlah']*$r['harga']);
+        $hargarp=rp($r['harga']); 
+        $faktur=$r['faktur'];
 
-  $data[$i]=array('<b>No</b>'=>$i, 
-                  '<b>Faktur</b>'=>$faktur, 
-                  '<b>Tanggal</b>'=>$r[tanggal], 
-                  '<b>Nama Produk</b>'=>$r[nama_produk], 
-                  '<b>Qty</b>'=>$r[jumlah], 
-                  '<b>Harga</b>'=>$hargarp,
-                  '<b>Sub Total</b>'=>$quantityharga);
-	$total = $total+($r[jumlah]*$r[harga]);
-	$totqu = $totqu + $r[jumlah];
-  $i++;
-}
+        $data[$i]=array('<b>No</b>'=>$i, 
+                        '<b>Faktur</b>'=>$faktur, 
+                        '<b>Tanggal</b>'=>$r['tanggal'], 
+                        '<b>Nama Produk</b>'=>$r['nama_produk'], 
+                        '<b>Qty</b>'=>$r['jumlah'], 
+                        '<b>Harga</b>'=>$hargarp,
+                        '<b>Sub Total</b>'=>$quantityharga);
+            $total = $total+($r['jumlah']*$r['harga']);
+            $totqu = $totqu + $r['jumlah'];
+        $i++;
+    }
 
-$pdf->ezTable($data, '', '', '');
+    $pdf->ezTable($data, '', '', '');
 
-$tot=rp($total);
-$pdf->ezText("\n\nTotal keseluruhan : Rp. {$tot}");
-$pdf->ezText("\nJumlah yang terjual : {$jml} unit");
-$pdf->ezText("Jumlah keseluruhan yg terjual: {$totqu} unit");
+    $tot=rp($total);
+    $pdf->ezText("\n\nTotal keseluruhan : Rp. {$tot}");
+    $pdf->ezText("\nJumlah yang terjual : {$jml} unit");
+    $pdf->ezText("Jumlah keseluruhan yg terjual: {$totqu} unit");
 
-// Penomoran halaman
-$pdf->ezStartPageNumbers(320, 15, 8);
-$pdf->ezStream();
+    // Penomoran halaman
+    $pdf->ezStartPageNumbers(320, 15, 8);
+    $pdf->ezStream();
 }
 else{
-  $m=$_POST[tgl_mulai].'-'.$_POST[bln_mulai].'-'.$_POST[thn_mulai];
-  $s=$_POST[tgl_selesai].'-'.$_POST[bln_selesai].'-'.$_POST[thn_selesai];
-  echo "Tidak ada transaksi/order pada Tanggal $m s/d $s";
+    // echo '<pre>';
+    // print_r($_REQUEST);
+    // echo '</pre>';
+    $m=$_POST['tgl_mulai'].'-'.$_POST['bln_mulai'].'-'.$_POST['thn_mulai'];
+    $s=$_POST['tgl_selesai'].'-'.$_POST['bln_selesai'].'-'.$_POST['thn_selesai'];
+    echo "Tidak ada transaksi/order pada Tanggal $m s/d $s";
 }
 ?>
