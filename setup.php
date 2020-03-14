@@ -1,5 +1,5 @@
 <?php
-include_once("koneksi.php");
+include_once("config/koneksi.php");
 ini_set('max_execution_time', 300); 
 class import_db
 {
